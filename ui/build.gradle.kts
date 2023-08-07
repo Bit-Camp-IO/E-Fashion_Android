@@ -1,17 +1,29 @@
+import java.util.Properties
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
 
+
+fun getSecretKeys(): Properties {
+    val keyFile = project.rootProject.file("local.properties")
+    val properties =  Properties()
+    properties.load(project.rootProject.file(keyFile).inputStream())
+    return properties
+}
+
 android {
     namespace = "com.bitio.ui"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "GOOGLE_MAP_KEY", getSecretKeys()["GOOGLE_MAP_KEY"].toString())
     }
 
     buildTypes {
@@ -33,11 +45,11 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
-    buildToolsVersion = "33.0.0"
 }
 
 dependencies {
@@ -53,11 +65,11 @@ dependencies {
     api("androidx.compose.ui:ui-graphics")
     api("androidx.compose.ui:ui-tooling-preview")
     api("androidx.compose.material3:material3")
+
     // coil
     implementation("io.coil-kt:coil-compose:2.4.0")
     //google fonts
     implementation("androidx.compose.ui:ui-text-google-fonts:1.4.3")
-
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

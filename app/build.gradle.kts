@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.bitio.efashion"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.bitio.efashion"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -47,10 +47,8 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    buildToolsVersion = "33.0.0"
 }
 dependencies {
     implementation(project(":ui"))
-
 }
 

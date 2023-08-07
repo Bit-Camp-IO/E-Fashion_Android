@@ -6,13 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.bitio.ui.theme.EFashionTheme
 import com.bitio.productscomponent.domain.entities.CollectionGroup
 import com.bitio.ui.product.home.HomeScreen
-import com.bitio.ui.product.home.composables.CollectionPager
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

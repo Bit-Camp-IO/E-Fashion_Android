@@ -18,9 +18,7 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = PeacockBlue,
     background = Cinder,
     surface = BalticSea,
-    onBackground = Color(0xFFAEAEAE)
-
-
+    onBackground = Porcelain
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -28,7 +26,7 @@ private val LightColorScheme = lightColorScheme(
     secondary = NiceBlue,
     tertiary = PeacockBlue,
     background = Porcelain,
-    onBackground = Color(0xFF2B1513),
+    onBackground = FireFly,
     surface = Platinum,
     onSurface = Porcelain,
 

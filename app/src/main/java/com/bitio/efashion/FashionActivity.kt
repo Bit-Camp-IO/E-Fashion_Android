@@ -9,18 +9,22 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import com.bitio.ui.theme.EFashionTheme
 import com.bitio.productscomponent.domain.entities.CollectionGroup
 import com.bitio.ui.location.LocationScreen
-import com.bitio.ui.product.home.HomeScreen
+import com.bitio.ui.profile.ProfileScreen
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class FashionActivity : ComponentActivity() {
 
 
     private val requestPermissionLauncher =
@@ -39,6 +43,7 @@ class MainActivity : ComponentActivity() {
         ) -> {
             // TODO
         }
+
         else -> {
             requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
         }
@@ -53,13 +58,20 @@ class MainActivity : ComponentActivity() {
         askPermissions()
 
         setContent {
-            EFashionTheme {
+            var isDarkTheme by remember {
+                mutableStateOf(false)
+            }
+            EFashionTheme(
+                darkTheme = isDarkTheme
+            ) {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LocationScreen()
+                    ProfileScreen(isDarkTheme = isDarkTheme) {
+                        isDarkTheme = !isDarkTheme
+                    }
                 }
             }
         }

@@ -58,7 +58,7 @@ class AppThemeTextStyles(fontColor: Color) {
     val bodySmall by lazy {
         TextStyle(
             fontFamily = AppFontData.fontFamily,
-            fontWeight = FontWeight.W400,
+            fontWeight = FontWeight.Normal,
             fontSize = 12.sp,
             color = fontColor
 

@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import com.bitio.ui.theme.EFashionTheme
 import com.bitio.productscomponent.domain.entities.CollectionGroup
-import com.bitio.ui.location.LocationScreen
 import com.bitio.ui.profile.ProfileScreen
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices

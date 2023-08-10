@@ -71,7 +71,6 @@ private fun ProfileUserContent(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(state = rememberScrollState())
-            .background(MaterialTheme.colorScheme.background)
             .drawBehind {},
     ) {
         IconButton(

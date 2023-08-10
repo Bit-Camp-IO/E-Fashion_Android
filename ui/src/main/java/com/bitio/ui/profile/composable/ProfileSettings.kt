@@ -3,6 +3,7 @@ package com.bitio.ui.profile.composable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -30,7 +31,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.res.painterResource
@@ -41,9 +44,17 @@ import com.bitio.ui.theme.Porcelain
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.asComposePath
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.core.graphics.PathParser
+import com.bitio.ui.product.home.composables.myShape
 import com.bitio.ui.shared.VerticalSpacer32Dp
+import java.util.regex.Pattern
 
 
 @Composable
@@ -69,12 +80,11 @@ private fun ProfileUserContent(
     onClickMyProfile: () -> Unit
 ) {
 
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(state = rememberScrollState())
-            .background(MaterialTheme.colorScheme.background)
-            .drawBehind {},
     ) {
         IconButton(
             onClick = { /*TODO*/ },
@@ -131,6 +141,7 @@ private fun ProfileUserContent(
             onSwitchTheme
         )
     }
+
 }
 
 
@@ -248,27 +259,3 @@ private fun ThemeSwitcher(
         }
     }
 }
-
-private fun DrawScope.drawHalfTriangle(screenHeight: Float) {
-    val path = Path()
-    path.moveTo(0f, 0f)
-    path.lineTo(0f, size.height)
-    path.lineTo(size.width, size.height)
-    path.lineTo(size.width, size.height / 2f)
-    path.close()
-
-    drawPath(
-        path = path,
-        color = Color.Green,
-        style = Stroke(
-            width = 100f,
-            pathEffect = PathEffect.cornerPathEffect(50f),
-        ),
-    )
-}
-
-
-
-
-
-

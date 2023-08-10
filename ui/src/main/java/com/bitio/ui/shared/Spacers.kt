@@ -56,3 +56,9 @@ fun VerticalSpacer16Dp() {
 fun VerticalSpacer32Dp() {
     Spacer(modifier = Modifier.height(32.dp))
 }
+
+@Composable
+fun VerticalSpacer64Dp() {
+    Spacer(modifier = Modifier.height(64.dp))
+}
+

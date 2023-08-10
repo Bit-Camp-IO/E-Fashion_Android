@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.layout.ContentScale
@@ -44,6 +45,7 @@ import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
 import com.bitio.ui.theme.Porcelain
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
+import com.bitio.utils.resizeShape
 import java.util.regex.Pattern
 
 @Composable
@@ -62,21 +64,22 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
 
-    var isShowUserInfo by remember {
+    var isUserProfileVisible by remember {
         mutableStateOf(false)
     }
-    val offsetSettings by animateDpAsState(
-        targetValue = if (isShowUserInfo) screenWidth else 0.dp, label = ""
+
+    val offsetXOfProfileSettings by animateDpAsState(
+        targetValue = if (isUserProfileVisible) screenWidth else 0.dp, label = ""
     )
-    val offsetUserInfo by animateDpAsState(
-        targetValue = if (isShowUserInfo) 0.dp else -screenWidth, label = ""
+    val offsetXOfUserProfile by animateDpAsState(
+        targetValue = if (isUserProfileVisible) 0.dp else -screenWidth, label = ""
     )
 
     Box(
         modifier = Modifier
             .fillMaxSize(), contentAlignment = Alignment.TopCenter
     ) {
-        BlurProfileImage(
+        CustomBlurProfileImage(
             image = state.profile.image,
             contentDescription = state.profile.username
         )
@@ -88,12 +91,12 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box {
-                CircleProfileImage(
+                CustomCircleProfileImage(
                     state.profile.image,
                     state.profile.username,
                 )
 
-                if (isShowUserInfo) {
+                if (isUserProfileVisible) {
                     IconButton(
                         onClick = { },
                         modifier = Modifier
@@ -135,17 +138,17 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
                         isDarkTheme = isDarkTheme,
                         onSwitchTheme = onSwitchTheme,
                         modifier = Modifier
-                            .offset(x = offsetSettings)
+                            .offset(x = offsetXOfProfileSettings)
                     ) {
-                        isShowUserInfo = !isShowUserInfo
+                        isUserProfileVisible = !isUserProfileVisible
                     }
 
                     ProfileUser(
                         onClickBack = {
-                            isShowUserInfo = !isShowUserInfo
+                            isUserProfileVisible = !isUserProfileVisible
                         },
                         modifier = Modifier
-                            .offset(x = offsetUserInfo),
+                            .offset(x = offsetXOfUserProfile),
                         onClickSaveButton = { username, phone, email ->
                             println("User info: $username $phone $email")
                         }
@@ -159,7 +162,7 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
 
 
 @Composable
-private fun BlurProfileImage(
+private fun CustomBlurProfileImage(
     image: String,
     contentDescription: String,
     modifier: Modifier = Modifier,
@@ -175,7 +178,7 @@ private fun BlurProfileImage(
 }
 
 @Composable
-private fun CircleProfileImage(
+private fun CustomCircleProfileImage(
     image: String,
     contentDescription: String,
     modifier: Modifier = Modifier
@@ -195,7 +198,7 @@ val profileShape = object : Shape {
     override fun createOutline(
         size: Size,
         layoutDirection: LayoutDirection,
-        density: Density
+        density: Density,
     ): Outline {
         val pathData =
             "M0 50.5849C0 13.737 38.5025 -10.4526 71.6995 5.53903L331.699 130.786C349.001 139.12 360 156.628 360 175.832V526C360 542.569 346.569 556 330 556H30C13.4315 556 0 542.569 0 526L0 50.5849Z"
@@ -203,23 +206,7 @@ val profileShape = object : Shape {
         val scaleX = size.width / 360F
         val scaleY = size.height / 400F
         return Outline.Generic(
-            PathParser.createPathFromPathData(resize(pathData, scaleX, scaleY)).asComposePath()
+            PathParser.createPathFromPathData(resizeShape(pathData, scaleX, scaleY)).asComposePath()
         )
-    }
-
-    private fun resize(pathData: String, scaleX: Float, scaleY: Float): String {
-        val matcher = Pattern.compile("[0-9]+[.]?([0-9]+)?")
-            .matcher(pathData) // match the numbers in the path
-        val stringBuffer = StringBuffer()
-        var count = 0
-        while (matcher.find()) {
-            val number = matcher.group().toFloat()
-            matcher.appendReplacement(
-                stringBuffer,
-                (if (count % 2 == 0) number * scaleX else number * scaleY).toString()
-            ) // replace numbers with scaled numbers
-            ++count
-        }
-        return stringBuffer.toString() // return the scaled path
     }
 }

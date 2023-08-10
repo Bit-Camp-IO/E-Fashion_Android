@@ -38,6 +38,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
 import com.bitio.ui.shared.VerticalSpacer32Dp
+import com.bitio.ui.shared.VerticalSpacer64Dp
 import com.bitio.ui.theme.PeacockBlue
 import com.bitio.ui.theme.Porcelain
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
@@ -88,11 +89,12 @@ private fun ProfileUserContent(
             )
         }
 
+        VerticalSpacer32Dp()
+
         Text(
             text = "Edit Profile",
             style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).titleMedium,
             modifier = Modifier
-                .padding(top = 8.dp)
                 .align(Alignment.CenterHorizontally)
         )
 

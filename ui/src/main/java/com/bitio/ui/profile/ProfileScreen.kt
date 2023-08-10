@@ -67,7 +67,6 @@ fun ProfileScreen(
 private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitchTheme: () -> Unit) {
 
     val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
 
     var isShowUserInfo by remember {
@@ -81,21 +80,21 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
     )
 
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.TopCenter
+        modifier = Modifier
+            .fillMaxSize(), contentAlignment = Alignment.TopCenter
     ) {
         BlurProfileImage(
             image = state.profile.image,
             contentDescription = state.profile.username
         )
 
-
         Column(
-            modifier = Modifier.padding(top = 64.dp),
+            modifier = Modifier
+                .padding(top = 64.dp)
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box {
-
                 CircleProfileImage(
                     state.profile.image,
                     state.profile.username,
@@ -120,7 +119,9 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
                 }
 
             }
+
             VerticalSpacer8Dp()
+
             Text(
                 text = state.profile.username,
                 style = AppThemeTextStyles(Porcelain).titleMedium
@@ -129,25 +130,28 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
             VerticalSpacer16Dp()
 
             Column(
-                modifier = Modifier.verticalScroll(state = rememberScrollState())
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
             ) {
-                Box {
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
                     ProfileSettings(
                         isDarkTheme = isDarkTheme,
                         onSwitchTheme = onSwitchTheme,
                         modifier = Modifier
-                            .fillMaxSize()
                             .offset(x = offsetSettings)
                     ) {
                         isShowUserInfo = !isShowUserInfo
                     }
+
                     ProfileUser(
                         onClickBack = {
                             isShowUserInfo = !isShowUserInfo
                         },
                         modifier = Modifier
-                            .offset(x = offsetUserInfo)
-                            .fillMaxSize(),
+                            .offset(x = offsetUserInfo),
                         onClickSaveButton = { username, phone, email ->
                             println("User info: $username $phone $email")
                         }

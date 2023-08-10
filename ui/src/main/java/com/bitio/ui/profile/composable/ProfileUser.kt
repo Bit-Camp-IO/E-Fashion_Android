@@ -16,6 +16,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -67,7 +69,7 @@ private fun ProfileUserContent(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-
+            .drawBehind {},
     ) {
         IconButton(
             onClick = onClickBack,
@@ -84,7 +86,7 @@ private fun ProfileUserContent(
             )
         }
 
-        Title(
+        Text(
             text = "Edit Profile",
             style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).titleMedium,
             modifier = Modifier
@@ -153,7 +155,7 @@ private fun TextFieldContainer(
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 8.dp),
+            .padding(vertical = 12.dp, horizontal = 24.dp),
         value = value, onValueChange = onValueChange,
         textStyle = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).bodySmall,
         singleLine = true,

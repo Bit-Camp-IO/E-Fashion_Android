@@ -7,12 +7,16 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,12 +24,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
@@ -42,6 +48,8 @@ import com.bitio.ui.R
 import com.bitio.ui.profile.composable.ProfileSettings
 import com.bitio.ui.profile.composable.Title
 import com.bitio.ui.profile.composable.ProfileUser
+import com.bitio.ui.shared.VerticalSpacer16Dp
+import com.bitio.ui.shared.VerticalSpacer8Dp
 import com.bitio.ui.theme.Porcelain
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 
@@ -72,114 +80,88 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
         targetValue = if (isShowUserInfo) 0.dp else -screenWidth, label = ""
     )
 
-    ConstraintLayout(
-        modifier = Modifier.verticalScroll(rememberScrollState())
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.TopCenter
     ) {
-        val (
-            blurProfileImage,
-            circleProfileImage,
-            username,
-            profileSettings,
-            profileUser,
-        ) = createRefs()
-
         BlurProfileImage(
-            screenHeight = screenHeight,
-            state.profile.image,
-            state.profile.username,
-            Modifier
-                .fillMaxSize()
-                .constrainAs(blurProfileImage) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
+            image = state.profile.image,
+            contentDescription = state.profile.username
         )
 
-        Box(
-            Modifier
-                .constrainAs(circleProfileImage) {
-                    top.linkTo(blurProfileImage.top, margin = 64.dp)
-                    start.linkTo(blurProfileImage.start)
-                    end.linkTo(blurProfileImage.end)
-                }
+
+        Column(
+            modifier = Modifier.padding(top = 64.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CircleProfileImage(
-                state.profile.image,
-                state.profile.username,
+            Box {
+
+                CircleProfileImage(
+                    state.profile.image,
+                    state.profile.username,
+                )
+
+                if (isShowUserInfo) {
+                    IconButton(
+                        onClick = { },
+                        modifier = Modifier
+                            .offset(y = (-40).dp)
+                            .clip(RoundedCornerShape(100.dp))
+                            .size(24.dp)
+                            .background(MaterialTheme.colorScheme.secondary)
+                            .align(Alignment.CenterEnd)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.edit),
+                            contentDescription = "back",
+                            tint = Porcelain
+                        )
+                    }
+                }
+
+            }
+            VerticalSpacer8Dp()
+            Text(
+                text = state.profile.username,
+                style = AppThemeTextStyles(Porcelain).titleMedium
             )
-            AnimatedVisibility(
-                visible = isShowUserInfo,
-                enter = fadeIn(animationSpec = tween(durationMillis = 100)),
-                exit = fadeOut(animationSpec = tween(durationMillis = 100)),
+
+            VerticalSpacer16Dp()
+
+            Column(
+                modifier = Modifier.verticalScroll(state = rememberScrollState())
             ) {
-                IconButton(
-                    onClick = { },
-                    modifier = Modifier
-                        .offset(x = 100.dp, y = 16.dp)
-                        .clip(RoundedCornerShape(100.dp))
-                        .size(32.dp)
-                        .background(MaterialTheme.colorScheme.secondary)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.edit),
-                        contentDescription = "back",
-                        tint = Porcelain
+                Box {
+                    ProfileSettings(
+                        isDarkTheme = isDarkTheme,
+                        onSwitchTheme = onSwitchTheme,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .offset(x = offsetSettings)
+                    ) {
+                        isShowUserInfo = !isShowUserInfo
+                    }
+                    ProfileUser(
+                        onClickBack = {
+                            isShowUserInfo = !isShowUserInfo
+                        },
+                        modifier = Modifier
+                            .offset(x = offsetUserInfo)
+                            .fillMaxSize(),
+                        onClickSaveButton = { username, phone, email ->
+                            println("User info: $username $phone $email")
+                        }
                     )
                 }
             }
+
         }
-
-        Title(
-            state.profile.username,
-            Modifier
-                .constrainAs(username) {
-                    top.linkTo(circleProfileImage.bottom, margin = 8.dp)
-                    start.linkTo(circleProfileImage.start)
-                    end.linkTo(circleProfileImage.end)
-                },
-            style = AppThemeTextStyles(Color.Blue).titleMedium
-        )
-
-        ProfileSettings(
-            isDarkTheme = isDarkTheme,
-            onSwitchTheme = onSwitchTheme,
-            modifier = Modifier
-                .fillMaxSize()
-                .offset(x = offsetSettings)
-                .constrainAs(profileSettings) {
-                    top.linkTo(username.bottom, margin = 8.dp)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                },
-        ) {
-            isShowUserInfo = !isShowUserInfo
-        }
-
-        ProfileUser(
-            onClickBack = {
-                isShowUserInfo = !isShowUserInfo
-            },
-            modifier = Modifier
-                .offset(x = offsetUserInfo)
-                .fillMaxSize()
-                .constrainAs(profileUser) {
-                    top.linkTo(username.bottom, margin = 8.dp)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                },
-            onClickSaveButton = { username, phone, email ->
-                println("User info: $username $phone $email")
-            }
-        )
     }
 }
 
+
 @Composable
 private fun BlurProfileImage(
-    screenHeight: Dp,
     image: String,
     contentDescription: String,
     modifier: Modifier = Modifier,
@@ -188,9 +170,8 @@ private fun BlurProfileImage(
         painter = rememberAsyncImagePainter(model = image),
         contentDescription = contentDescription,
         modifier = modifier
-            .blur(radius = 30.dp)
-            .height(screenHeight / 2)
-            ,
+            .fillMaxSize()
+            .blur(radius = 30.dp),
         contentScale = ContentScale.FillBounds
     )
 }

@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,6 +41,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.painter.Painter
+import com.bitio.ui.shared.VerticalSpacer32Dp
 
 
 @Composable
@@ -86,7 +88,7 @@ private fun ProfileUserContent(
             )
         }
 
-        Title(
+        Text(
             text = "Profile Settings",
             style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).titleMedium,
             modifier = Modifier
@@ -94,8 +96,7 @@ private fun ProfileUserContent(
                 .align(Alignment.CenterHorizontally)
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
-
+        VerticalSpacer32Dp()
 
         ProfileSettingItem(
             startPainterIcon = painterResource(id = R.drawable.profile),

@@ -10,5 +10,5 @@ data class ProfileUiState(
 data class Profile(
     val id: Int = 0,
     val username: String = "Sajjad Abdel Aziz",
-    val image: String = "https://th.bing.com/th/id/OIP.GlXqxcR9EmviN5kuwaUsMQHaIB?w=197&h=213&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+    val image: String = "https://th.bing.com/th/id/OIP.NqY3rNMnx2NXYo3KJfg43gAAAA?w=196&h=196&c=7&r=0&o=5&dpr=1.3&pid=1.7"
 )

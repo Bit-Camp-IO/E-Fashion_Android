@@ -44,7 +44,11 @@ fun ProfileUser(
     onClickBack: () -> Unit,
     onClickSaveButton: (String, String, String) -> Unit
 ) {
-    ProfileUserContent(modifier = modifier, onClickBack = onClickBack, onClickSaveButton)
+    ProfileUserContent(
+        modifier = modifier,
+        onClickBack = onClickBack,
+        onClickSaveButton = onClickSaveButton
+    )
 }
 
 @Composable
@@ -66,7 +70,7 @@ private fun ProfileUserContent(
 
     ) {
         IconButton(
-            onClick = { onClickBack },
+            onClick = onClickBack,
             modifier = Modifier
                 .padding(horizontal = 24.dp, vertical = 24.dp)
                 .size(48.dp)
@@ -76,7 +80,7 @@ private fun ProfileUserContent(
             Icon(
                 painter = painterResource(id = R.drawable.arraw_back),
                 contentDescription = "back",
-                tint = Porcelain
+                tint = Porcelain,
             )
         }
 

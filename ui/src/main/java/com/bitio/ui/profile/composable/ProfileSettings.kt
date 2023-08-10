@@ -96,36 +96,29 @@ private fun ProfileUserContent(
 
         Spacer(modifier = Modifier.height(32.dp))
 
+
         ProfileSettingItem(
             startPainterIcon = painterResource(id = R.drawable.profile),
             text = "My Profile",
-        ){
-            onClickMyProfile
-        }
+            modifier = Modifier.clickable(onClick = onClickMyProfile)
+        )
+
         ProfileSettingItem(
             startPainterIcon = painterResource(id = R.drawable.location),
             text = "Location",
-        ) {
-
-        }
+        )
         ProfileSettingItem(
             startPainterIcon = painterResource(id = R.drawable.bag),
             text = "Order status",
-        ) {
-
-        }
+        )
         ProfileSettingItem(
             startPainterIcon = painterResource(id = R.drawable.messages),
             text = "Chat Support",
-        ) {
-
-        }
+        )
         ProfileSettingItem(
             startPainterIcon = painterResource(id = R.drawable.notification),
             text = "Notifications",
-        ) {
-
-        }
+        )
 
         ContainerThemeSwitcher(
             startPainterIcon = painterResource(id = R.drawable.sun),
@@ -142,11 +135,12 @@ private fun ProfileSettingItem(
     startPainterIcon: Painter,
     text: String,
     endPainterIcon: Painter = painterResource(id = R.drawable.arraw_right),
-    onClickItem: () -> Unit
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
+            .fillMaxWidth()
             .padding(vertical = 12.dp, horizontal = 24.dp),
     ) {
         Icon(painter = startPainterIcon, contentDescription = "")
@@ -156,8 +150,7 @@ private fun ProfileSettingItem(
             style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).bodySmall,
             modifier = Modifier.weight(1f)
         )
-        Icon(painter = endPainterIcon, contentDescription = "",modifier = Modifier
-            .clickable { onClickItem })
+        Icon(painter = endPainterIcon, contentDescription = "")
     }
 }
 
@@ -183,7 +176,6 @@ private fun ContainerThemeSwitcher(
             modifier = Modifier.weight(1f)
         )
         ThemeSwitcher(isDarkTheme = isDarkTheme, onSwitchTheme = onSwitchTheme)
-
     }
 }
 

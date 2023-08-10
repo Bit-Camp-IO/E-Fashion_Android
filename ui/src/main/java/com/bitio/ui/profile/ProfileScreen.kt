@@ -3,14 +3,15 @@ package com.bitio.ui.profile
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -32,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,7 +44,6 @@ import com.bitio.ui.profile.composable.Title
 import com.bitio.ui.profile.composable.ProfileUser
 import com.bitio.ui.theme.Porcelain
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
-import kotlinx.coroutines.delay
 
 @Composable
 fun ProfileScreen(
@@ -83,6 +84,7 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
         ) = createRefs()
 
         BlurProfileImage(
+            screenHeight = screenHeight,
             state.profile.image,
             state.profile.username,
             Modifier
@@ -156,7 +158,9 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
         }
 
         ProfileUser(
-            onClickBack = {},
+            onClickBack = {
+                isShowUserInfo = !isShowUserInfo
+            },
             modifier = Modifier
                 .offset(x = offsetUserInfo)
                 .fillMaxSize()
@@ -167,7 +171,7 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
                     bottom.linkTo(parent.bottom)
                 },
             onClickSaveButton = { username, phone, email ->
-
+                println("User info: $username $phone $email")
             }
         )
     }
@@ -175,6 +179,7 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
 
 @Composable
 private fun BlurProfileImage(
+    screenHeight: Dp,
     image: String,
     contentDescription: String,
     modifier: Modifier = Modifier,
@@ -183,7 +188,9 @@ private fun BlurProfileImage(
         painter = rememberAsyncImagePainter(model = image),
         contentDescription = contentDescription,
         modifier = modifier
-            .blur(radius = 30.dp),
+            .blur(radius = 30.dp)
+            .height(screenHeight / 2)
+            ,
         contentScale = ContentScale.FillBounds
     )
 }

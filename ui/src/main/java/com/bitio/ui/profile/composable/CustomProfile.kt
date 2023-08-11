@@ -1,5 +1,6 @@
 package com.bitio.ui.profile.composable
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -38,11 +39,10 @@ import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import com.bitio.ui.shared.VerticalSpacer32Dp
-import com.bitio.ui.shared.VerticalSpacer64Dp
 
 
 @Composable
-fun ProfileSettings(
+fun CustomProfile(
     isDarkTheme: Boolean,
     modifier: Modifier = Modifier,
     onSwitchTheme: () -> Unit,
@@ -121,7 +121,6 @@ private fun ProfileUserContent(
 
         ContainerThemeSwitcher(
             startPainterIcon = painterResource(id = R.drawable.sun),
-            text = "Dark Theme",
             isDarkTheme,
             onSwitchTheme
         )
@@ -135,7 +134,7 @@ private fun ProfileSettingItem(
     startPainterIcon: Painter,
     text: String,
     endPainterIcon: Painter = painterResource(id = R.drawable.arraw_right),
-    modifier: Modifier = Modifier,
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -145,7 +144,7 @@ private fun ProfileSettingItem(
     ) {
         Icon(painter = startPainterIcon, contentDescription = "")
         Spacer(modifier = Modifier.width(16.dp))
-        Title(
+        Text(
             text = text,
             style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).bodySmall,
             modifier = Modifier.weight(1f)
@@ -158,7 +157,6 @@ private fun ProfileSettingItem(
 @Composable
 private fun ContainerThemeSwitcher(
     startPainterIcon: Painter,
-    text: String,
     isDarkTheme: Boolean,
     onSwitchTheme: () -> Unit
 ) {
@@ -170,8 +168,8 @@ private fun ContainerThemeSwitcher(
     ) {
         Icon(painter = startPainterIcon, contentDescription = "")
         Spacer(modifier = Modifier.width(16.dp))
-        Title(
-            text = text,
+        Text(
+            text = if (isDarkTheme) "Dark Theme" else "Light Theme",
             style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).bodySmall,
             modifier = Modifier.weight(1f)
         )

@@ -1,6 +1,5 @@
 package com.bitio.ui.profile.composable
 
-import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,24 +26,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
 import com.bitio.ui.shared.VerticalSpacer32Dp
-import com.bitio.ui.shared.VerticalSpacer64Dp
-import com.bitio.ui.theme.PeacockBlue
 import com.bitio.ui.theme.Porcelain
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 
 @Composable
-fun ProfileUser(
+fun CustomUserProfile(
     modifier: Modifier = Modifier,
     onClickBack: () -> Unit,
     onClickSaveButton: (String, String, String) -> Unit
@@ -72,7 +65,6 @@ private fun ProfileUserContent(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(state = rememberScrollState())
-            .drawBehind {},
     ) {
         IconButton(
             onClick = onClickBack,
@@ -138,7 +130,7 @@ private fun ProfileUserContent(
             colors = buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             shape = RoundedCornerShape(8.dp)
         ) {
-            Title(
+            Text(
                 text = "Save",
                 style = AppThemeTextStyles(Color.White).titleMedium,
                 modifier = Modifier
@@ -165,7 +157,7 @@ private fun TextFieldContainer(
         singleLine = true,
         maxLines = 1,
         label = {
-            Title(
+            Text(
                 text = label,
                 style = AppThemeTextStyles(Color.Gray).titleSmall
             )

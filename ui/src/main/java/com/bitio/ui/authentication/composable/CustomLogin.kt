@@ -10,19 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults.colors
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,14 +24,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
+import com.bitio.ui.shared.CustomButtonForm
+import com.bitio.ui.shared.CustomTextField
 import com.bitio.ui.shared.VerticalSpacer32Dp
 import com.bitio.ui.shared.VerticalSpacer64Dp
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
@@ -60,7 +50,10 @@ fun CustomLogin(
             id = R.drawable.eye
         )
 
-    Column(modifier = modifier.verticalScroll(state = rememberScrollState())) {
+    Column(
+        modifier = modifier
+            .verticalScroll(state = rememberScrollState())
+    ) {
         VerticalSpacer64Dp()
         Text(
             text = "Log in",
@@ -70,16 +63,16 @@ fun CustomLogin(
 
         VerticalSpacer32Dp()
 
-        TextFieldUsername(
+        CustomTextField(
             value = username,
-            label = "Username",
+            placeholder = "Username",
             leadingIcon = painterResource(id = R.drawable.profile),
             onValueChange = {
                 username = it
             },
         )
 
-        TextFieldPassword(
+        CustomTextFieldPassword(
             value = password,
             leadingIcon = painterResource(id = R.drawable.password),
             trailingIcon = iconPassword,
@@ -93,7 +86,12 @@ fun CustomLogin(
             onClickForgetPassword = onClickForgetPassword
         )
 
-        LoginButton(modifier.align(Alignment.CenterHorizontally)) {
+        CustomButtonForm(
+            modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(vertical = 32.dp, horizontal = 24.dp),
+            title = "Log in"
+        ) {
             onClickLoginButton(username, password)
         }
 
@@ -122,84 +120,6 @@ fun CustomLogin(
             )
         }
     }
-}
-
-@Composable
-private fun TextFieldUsername(
-    value: String,
-    label: String,
-    leadingIcon: Painter,
-    keyboardType: KeyboardType = KeyboardType.Text,
-    onValueChange: (String) -> Unit,
-) {
-
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp, horizontal = 24.dp),
-        value = value, onValueChange = onValueChange,
-        textStyle = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).titleSmall,
-        singleLine = true,
-        maxLines = 1,
-        placeholder = {
-            Text(
-                text = label,
-                style = AppThemeTextStyles(Color.Gray).titleSmall
-            )
-        },
-        leadingIcon = { LeadingIcon(leadingIcon) },
-        shape = RoundedCornerShape(12.dp),
-        colors = shapeColorOfTextField(),
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType,
-            imeAction = ImeAction.Done
-        ),
-    )
-}
-
-@Composable
-private fun TextFieldPassword(
-    value: String,
-    leadingIcon: Painter,
-    keyboardType: KeyboardType = KeyboardType.Text,
-    onValueChange: (String) -> Unit,
-    trailingIcon: Painter,
-    isShowPassword: Boolean,
-    onClickShowPassword: () -> Unit
-) {
-
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp, horizontal = 24.dp),
-        value = value, onValueChange = onValueChange,
-        textStyle = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).titleSmall,
-        singleLine = true,
-        maxLines = 1,
-        placeholder = {
-            Text(
-                text = "Password",
-                style = AppThemeTextStyles(Color.Gray).titleSmall
-            )
-        },
-        leadingIcon = { LeadingIcon(leadingIcon) },
-        trailingIcon = {
-            IconButton(onClick = onClickShowPassword) {
-                Icon(
-                    painter = trailingIcon,
-                    contentDescription = "",
-                    tint = Color.Gray
-                )
-            }
-        },
-        shape = RoundedCornerShape(12.dp),
-        colors = shapeColorOfTextField(),
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType,
-            imeAction = ImeAction.Done
-        ),
-        visualTransformation = if (isShowPassword) VisualTransformation.None else PasswordVisualTransformation()
-    )
 }
 
 @Composable
@@ -241,45 +161,4 @@ private fun CustomCheckBox(
                 .padding(4.dp)
         )
     }
-}
-
-@Composable
-private fun LoginButton(
-    modifier: Modifier = Modifier,
-    onClickLoginButton: () -> Unit
-) {
-    Button(
-        onClick = onClickLoginButton,
-        modifier = modifier
-            .padding(vertical = 32.dp, horizontal = 24.dp)
-            .fillMaxWidth(),
-        colors = buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-        shape = RoundedCornerShape(8.dp)
-    ) {
-        Text(
-            text = "Log in",
-            style = AppThemeTextStyles(Color.White).titleMedium,
-            modifier = Modifier
-        )
-    }
-}
-
-@Composable
-private fun LeadingIcon(
-    leadingIcon: Painter,
-) {
-    Icon(
-        painter = leadingIcon,
-        contentDescription = "",
-        tint = Color.Gray
-    )
-}
-
-@Composable
-private fun shapeColorOfTextField(): TextFieldColors {
-    return OutlinedTextFieldDefaults.colors(
-        focusedBorderColor = MaterialTheme.colorScheme.primary,
-        focusedContainerColor = MaterialTheme.colorScheme.background,
-        cursorColor = MaterialTheme.colorScheme.primary
-    )
 }

@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.ui.R
-import com.bitio.ui.profile.composable.CustomProfile
-import com.bitio.ui.profile.composable.CustomUserProfile
+import com.bitio.ui.profile.composable.SettingApp
+import com.bitio.ui.profile.composable.UserProfile
 import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
 import com.bitio.ui.theme.Porcelain
@@ -116,37 +116,32 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
 
             VerticalSpacer16Dp()
 
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(profileShape)
                     .background(MaterialTheme.colorScheme.background)
             ) {
-                Box(
-                    modifier = Modifier.fillMaxSize()
+                SettingApp(
+                    isDarkTheme = isDarkTheme,
+                    onSwitchTheme = onSwitchTheme,
+                    modifier = Modifier
+                        .offset(x = offsetXOfProfileSettings)
                 ) {
-                    CustomProfile(
-                        isDarkTheme = isDarkTheme,
-                        onSwitchTheme = onSwitchTheme,
-                        modifier = Modifier
-                            .offset(x = offsetXOfProfileSettings)
-                    ) {
-                        isUserProfileVisible = !isUserProfileVisible
-                    }
-
-                    CustomUserProfile(
-                        onClickBack = {
-                            isUserProfileVisible = !isUserProfileVisible
-                        },
-                        modifier = Modifier
-                            .offset(x = offsetXOfUserProfile),
-                        onClickSaveButton = { username, phone, email ->
-                            println("User info: $username $phone $email")
-                        }
-                    )
+                    isUserProfileVisible = true
                 }
-            }
 
+                UserProfile(
+                    onClickBack = {
+                        isUserProfileVisible = false
+                    },
+                    modifier = Modifier
+                        .offset(x = offsetXOfUserProfile),
+                    onClickSaveButton = { username, phone, email ->
+                        println("User info: $username $phone $email")
+                    }
+                )
+            }
         }
     }
 }

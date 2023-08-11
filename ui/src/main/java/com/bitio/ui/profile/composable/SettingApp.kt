@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -42,32 +41,14 @@ import com.bitio.ui.shared.VerticalSpacer32Dp
 
 
 @Composable
-fun CustomProfile(
+fun SettingApp(
     isDarkTheme: Boolean,
     modifier: Modifier = Modifier,
     onSwitchTheme: () -> Unit,
     onClickMyProfile: () -> Unit,
 ) {
-    ProfileUserContent(
-        isDarkTheme,
-        modifier,
-        onSwitchTheme,
-        onClickMyProfile
-    )
-}
-
-@Composable
-private fun ProfileUserContent(
-    isDarkTheme: Boolean,
-    modifier: Modifier,
-    onSwitchTheme: () -> Unit,
-    onClickMyProfile: () -> Unit
-) {
-
-
     Column(
         modifier = modifier
-            .fillMaxSize()
             .verticalScroll(state = rememberScrollState())
     ) {
         IconButton(
@@ -96,41 +77,49 @@ private fun ProfileUserContent(
 
         VerticalSpacer32Dp()
 
-        ProfileSettingItem(
+        SettingItem(
             startPainterIcon = painterResource(id = R.drawable.profile),
             text = "My Profile",
             modifier = Modifier.clickable(onClick = onClickMyProfile)
         )
 
-        ProfileSettingItem(
+        SettingItem(
             startPainterIcon = painterResource(id = R.drawable.location),
             text = "Location",
         )
-        ProfileSettingItem(
+        SettingItem(
             startPainterIcon = painterResource(id = R.drawable.bag),
             text = "Order status",
         )
-        ProfileSettingItem(
+        SettingItem(
             startPainterIcon = painterResource(id = R.drawable.messages),
             text = "Chat Support",
         )
-        ProfileSettingItem(
+        SettingItem(
             startPainterIcon = painterResource(id = R.drawable.notification),
             text = "Notifications",
         )
 
-        ContainerThemeSwitcher(
-            startPainterIcon = painterResource(id = R.drawable.sun),
-            isDarkTheme,
-            onSwitchTheme
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(painter = painterResource(id = R.drawable.sun), contentDescription = "")
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = if (isDarkTheme) "Dark Theme" else "Light Theme",
+                style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).bodySmall,
+                modifier = Modifier.weight(1f)
+            )
+            ThemeSwitcher(isDarkTheme = isDarkTheme, onSwitchTheme = onSwitchTheme)
+        }
     }
-
 }
 
-
 @Composable
-private fun ProfileSettingItem(
+private fun SettingItem(
     startPainterIcon: Painter,
     text: String,
     endPainterIcon: Painter = painterResource(id = R.drawable.arraw_right),
@@ -153,29 +142,6 @@ private fun ProfileSettingItem(
     }
 }
 
-
-@Composable
-private fun ContainerThemeSwitcher(
-    startPainterIcon: Painter,
-    isDarkTheme: Boolean,
-    onSwitchTheme: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 20.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(painter = startPainterIcon, contentDescription = "")
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = if (isDarkTheme) "Dark Theme" else "Light Theme",
-            style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).bodySmall,
-            modifier = Modifier.weight(1f)
-        )
-        ThemeSwitcher(isDarkTheme = isDarkTheme, onSwitchTheme = onSwitchTheme)
-    }
-}
 
 @Composable
 private fun ThemeSwitcher(

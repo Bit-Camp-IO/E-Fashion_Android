@@ -18,6 +18,8 @@ import androidx.core.content.ContextCompat
 import com.bitio.ui.theme.EFashionTheme
 import com.bitio.productscomponent.domain.entities.CollectionGroup
 import com.bitio.ui.authentication.AuthenticationScreen
+import com.bitio.ui.favorite.FavoriteScreen
+import com.bitio.ui.profile.ProfileScreen
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,7 +70,7 @@ class FashionActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                  AuthenticationScreen()
+                    FavoriteScreen()
                 }
             }
         }

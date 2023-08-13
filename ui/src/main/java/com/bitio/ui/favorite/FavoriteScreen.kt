@@ -3,39 +3,23 @@
 package com.bitio.ui.favorite
 
 import android.annotation.SuppressLint
-import android.media.session.PlaybackState.CustomAction
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -53,19 +37,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.PathParser
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.ui.R
@@ -368,110 +345,6 @@ fun CustomIconButton(
             contentDescription = "",
             modifier = Modifier.size(18.dp),
             tint = tint,
-        )
-    }
-}
-
-
-private val firstIndexOfLazyCardShape = object : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density,
-    ): Outline {
-        val pathData =
-            "M0.5" +
-                    " ${size.height * 0.16648}C0.5" +
-                    " ${size.height * 0.05124}" +
-                    " ${size.width * 0.07453} 0" +
-                    " ${size.width * 0.11034} 0H" +
-                    "${size.width * 0.94507}C" +
-                    "${size.width * 0.97126} 0 " +
-                    "${size.width} " +
-                    "${size.height * 0.05115} " +
-                    "${size.width} " +
-                    "${size.height * 0.16648}V" +
-                    "${size.height * 0.99914}L0.5 " +
-                    "${size.height * 0.85606}V" +
-                    "${size.height * 0.16648}" +
-                    "Z"
-
-        return Outline.Generic(
-            PathParser.createPathFromPathData(pathData).asComposePath()
-        )
-    }
-}
-
-private val otherIndexesOfLazyCardShape = object : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density,
-    ): Outline {
-        val pathData =
-            "M0 ${size.height * 0}L${size.width} ${size.height * 0.13349}V${size.height * 0.92359}L0 ${size.height * 0.78708}L0 ${size.height * 0}"
-
-        return Outline.Generic(
-            PathParser.createPathFromPathData(pathData).asComposePath()
-        )
-    }
-}
-
-
-private val firstRightGridShape = object : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ): Outline {
-        val pathData =
-            "M0.5" +
-                    " ${size.height * 0.16648}C0.5" +
-                    " ${size.height * 0.05124}" +
-                    " ${size.width * 0.07453} 0" +
-                    " ${size.width * 0.11034} 0H" +
-                    "${size.width * 0.94507}C" +
-                    "${size.width * 0.97126} 0 " +
-                    "${size.width} " +
-                    "${size.height * 0.05115} " +
-                    "${size.width} " +
-                    "${size.height * 0.16648}V" +
-                    "${size.height * 0.99914}L0.5 " +
-                    "${size.height * 0.85606}V" +
-                    "${size.height * 0.16648}" +
-                    "Z"
-
-        return Outline.Generic(
-            PathParser.createPathFromPathData(pathData).asComposePath()
-        )
-    }
-}
-private val othersRightGridShape = object : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ): Outline {
-        val pathData =
-            "M0 0L${size.width} 0V${size.height}L0 ${size.height}"
-
-        return Outline.Generic(
-            PathParser.createPathFromPathData(pathData).asComposePath()
-        )
-    }
-}
-
-private val othersLeftGridShape = object : Shape {
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ): Outline {
-        val pathData =
-            "M0 ${size.height * 0.92359}L${size.width} ${size.height * 0.78708}V${size.height * 0.13349}L0 ${size.height * 0}"
-
-        return Outline.Generic(
-            PathParser.createPathFromPathData(pathData).asComposePath()
         )
     }
 }

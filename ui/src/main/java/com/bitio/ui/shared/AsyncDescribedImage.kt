@@ -10,7 +10,7 @@ fun AsyncDescribedImage(
     imageLink: String,
     modifier: Modifier = Modifier,
     alpha: Float=1f,
-    contentScale: ContentScale = ContentScale.Fit
+    contentScale: ContentScale = ContentScale.FillBounds
 ) {
     AsyncImage(
         model = imageLink,

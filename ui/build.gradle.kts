@@ -1,17 +1,23 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("kotlin-parcelize")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
+
 
 android {
     namespace = "com.bitio.ui"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
     }
 
     buildTypes {
@@ -24,20 +30,20 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
-    buildToolsVersion = "33.0.0"
 }
 
 dependencies {
@@ -53,11 +59,37 @@ dependencies {
     api("androidx.compose.ui:ui-graphics")
     api("androidx.compose.ui:ui-tooling-preview")
     api("androidx.compose.material3:material3")
+
+    // Room
+    api("androidx.room:room-runtime:2.5.2")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    //noinspection KaptUsageInsteadOfKsp
+    kapt("androidx.room:room-compiler:2.5.2")
+    // Kotlin Extensions and Coroutines support for Room
+    api("androidx.room:room-ktx:2.5.2")
+
+    // Navigation
+    api("androidx.hilt:hilt-navigation-compose:1.0.0")
+    api("androidx.navigation:navigation-compose:2.6.0")
+
+    // Dagger-Hilt
+    api("com.google.dagger:hilt-android:2.46.1")
+    kapt("com.google.dagger:hilt-compiler:2.44")
+
+    // Google maps
+    api("com.google.maps.android:maps-compose:1.0.0")
+    api("com.google.android.gms:play-services-maps:18.1.0")
+    api("com.google.android.gms:play-services-location:21.0.1")
+
+    // Accompanist
+    api("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
+
+    api("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
     // coil
     implementation("io.coil-kt:coil-compose:2.4.0")
     //google fonts
     implementation("androidx.compose.ui:ui-text-google-fonts:1.4.3")
-
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -66,4 +98,5 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
 }

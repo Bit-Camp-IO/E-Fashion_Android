@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.bitio.efashion"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.bitio.efashion"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -30,11 +30,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -47,10 +47,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    buildToolsVersion = "33.0.0"
 }
 dependencies {
     implementation(project(":ui"))
-
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 }
 

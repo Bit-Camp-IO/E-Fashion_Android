@@ -9,8 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bitio.productscomponent.domain.entities.Product
-
+import com.bitio.productscomponent.domain.entities.products.Product
 import com.bitio.ui.product.home.productWithOffer
 
 @Composable
@@ -22,9 +21,9 @@ fun ProductParallelogramColumn(products: List<Product> = List(10) { productWithO
         contentPadding = PaddingValues(vertical = 16.dp)
 
     ) {
-        item(contentType = Product::class, key = 0) { ProductFirstParallelogramCard() }
-        items(count = products.size - 1, contentType = { Product::class }, key = {it+1}) {
-            ProductMiddleParallelogramCard()
+        item(contentType = Product::class, key = 0) { ProductFirstParallelogramCard(products[0]) }
+        items(count = products.size - 1, contentType = { Product::class }, key = { it + 1 }) {
+            ProductMiddleParallelogramCard(products[it + 1])
         }
     }
 }

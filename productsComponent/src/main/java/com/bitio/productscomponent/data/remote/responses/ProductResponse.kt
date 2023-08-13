@@ -1,6 +1,6 @@
 package com.bitio.productscomponent.data.remote.responses
 
-import com.bitio.productscomponent.domain.entities.Product
+import com.bitio.productscomponent.domain.entities.products.Product
 import com.bitio.productscomponent.domain.entities.selectable.SelectableProperty
 
 data class ProductResponse(

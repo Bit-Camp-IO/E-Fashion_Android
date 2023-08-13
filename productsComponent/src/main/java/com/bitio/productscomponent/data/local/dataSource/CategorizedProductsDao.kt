@@ -1,6 +1,6 @@
 package com.bitio.productscomponent.data.local.dataSource
 
-import com.bitio.productscomponent.domain.entities.Product
+import com.bitio.productscomponent.domain.entities.products.Product
 import com.bitio.productscomponent.domain.entities.categories.CategoryFilter
 import com.bitio.productscomponent.domain.entities.categories.GenderCategory
 import com.bitio.productscomponent.domain.entities.categories.ProductCategory

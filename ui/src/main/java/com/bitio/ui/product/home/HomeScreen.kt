@@ -6,8 +6,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.bitio.productscomponent.domain.entities.Brand
-
+import com.bitio.productscomponent.domain.entities.products.CollectionGroup
+import com.bitio.productscomponent.domain.entities.products.ProductWithOffer
 import com.bitio.productscomponent.domain.entities.selectable.SelectableProperty
+
 import com.bitio.ui.product.home.composables.BrandRow
 import com.bitio.ui.product.home.composables.CategoriesRow
 import com.bitio.ui.product.home.composables.CollectionPager

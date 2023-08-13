@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.bitio.productscomponent.domain.entities.Product
+import com.bitio.productscomponent.domain.entities.products.Product
 
 
 @Composable

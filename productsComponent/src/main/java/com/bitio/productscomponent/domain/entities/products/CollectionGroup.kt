@@ -1,4 +1,4 @@
-package com.bitio.productscomponent.domain.entities
+package com.bitio.productscomponent.domain.entities.products
 
 interface CollectionGroup {
     val id: Int

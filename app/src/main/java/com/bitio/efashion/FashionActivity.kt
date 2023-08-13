@@ -12,14 +12,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
-import com.bitio.ui.theme.EFashionTheme
-import com.bitio.productscomponent.domain.entities.CollectionGroup
-import com.bitio.ui.authentication.AuthenticationScreen
+import com.bitio.productscomponent.domain.entities.products.CollectionGroup
 import com.bitio.ui.favorite.FavoriteScreen
-import com.bitio.ui.profile.ProfileScreen
+import com.bitio.ui.theme.EFashionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,7 +56,7 @@ class FashionActivity : ComponentActivity() {
         askPermissions()
 
         setContent {
-            var isDarkTheme by remember {
+            val isDarkTheme by remember {
                 mutableStateOf(false)
             }
             EFashionTheme(

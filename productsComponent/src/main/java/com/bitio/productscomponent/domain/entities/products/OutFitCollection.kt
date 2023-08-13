@@ -1,4 +1,4 @@
-package com.bitio.productscomponent.domain.entities
+package com.bitio.productscomponent.domain.entities.products
 
 interface OutFitCollection {
     val id: Int

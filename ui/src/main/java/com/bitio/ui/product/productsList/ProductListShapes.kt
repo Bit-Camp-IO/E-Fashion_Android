@@ -1,4 +1,4 @@
-package com.bitio.ui.product
+package com.bitio.ui.product.productsList
 
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
@@ -16,10 +16,10 @@ fun middleItemsLargeShape() = makeShapeFromSvgPath(SvgLargePaths.MIDDLE)
 
 fun lastItemLargeShape() = makeShapeFromSvgPath(SvgLargePaths.LAST)
 
-fun firstLeftShape()= makeShapeFromSvgPath(SvgSmallPaths.FIRST_LEFT)
-fun firstRightShape()= makeShapeFromSvgPath(SvgSmallPaths.FIRST_RIGHT)
-fun middleLeftShape()= makeShapeFromSvgPath(SvgSmallPaths.MIDDLE_LEFT)
-fun middleRightShape()= makeShapeFromSvgPath(SvgSmallPaths.MIDDLE_RIGHT)
+fun firstLeftShape() = makeShapeFromSvgPath(SvgSmallPaths.FIRST_LEFT)
+fun firstRightShape() = makeShapeFromSvgPath(SvgSmallPaths.FIRST_RIGHT)
+fun middleLeftShape() = makeShapeFromSvgPath(SvgSmallPaths.MIDDLE_LEFT)
+fun middleRightShape() = makeShapeFromSvgPath(SvgSmallPaths.MIDDLE_RIGHT)
 
 
 fun makeShapeFromSvgPath(svgPath: String): Shape {

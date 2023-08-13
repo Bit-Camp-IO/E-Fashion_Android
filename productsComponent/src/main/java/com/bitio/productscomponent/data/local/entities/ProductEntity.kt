@@ -1,6 +1,6 @@
 package com.bitio.productscomponent.data.local.entities
 
-import com.bitio.productscomponent.domain.entities.Product
+import com.bitio.productscomponent.domain.entities.products.Product
 import com.bitio.productscomponent.domain.entities.selectable.SelectableProperty
 
 data class ProductEntity(
@@ -12,4 +12,4 @@ data class ProductEntity(
     override val brandId: Int,
     override val brandName: Int,
     override val selectableProperties: List<SelectableProperty<String>>
-):Product
+): Product

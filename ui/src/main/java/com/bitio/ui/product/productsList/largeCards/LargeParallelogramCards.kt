@@ -22,13 +22,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.bitio.productscomponent.domain.entities.Product
+import com.bitio.productscomponent.domain.entities.products.Product
 import com.bitio.ui.R
 import com.bitio.ui.product.CartIconButton
 import com.bitio.ui.product.FavoriteIconButtonCircularBg
-import com.bitio.ui.product.firstItemLargeShape
-import com.bitio.ui.product.lastItemLargeShape
-import com.bitio.ui.product.middleItemsLargeShape
+import com.bitio.ui.product.productsList.firstItemLargeShape
+import com.bitio.ui.product.productsList.lastItemLargeShape
+import com.bitio.ui.product.productsList.middleItemsLargeShape
 import com.bitio.ui.shared.AsyncDescribedImage
 import com.bitio.ui.shared.HorizontalSpacer24Dp
 import com.bitio.ui.shared.VerticalSpacer4Dp
@@ -36,7 +36,7 @@ import com.bitio.ui.shared.VerticalSpacer4Dp
 
 @Composable
 fun ProductFirstParallelogramCard(
-    product: Product ,
+    product: Product,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {}

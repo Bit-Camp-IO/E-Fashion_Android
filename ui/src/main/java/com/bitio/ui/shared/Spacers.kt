@@ -26,6 +26,10 @@ fun HorizontalSpacer8Dp() {
 fun HorizontalSpacer16Dp() {
     Spacer(modifier = Modifier.width(16.dp))
 }
+@Composable
+fun HorizontalSpacer24Dp() {
+    Spacer(modifier = Modifier.width(24.dp))
+}
 
 @Composable
 fun HorizontalSpacer32Dp() {

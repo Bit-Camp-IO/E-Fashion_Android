@@ -9,7 +9,7 @@ import coil.compose.AsyncImage
 fun AsyncDescribedImage(
     imageLink: String,
     modifier: Modifier = Modifier,
-    alpha: Float,
+    alpha: Float=1f,
     contentScale: ContentScale = ContentScale.Fit
 ) {
     AsyncImage(

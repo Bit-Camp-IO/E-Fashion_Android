@@ -20,15 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.bitio.productscomponent.domain.entities.products.Product
+import com.bitio.productscomponent.domain.entities.Product
 import com.bitio.ui.R
 import com.bitio.ui.product.CartIconButton
 import com.bitio.ui.product.FavoriteIconButtonCircularBg
 import com.bitio.ui.product.firstItemLargeShape
-import com.bitio.ui.product.home.productWithOffer
 import com.bitio.ui.product.lastItemLargeShape
 import com.bitio.ui.product.middleItemsLargeShape
 import com.bitio.ui.shared.AsyncDescribedImage
@@ -36,10 +34,9 @@ import com.bitio.ui.shared.HorizontalSpacer24Dp
 import com.bitio.ui.shared.VerticalSpacer4Dp
 
 
-@Preview
 @Composable
 fun ProductFirstParallelogramCard(
-    product: Product = productWithOffer,
+    product: Product ,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {}
@@ -55,10 +52,10 @@ fun ProductFirstParallelogramCard(
     )
 }
 
-@Preview
+
 @Composable
 fun ProductMiddleParallelogramCard(
-    product: Product = productWithOffer,
+    product: Product ,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {}
@@ -73,10 +70,10 @@ fun ProductMiddleParallelogramCard(
 
     )
 }
-@Preview
+
 @Composable
 fun ProductLastParallelogramCard(
-    product: Product = productWithOffer,
+    product: Product ,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {}
@@ -96,7 +93,7 @@ fun ProductLastParallelogramCard(
 
 @Composable
 fun ProductLargeParallelogramCard(
-    product: Product = productWithOffer,
+    product: Product ,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {},

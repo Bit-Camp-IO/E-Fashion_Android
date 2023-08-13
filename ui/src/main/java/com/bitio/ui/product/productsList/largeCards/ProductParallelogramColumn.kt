@@ -9,7 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bitio.productscomponent.domain.entities.products.Product
+import com.bitio.productscomponent.domain.entities.Product
+
 import com.bitio.ui.product.home.productWithOffer
 
 @Composable

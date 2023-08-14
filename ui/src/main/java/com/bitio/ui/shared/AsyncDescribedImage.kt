@@ -9,12 +9,12 @@ import coil.compose.AsyncImage
 fun AsyncDescribedImage(
     imageLink: String,
     modifier: Modifier = Modifier,
-    alpha: Float=1f,
+    alpha: Float = 1f,
     contentScale: ContentScale = ContentScale.FillBounds
 ) {
     AsyncImage(
         model = imageLink,
-        contentDescription = "$imageLink Image",
+        contentDescription = "product Image",
         modifier = modifier,
         contentScale = contentScale,
         alpha = alpha

@@ -55,7 +55,7 @@ fun ProductFirstParallelogramCard(
 
 @Composable
 fun ProductMiddleParallelogramCard(
-    product: Product ,
+    product: Product,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {}
@@ -73,7 +73,7 @@ fun ProductMiddleParallelogramCard(
 
 @Composable
 fun ProductLastParallelogramCard(
-    product: Product ,
+    product: Product,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {}
@@ -93,7 +93,7 @@ fun ProductLastParallelogramCard(
 
 @Composable
 fun ProductLargeParallelogramCard(
-    product: Product ,
+    product: Product,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {},

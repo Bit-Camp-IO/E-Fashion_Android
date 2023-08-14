@@ -1,6 +1,7 @@
 package com.bitio.productscomponent.domain.entities.selectable
 
-interface SelectableProperty<T : Any> {
+interface SelectableProperty {
+    val id:Int
     val name: String
-    val options: List<T>
+    val options: List<Option>
 }

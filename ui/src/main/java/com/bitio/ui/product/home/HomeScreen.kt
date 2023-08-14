@@ -97,14 +97,7 @@ val productWithOffer = object : ProductWithOffer {
         get() = myImage
     override val price: Float
         get() = 150f
-    override val description: String
-        get() = ""
-    override val brandId: Int
-        get() = 4
-    override val brandName: Int
-        get() = 1
-    override val selectableProperties: List<SelectableProperty<String>>
-        get() = listOf()
+
 }
 val brand = object : Brand {
     override val id: Int

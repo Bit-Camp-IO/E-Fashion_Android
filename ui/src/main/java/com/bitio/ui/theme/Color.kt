@@ -17,7 +17,7 @@ val FireFly = Color(0xFF051320)// light theme Primary
 val Porcelain = Color(0xFFF2F2F2)//light theme bg
 val Platinum = Color(0xFFE3E3E3)//light theme surface
 
-val NeonBlue = Color(0xFF00E0FF)// dark theme Primary
+val NeonBlue = Color(0xFF99CBFF)// dark theme Primary
 val Cinder = Color(0xFF101318)//dark theme bg
 val BalticSea = Color(0xFF242629)//dark theme surface
 

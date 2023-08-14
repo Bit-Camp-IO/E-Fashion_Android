@@ -27,7 +27,9 @@ fun CustomButtonForm(
     ) {
         Text(
             text = title,
-            style = AppThemeTextStyles(Color.White).titleMedium,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onPrimary
+            ,
             modifier = Modifier
         )
     }

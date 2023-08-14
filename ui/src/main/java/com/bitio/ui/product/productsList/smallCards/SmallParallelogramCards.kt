@@ -78,7 +78,7 @@ import com.bitio.ui.shared.VerticalSpacer4Dp
 
 @Composable
 fun FirstLeftParallelogramCards(
-    product: Product ,
+    product: Product,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {},
@@ -95,7 +95,7 @@ fun FirstLeftParallelogramCards(
 
 @Composable
 fun FirstRightParallelogramCards(
-    product: Product ,
+    product: Product,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {},
@@ -112,7 +112,7 @@ fun FirstRightParallelogramCards(
 
 @Composable
 fun MiddleLeftParallelogramCards(
-    product: Product ,
+    product: Product,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {},
@@ -129,7 +129,7 @@ fun MiddleLeftParallelogramCards(
 
 @Composable
 fun MiddleRightParallelogramCards(
-    product: Product ,
+    product: Product,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {},
@@ -147,7 +147,7 @@ fun MiddleRightParallelogramCards(
 
 @Composable
 fun SmallLeftParallelogramCards(
-    product: Product ,
+    product: Product,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {},
@@ -178,7 +178,7 @@ fun SmallLeftParallelogramCards(
 
 @Composable
 fun SmallRightParallelogramCards(
-    product: Product ,
+    product: Product,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {},

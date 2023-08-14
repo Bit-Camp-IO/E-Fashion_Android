@@ -7,5 +7,5 @@ interface ProductInstance {
     val name: String
     val image: String
     val description: String
-    val selectedProperties: List<SelectedProperty<Any>>
+    val selectedProperties: List<SelectedProperty>
 }

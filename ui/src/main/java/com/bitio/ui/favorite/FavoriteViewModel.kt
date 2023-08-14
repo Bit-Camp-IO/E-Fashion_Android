@@ -25,38 +25,7 @@ class FavoriteViewModel @Inject constructor() : ViewModel() {
             _favoriteUIState.update { it.copy(isLoading = true) }
             _favoriteUIState.update {
                 it.copy(
-                    isLoading = false, state = listOf(
-                        Favorite(
-                            image = "https://th.bing.com/th/id/OIP.VFya5WgweuE8FE3i66DiTQAAAA?pid=ImgDet&rs=1",
-                            title = "Black Dress",
-                            price = "200"
-                        ),
-                        Favorite(
-                            image = "https://cdnc.lystit.com/photos/9789-2014/02/19/lauren-ralph-lauren-orange-plus-size-tab-sleeve-linen-shirt-product-1-17781787-1-361435555-normal.jpeg",
-                            title = "Orange Shirt",
-                            price = "150"
-                        ),
-                        Favorite(
-                            image = "https://th.bing.com/th/id/OIP.VFya5WgweuE8FE3i66DiTQAAAA?pid=ImgDet&rs=1",
-                            title = "Black Dress",
-                            price = "200"
-                        ),
-                        Favorite(
-                            image = "https://cdnc.lystit.com/photos/9789-2014/02/19/lauren-ralph-lauren-orange-plus-size-tab-sleeve-linen-shirt-product-1-17781787-1-361435555-normal.jpeg",
-                            title = "Orange Shirt",
-                            price = "150"
-                        ),
-                        Favorite(
-                            image = "https://th.bing.com/th/id/OIP.VFya5WgweuE8FE3i66DiTQAAAA?pid=ImgDet&rs=1",
-                            title = "Black Dress",
-                            price = "200"
-                        ),
-                        Favorite(
-                            image = "https://cdnc.lystit.com/photos/9789-2014/02/19/lauren-ralph-lauren-orange-plus-size-tab-sleeve-linen-shirt-product-1-17781787-1-361435555-normal.jpeg",
-                            title = "Orange Shirt",
-                            price = "150"
-                        )
-                    )
+                    isLoading = false,
                 )
             }
         }

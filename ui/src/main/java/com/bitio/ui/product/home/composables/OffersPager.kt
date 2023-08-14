@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -111,8 +112,8 @@ fun OfferCard(
     onAddToCartClicked: (Int) -> Unit,
     onAddToFavoriteClicked: (Int) -> Unit
 ) {
-    val width = remember(isInFocusMood){ (if (isInFocusMood) 250 else 220).dp}
-    val height = remember(isInFocusMood) {(if (isInFocusMood) 180 else 160).dp}
+    val width = remember(isInFocusMood) { (if (isInFocusMood) 250 else 220).dp }
+    val height = remember(isInFocusMood) { (if (isInFocusMood) 180 else 160).dp }
 
     Box(
         modifier = Modifier
@@ -180,7 +181,8 @@ fun CurveDetailsBar(
                     Text(text = "$" + product.price.toString())
                 }
             }
-            CartIconButtonCircularBg { onAddToCartClicked(product.id)
+            CartIconButtonCircularBg {
+                onAddToCartClicked(product.id)
             }
         }
 

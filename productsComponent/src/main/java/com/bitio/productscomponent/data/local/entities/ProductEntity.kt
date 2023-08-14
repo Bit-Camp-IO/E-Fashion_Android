@@ -7,5 +7,4 @@ data class ProductEntity(
     override val name: String,
     override val image: String,
     override val price: Float,
-
 ): Product

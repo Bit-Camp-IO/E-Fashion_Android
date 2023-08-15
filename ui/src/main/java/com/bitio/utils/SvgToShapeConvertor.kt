@@ -1,5 +1,6 @@
 package com.bitio.utils
 
+import android.graphics.Matrix
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
@@ -10,15 +11,16 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.graphics.PathParser
 
 fun makeShapeFromSvgPath(svgPath: String): Shape {
-    val path = PathParser.createPathFromPathData(svgPath).asComposePath()
-    val pathSize = path.getBounds().size
+
     return object : Shape {
         override fun createOutline(
             size: Size,
             layoutDirection: LayoutDirection,
             density: Density
         ): Outline {
-            val matrix = android.graphics.Matrix()
+            val path = PathParser.createPathFromPathData(svgPath).asComposePath()
+            val pathSize = path.getBounds().size
+            val matrix = Matrix()
             matrix.postScale(
                 size.width / pathSize.width,
                 size.height / pathSize.height
@@ -29,3 +31,4 @@ fun makeShapeFromSvgPath(svgPath: String): Shape {
         }
     }
 }
+

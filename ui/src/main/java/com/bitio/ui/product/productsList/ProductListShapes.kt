@@ -2,20 +2,18 @@ package com.bitio.ui.product.productsList
 
 import com.bitio.utils.makeShapeFromSvgPath
 
-fun firstItemLargeShape() =
-    makeShapeFromSvgPath(SvgLargePaths.FIRST)
+val firstItemLargeShape =makeShapeFromSvgPath(SvgLargePaths.FIRST)
 
-fun middleItemsLargeShape() = makeShapeFromSvgPath(SvgLargePaths.MIDDLE)
+val middleItemsLargeShape = makeShapeFromSvgPath(SvgLargePaths.MIDDLE)
 
-fun lastItemLargeShape() = makeShapeFromSvgPath(SvgLargePaths.LAST)
+val lastItemLargeShape = makeShapeFromSvgPath(SvgLargePaths.LAST)
 
-fun firstLeftShape() = makeShapeFromSvgPath(SvgSmallPaths.FIRST_LEFT)
-fun firstRightShape() = makeShapeFromSvgPath(SvgSmallPaths.FIRST_RIGHT)
-fun middleLeftShape() = makeShapeFromSvgPath(SvgSmallPaths.MIDDLE_LEFT)
-fun middleRightShape() = makeShapeFromSvgPath(SvgSmallPaths.MIDDLE_RIGHT)
+val firstLeftShape = makeShapeFromSvgPath(SvgSmallPaths.FIRST_LEFT)
 
 
-
+val firstRightShape = makeShapeFromSvgPath(SvgSmallPaths.FIRST_RIGHT)
+val middleLeftShape = makeShapeFromSvgPath(SvgSmallPaths.MIDDLE_LEFT)
+val middleRightShape = makeShapeFromSvgPath(SvgSmallPaths.MIDDLE_RIGHT)
 
 
 object SvgLargePaths {

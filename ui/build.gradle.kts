@@ -88,6 +88,10 @@ dependencies {
 
     // coil
     implementation("io.coil-kt:coil-compose:2.4.0")
+
+
+    //glide
+    implementation("com.github.bumptech.glide:compose:1.0.0-alpha.1")
     //google fonts
     implementation("androidx.compose.ui:ui-text-google-fonts:1.4.3")
 

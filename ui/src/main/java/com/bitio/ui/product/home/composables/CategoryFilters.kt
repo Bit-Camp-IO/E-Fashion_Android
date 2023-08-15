@@ -217,5 +217,5 @@ val productCategory = object : ProductCategory {
 val productCategories = List(10) { productCategory }
 
 
-const val myImage =
-    "https://previews.123rf.com/images/f8studio/f8studio1707/f8studio170701400/82842066-young-girl-in-stylish-clothes-posing-in-the-city-street.jpg"
+const val myImage ="https://picsum.photos/100.webp"
+ //   "https://previews.123rf.com/images/f8studio/f8studio1707/f8studio170701400/82842066-young-girl-in-stylish-clothes-posing-in-the-city-street.jpg"

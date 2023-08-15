@@ -15,9 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import com.bitio.productscomponent.domain.entities.products.CollectionGroup
-import com.bitio.ui.product.details.DetailsScreen
 import com.bitio.ui.product.home.productWithOffer
-import com.bitio.ui.product.productsList.largeCards.ProductParallelogramColumn
+import com.bitio.ui.product.models.toUiProduct
 import com.bitio.ui.product.productsList.smallCards.ProductParallelogramGrid
 import com.bitio.ui.theme.EFashionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -69,7 +68,10 @@ class FashionActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                  ProductParallelogramGrid(products = List(50){ productWithOffer})
+                    val products = remember {
+                        List(50){ productWithOffer.toUiProduct()}
+                    }
+                  ProductParallelogramGrid(products = products)
                  // ProductParallelogramColumn(products = List(50){ productWithOffer})
                     //DetailsScreen()
                 }

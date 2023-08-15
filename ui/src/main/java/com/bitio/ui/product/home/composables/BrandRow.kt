@@ -76,9 +76,10 @@ fun ProductCard(
             val isFav = remember { mutableStateOf(true) }
 
             FavoriteIconButtonCircularBg(
-                modifier = Modifier.padding(12.dp), isFav
+                modifier = Modifier.padding(12.dp), isFav,
+                productId = product.id
             ) { onAddToFavoriteClicked(product.id) }
-            ProductCardDetailsCurve(product) { onAddToCartClicked(product.id) }
+            ProductCardDetailsCurve(product, onAddToCartClicked)
 
         }
 
@@ -87,7 +88,7 @@ fun ProductCard(
 }
 
 @Composable
-fun ProductCardDetailsCurve(product: Product, onAddToCartClicked: () -> Unit) {
+fun ProductCardDetailsCurve(product: Product, onAddToCartClicked: (Int) -> Unit) {
     Box {
         Image(
             modifier = Modifier.fillMaxWidth(),
@@ -113,7 +114,7 @@ fun ProductCardDetailsCurve(product: Product, onAddToCartClicked: () -> Unit) {
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            CartIconButton(onClick = onAddToCartClicked)
+            CartIconButton(productId = product.id, onClick = onAddToCartClicked)
         }
     }
 }

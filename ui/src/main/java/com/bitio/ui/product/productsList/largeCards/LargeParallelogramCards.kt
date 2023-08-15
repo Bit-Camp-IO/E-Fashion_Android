@@ -47,7 +47,7 @@ fun ProductFirstParallelogramCard(
         onAddToCartClicked = onAddToCartClicked,
         onAddToFavClicked = onAddToFavClicked,
         favoriteIconTopPadding = 16.dp,
-        shape = firstItemLargeShape()
+        shape = firstItemLargeShape
 
     )
 }
@@ -66,7 +66,7 @@ fun ProductMiddleParallelogramCard(
         onAddToCartClicked = onAddToCartClicked,
         onAddToFavClicked = onAddToFavClicked,
         favoriteIconTopPadding = 50.dp,
-        shape = middleItemsLargeShape()
+        shape = middleItemsLargeShape
 
     )
 }
@@ -84,11 +84,10 @@ fun ProductLastParallelogramCard(
         onAddToCartClicked = onAddToCartClicked,
         onAddToFavClicked = onAddToFavClicked,
         favoriteIconTopPadding = 50.dp,
-        shape = lastItemLargeShape()
+        shape = lastItemLargeShape
 
     )
 }
-
 
 
 @Composable
@@ -98,7 +97,7 @@ fun ProductLargeParallelogramCard(
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {},
     favoriteIconTopPadding: Dp,
-    shape:Shape
+    shape: Shape
 ) {
     Box(
         modifier = Modifier
@@ -115,9 +114,10 @@ fun ProductLargeParallelogramCard(
             val x = remember { mutableStateOf(true) }
             FavoriteIconButtonCircularBg(
                 isFavoriteState = x,
-                modifier = Modifier.padding(top = favoriteIconTopPadding, end = 16.dp)
+                modifier = Modifier.padding(top = favoriteIconTopPadding, end = 16.dp),
+                productId = product.id
             ) { onAddToFavClicked(product.id) }
-            ProductParallelogramDetailsCurve(product) { onAddToCartClicked(product.id) }
+            ProductParallelogramDetailsCurve(product,onAddToCartClicked)
         }
     }
 
@@ -127,7 +127,7 @@ fun ProductLargeParallelogramCard(
 @Composable
 fun ProductParallelogramDetailsCurve(
     product: Product,
-    onAddToCartClicked: () -> Unit
+    onAddToCartClicked: (Int) -> Unit
 ) {
     Box(contentAlignment = Alignment.BottomCenter) {
         Image(
@@ -151,11 +151,10 @@ fun ProductParallelogramDetailsCurve(
                 )
             }
             CartIconButton(
-                modifier = Modifier.padding(
-                    top = 20.dp,
-                    end = 16.dp
-                )
-            ) { onAddToCartClicked() }
+                modifier = Modifier.padding(top = 20.dp, end = 16.dp),
+                productId = product.id,
+                onAddToCartClicked
+            )
         }
     }
 }

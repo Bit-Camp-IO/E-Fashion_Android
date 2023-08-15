@@ -19,35 +19,41 @@ import com.bitio.ui.R
 
 @Composable
 fun FavoriteIconButton(
-    modifier: Modifier= Modifier,
+    modifier: Modifier = Modifier,
     isFavoriteState: MutableState<Boolean>, onClick: () -> Unit
 ) {
     val iconId = if (isFavoriteState.value) R.drawable.ic_heart_filled else R.drawable.ic_heart
     Box(modifier = modifier) {
         Icon(
-            modifier=Modifier.size(24.dp).clickable { onClick() },
+            modifier = Modifier
+                .size(24.dp)
+                .clickable { onClick() },
             painter = painterResource(id = iconId),
             contentDescription = "add to cart button",
             tint = Color.Unspecified
 
         )
 
-}}
+    }
+}
 
 
 @Composable
 fun FavoriteIconButtonCircularBg(
-    modifier: Modifier = Modifier, isFavoriteState: MutableState<Boolean>, onClick: () -> Unit
+    modifier: Modifier = Modifier,
+    isFavoriteState: MutableState<Boolean>,
+    productId: Int,
+    onClick: (Int) -> Unit
 ) {
-    val iconId = if (isFavoriteState.value) R.drawable.ic_heart_filled else R.drawable.ic_heart
     Box(
         modifier = modifier
             .size(24.dp)
             .clip(CircleShape)
             .background(Color.White)
-            .clickable { onClick() },
+            .clickable { onClick(productId) },
         contentAlignment = Alignment.Center
     ) {
+        val iconId = if (isFavoriteState.value) R.drawable.ic_heart_filled else R.drawable.ic_heart
         Icon(
             painter = painterResource(id = iconId),
             contentDescription = "add to cart button",
@@ -58,9 +64,9 @@ fun FavoriteIconButtonCircularBg(
 }
 
 @Composable
-fun CartIconButton(modifier: Modifier= Modifier, onClick: () -> Unit = {}) {
+fun CartIconButton(modifier: Modifier = Modifier, productId: Int, onClick: (Int) -> Unit = {}) {
     Icon(
-        modifier = modifier.clickable { onClick() },
+        modifier = modifier.clickable { onClick(productId) },
         painter = painterResource(id = R.drawable.ic_bag),
         contentDescription = "add to cart button",
         tint = Color.Unspecified
@@ -69,7 +75,7 @@ fun CartIconButton(modifier: Modifier= Modifier, onClick: () -> Unit = {}) {
 
 @Composable
 fun CartIconButtonCircularBg(onClick: () -> Unit = {}) {
-    val modifier= remember {
+    val modifier = remember {
         Modifier
             .size(24.dp)
             .clip(CircleShape)
@@ -78,8 +84,7 @@ fun CartIconButtonCircularBg(onClick: () -> Unit = {}) {
             .background(Color.White.copy(alpha = 0.15f))
     }
     Box(
-        modifier = modifier
-            ,
+        modifier = modifier,
 
         contentAlignment = Alignment.Center
     ) {

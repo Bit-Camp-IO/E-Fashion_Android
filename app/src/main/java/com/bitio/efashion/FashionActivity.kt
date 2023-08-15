@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import com.bitio.productscomponent.domain.entities.products.CollectionGroup
 import com.bitio.ui.favorite.FavoriteScreen
+import com.bitio.ui.order_status.OrderStatusScreen
 import com.bitio.ui.product.details.DetailsScreen
 import com.bitio.ui.product.home.productWithOffer
 import com.bitio.ui.product.productsList.largeCards.ProductParallelogramColumn
@@ -60,7 +61,7 @@ class FashionActivity : ComponentActivity() {
 
         setContent {
             val isDarkTheme by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
             EFashionTheme(
                 darkTheme = isDarkTheme
@@ -70,7 +71,7 @@ class FashionActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    FavoriteScreen()
+                    OrderStatusScreen()
                 }
             }
         }

@@ -1,8 +1,11 @@
 package com.bitio.ui.bottom_nav_rotue
 
-sealed class HomeRouteScreens(val route:String){
-    object Home : HomeRouteScreens(route = "home_route")
-    object Cart : HomeRouteScreens(route = "cart_route")
-    object Favorite : HomeRouteScreens(route = "favorite_route")
-    object Profile : HomeRouteScreens(route = "profile_route")
+import androidx.annotation.DrawableRes
+import com.bitio.ui.R
+
+sealed class HomeRouteScreens(val route: String, @DrawableRes val icon: Int) {
+    object Home : HomeRouteScreens(route = "home_route",icon = R.drawable.home)
+    object Cart : HomeRouteScreens(route = "cart_route",icon = R.drawable.bag)
+    object Favorite : HomeRouteScreens(route = "favorite_route",icon = R.drawable.outline_heart)
+    object Profile : HomeRouteScreens(route = "profile_route",icon = R.drawable.profile)
 }

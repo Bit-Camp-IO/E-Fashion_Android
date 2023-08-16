@@ -65,13 +65,7 @@ class FashionActivity : ComponentActivity() {
             EFashionTheme(
                 darkTheme = isDarkTheme
             ) {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-
-                    AppNavGraph(navController = navController)
-                }
+                BottomNavigationBar()
             }
         }
     }

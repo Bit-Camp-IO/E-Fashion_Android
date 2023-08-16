@@ -21,9 +21,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.ui.R
+import com.bitio.ui.authentication.route.navigateToForgotPasswordScreen
 import com.bitio.ui.authentication.composable.CustomLogin
 import com.bitio.ui.authentication.composable.CustomSignUp
 import com.bitio.utils.profileShape
@@ -31,18 +32,21 @@ import com.bitio.utils.profileShape
 
 @Composable
 fun AuthenticationScreen(
-    viewModel: AuthenticationViewModel = hiltViewModel()
+    viewModel: AuthenticationViewModel,
+    navController: NavController
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize(), contentAlignment = Alignment.TopCenter
     ) {
-        AuthenticationContent()
+        AuthenticationContent(onClickForgetPassword = navController::navigateToForgotPasswordScreen)
     }
 }
 
 @Composable
-private fun AuthenticationContent() {
+private fun AuthenticationContent(
+    onClickForgetPassword: () -> Unit
+) {
 
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
@@ -90,12 +94,13 @@ private fun AuthenticationContent() {
                     .background(MaterialTheme.colorScheme.background)
             ) {
 
-                CustomLogin(modifier = Modifier.offset(x = offsetXOfLogin),
+                CustomLogin(
+                    modifier = Modifier.offset(x = offsetXOfLogin),
                     onClickLoginButton = { username, password ->
                         println("User info: $username $password")
                     },
                     onCheckedChange = {},
-                    onClickForgetPassword = {}
+                    onClickForgetPassword = onClickForgetPassword
                 ) {
                     isClickOnSignUp = true
                 }

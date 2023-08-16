@@ -83,12 +83,10 @@ dependencies {
 
     // Accompanist
     api("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-
     api("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     // coil
     implementation("io.coil-kt:coil-compose:2.4.0")
-
 
     //glide
     implementation("com.github.bumptech.glide:compose:1.0.0-alpha.1")

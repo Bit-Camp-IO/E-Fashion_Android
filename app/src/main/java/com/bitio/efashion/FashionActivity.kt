@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
+import androidx.navigation.compose.rememberNavController
 import com.bitio.productscomponent.domain.entities.products.CollectionGroup
 import com.bitio.ui.order_status.OrderStatusScreen
 import com.bitio.ui.theme.EFashionTheme
@@ -59,6 +60,8 @@ class FashionActivity : ComponentActivity() {
             val isDarkTheme by remember {
                 mutableStateOf(false)
             }
+            val navController = rememberNavController()
+
             EFashionTheme(
                 darkTheme = isDarkTheme
             ) {
@@ -67,7 +70,7 @@ class FashionActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    OrderStatusScreen()
+                    AppNavGraph(navController = navController)
                 }
             }
         }

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.bitio.ui.favorite
+package com.bitio.ui.product.favorite
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
@@ -27,7 +27,6 @@ import com.bitio.ui.R
 import com.bitio.ui.product.home.productWithOffer
 import com.bitio.ui.product.productsList.largeCards.ProductParallelogramColumn
 import com.bitio.ui.product.productsList.smallCards.ProductParallelogramGrid
-import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 
 @Composable
 fun FavoriteScreen(

@@ -27,9 +27,9 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.bitio.productscomponent.domain.entities.products.ProductWithOffer
 import com.bitio.ui.product.CartIconButton
 import com.bitio.ui.product.FavoriteIconButtonCircularBg
-import com.bitio.ui.product.models.UiProduct
 import com.bitio.ui.product.productsList.firstLeftShape
 import com.bitio.ui.product.productsList.firstRightShape
 import com.bitio.ui.product.productsList.leftCurve
@@ -43,7 +43,7 @@ import com.bitio.ui.shared.VerticalSpacer4Dp
 @Stable
 @Composable
 fun SmallParallelogramCardFactory(
-    product: UiProduct,
+    product: ProductWithOffer,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {},
@@ -98,7 +98,7 @@ fun SmallParallelogramCardFactory(
 @Stable
 @Composable
 fun SmallParallelogramCard(
-    product: UiProduct,
+    product: ProductWithOffer,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {},
@@ -141,7 +141,7 @@ fun SmallParallelogramCard(
 @Stable
 @Composable
 fun ParallelogramCurve(
-    product: UiProduct,
+    product: ProductWithOffer,
     isLeft: Boolean,
     onAddToCartClicked: (Int) -> Unit
 ) {

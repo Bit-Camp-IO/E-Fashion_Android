@@ -10,14 +10,5 @@ data class OrderStatus(
     val title: String = "",
     val description: String = "",
     val isOrderStatusActive: Boolean = false,
-    val typeOrderStatus: TypeOrderStatus = TypeOrderStatus.OnProgress
+    val imageOfOrderStatus: Int = 0
 )
-
-enum class TypeOrderStatus {
-    OnProgress, OnWay, Delivered
-}
-/*
-*  0 => OnProgress
-*  1 => OnWay
-*  2 => Delivered
-* */

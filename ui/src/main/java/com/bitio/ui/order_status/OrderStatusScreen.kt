@@ -19,6 +19,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -61,15 +62,19 @@ private fun OrderStatusContent(state: OrderStatusUiState) {
     Scaffold(
         topBar = {
             TopAppBar(
+                modifier = Modifier.padding(horizontal = 24.dp),
                 title = {
                     Text("Order status", style = MaterialTheme.typography.titleMedium)
                 },
                 navigationIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.arraw_back),
-                        contentDescription = "back",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            modifier = Modifier.padding(end = 16.dp),
+                            painter = painterResource(id = R.drawable.arraw_back),
+                            contentDescription = "back",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
@@ -88,18 +93,19 @@ private fun OrderStatusContent(state: OrderStatusUiState) {
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
-            CheckOrderStatus(state.ordersStatus)
+            OrderStatusHeader(state.ordersStatus)
             state.ordersStatus.forEach {
                 it.takeIf { it.isOrderStatusActive }?.let { order ->
                     isThereOrderStatus = true
-                    DetailsOfOrderStatus(
-                        typeOrderStatus = order.typeOrderStatus,
+                    OrderStatusBody(
+                        painter = painterResource(id = order.imageOfOrderStatus),
                         description = order.description
                     )
                 }
             }
             if (!isThereOrderStatus) {
-                DetailsOfOrderStatus(
+                OrderStatusBody(
+                    painter = painterResource(id = R.drawable.box_empty),
                     description = "There is no order yet"
                 )
             }
@@ -109,7 +115,7 @@ private fun OrderStatusContent(state: OrderStatusUiState) {
 }
 
 @Composable
-private fun CheckOrderStatus(ordersStatus: List<OrderStatus>) {
+private fun OrderStatusHeader(ordersStatus: List<OrderStatus>) {
     Column(
         modifier = Modifier
             .padding(top = 24.dp)
@@ -190,45 +196,22 @@ private fun TitleOfOrderStatus(ordersStatus: List<OrderStatus>) {
 
 
 @Composable
-private fun DetailsOfOrderStatus(
-    typeOrderStatus: TypeOrderStatus? = null,
+private fun OrderStatusBody(
+    painter: Painter,
     description: String,
 ) {
     Column(
         modifier = Modifier.padding(vertical = 16.dp)
     ) {
-        when (typeOrderStatus) {
-            TypeOrderStatus.OnProgress -> {
-                CustomImage(
-                    painter = painterResource(id = R.drawable.order_progress),
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-            }
 
-            TypeOrderStatus.OnWay -> {
-                CustomImage(
-                    painter = painterResource(id = R.drawable.order_on_way),
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-            }
-
-            TypeOrderStatus.Delivered -> {
-                CustomImage(
-                    painter = painterResource(id = R.drawable.order_delivered),
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-            }
-
-            else -> {
-                Icon(
-                    painter = painterResource(id = R.drawable.box_empty),
-                    tint = MaterialTheme.colorScheme.primary, contentDescription = null,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(bottom = 24.dp)
-                )
-            }
-        }
+        Image(
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 16.dp)
+                .wrapContentSize(),
+            painter = painter,
+            contentDescription = null,
+        )
 
         Text(
             text = description,
@@ -242,18 +225,3 @@ private fun DetailsOfOrderStatus(
 
     }
 }
-
-@Composable
-private fun CustomImage(
-    painter: Painter,
-    modifier: Modifier = Modifier
-) {
-    Image(
-        modifier = modifier
-            .size(width = 200.dp, height = 250.dp)
-            .wrapContentSize(),
-        painter = painter,
-        contentDescription = null,
-    )
-}
-

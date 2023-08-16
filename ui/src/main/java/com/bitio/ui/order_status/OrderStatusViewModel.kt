@@ -1,6 +1,7 @@
 package com.bitio.ui.order_status
 
 import androidx.lifecycle.ViewModel
+import com.bitio.ui.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,19 +32,19 @@ class OrderStatusViewModel @Inject constructor() : ViewModel() {
                         title = "On Progress",
                         description = "Your order still on progress it may take hours",
                         isOrderStatusActive = false,
-                        typeOrderStatus = TypeOrderStatus.OnProgress
+                       imageOfOrderStatus = R.drawable.order_progress
                     ),
                     OrderStatus(
                         title = "On its way",
                         description = "The delivery man on his way to your location",
                         isOrderStatusActive = false,
-                        typeOrderStatus = TypeOrderStatus.OnWay
+                        imageOfOrderStatus = R.drawable.order_on_way
                     ),
                     OrderStatus(
                         title = "Delivered",
                         description = "Your order has been delivered, hope you liked it",
                         isOrderStatusActive = false,
-                        typeOrderStatus = TypeOrderStatus.Delivered
+                        imageOfOrderStatus = R.drawable.order_delivered
                     )
                 )
             )

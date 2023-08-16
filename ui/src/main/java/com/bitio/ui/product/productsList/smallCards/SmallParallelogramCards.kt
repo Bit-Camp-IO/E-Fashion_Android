@@ -1,17 +1,16 @@
-@file:Suppress("NOTHING_TO_INLINE")
-
 package com.bitio.ui.product.productsList.smallCards
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,245 +20,119 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.bitio.ui.R
 import com.bitio.ui.product.CartIconButton
 import com.bitio.ui.product.FavoriteIconButtonCircularBg
 import com.bitio.ui.product.models.UiProduct
 import com.bitio.ui.product.productsList.firstLeftShape
 import com.bitio.ui.product.productsList.firstRightShape
+import com.bitio.ui.product.productsList.leftCurve
 import com.bitio.ui.product.productsList.middleLeftShape
 import com.bitio.ui.product.productsList.middleRightShape
+import com.bitio.ui.product.productsList.rightCurve
+import com.bitio.ui.shared.AsyncDescribedImage
 import com.bitio.ui.shared.HorizontalSpacer24Dp
 import com.bitio.ui.shared.VerticalSpacer4Dp
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 
 @Stable
 @Composable
-inline fun SmallParallelogramCardFactory(
-    product: UiProduct,
-    noinline onCardClicked: (Int) -> Unit = {},
-    noinline onAddToCartClicked: (Int) -> Unit = {},
-    noinline onAddToFavClicked: (Int) -> Unit = {},
-    cardIndex: Int
-) {
-    val leftPainter= painterResource(id = R.drawable.small_curve_left)
-    val rightPainter= painterResource(id = R.drawable.small_curve_right)
-    when {
-        cardIndex == 0 -> FirstLeftParallelogramCards(
-            product,
-            onCardClicked,
-            onAddToCartClicked,
-            onAddToFavClicked,
-            leftPainter
-        )
-
-        cardIndex == 1 -> FirstRightParallelogramCards(
-            product,
-            onCardClicked,
-            onAddToCartClicked,
-            onAddToFavClicked,
-            rightPainter
-        )
-
-        cardIndex % 2 == 0 -> MiddleLeftParallelogramCards(
-            product,
-            onCardClicked,
-            onAddToCartClicked,
-            onAddToFavClicked,
-            leftPainter
-        )
-
-        else -> MiddleRightParallelogramCards(
-            product,
-            onCardClicked,
-            onAddToCartClicked,
-            onAddToFavClicked,
-            rightPainter
-        )
-
-    }
-
-}
-
-@Stable
-@Composable
-inline fun FirstLeftParallelogramCards(
-    product: UiProduct,
-    crossinline onCardClicked: (Int) -> Unit = {},
-    crossinline onAddToCartClicked: (Int) -> Unit = {},
-    noinline onAddToFavClicked: (Int) -> Unit = {},
-    painter: Painter
-) {
-
-    SmallLeftParallelogramCards(
-        product,
-        onCardClicked,
-        onAddToCartClicked,
-        onAddToFavClicked,
-        8.dp,
-        firstLeftShape,
-        painter
-    )
-}
-
-@Stable
-@Composable
-inline fun FirstRightParallelogramCards(
-    product: UiProduct,
-    noinline onCardClicked: (Int) -> Unit = {},
-    noinline onAddToCartClicked: (Int) -> Unit = {},
-    noinline onAddToFavClicked: (Int) -> Unit = {},
-    rightPainter: Painter,
-) {
-    SmallRightParallelogramCards(
-        product,
-        onCardClicked,
-        onAddToCartClicked,
-        onAddToFavClicked,
-        8.dp,
-        firstRightShape
-        ,rightPainter
-    )
-}
-
-@Stable
-@Composable
-inline fun MiddleLeftParallelogramCards(
-    product: UiProduct,
-    crossinline onCardClicked: (Int) -> Unit = {},
-    crossinline onAddToCartClicked: (Int) -> Unit = {},
-    noinline onAddToFavClicked: (Int) -> Unit = {},
-    leftPainter: Painter,
-) {
-    SmallLeftParallelogramCards(
-        product,
-        onCardClicked,
-        onAddToCartClicked,
-        onAddToFavClicked,
-        24.dp,
-        middleLeftShape,
-        leftPainter
-    )
-}
-
-@Stable
-@Composable
-inline fun MiddleRightParallelogramCards(
-    product: UiProduct,
-    noinline onCardClicked: (Int) -> Unit = {},
-    noinline onAddToCartClicked: (Int) -> Unit = {},
-    noinline onAddToFavClicked: (Int) -> Unit = {},
-    rightPainter: Painter,
-) {
-    SmallRightParallelogramCards(
-        product,
-        onCardClicked,
-        onAddToCartClicked,
-        onAddToFavClicked,
-        24.dp,
-        middleRightShape,
-        rightPainter
-    )
-}
-
-@OptIn(ExperimentalGlideComposeApi::class)
-@Stable
-@Composable
-inline fun SmallLeftParallelogramCards(
-    product: UiProduct,
-    crossinline onCardClicked: (Int) -> Unit = {},
-    crossinline onAddToCartClicked: (Int) -> Unit = {},
-    noinline onAddToFavClicked: (Int) -> Unit = {},
-    favoriteIconTopPadding: Dp,
-    shape: Shape,
-    painter: Painter
-) {
-
-    Box(
-        modifier = Modifier
-            .size(150.dp, 200.dp)
-            .clip(shape)
-            .clickable { onCardClicked(product.id) }
-    ) {
-//        AsyncDescribedImage(
-//            modifier = Modifier.fillMaxSize(),
-//            imageLink = product.image,
-//            contentScale = ContentScale.Crop
-//        )
-        GlideImage(
-            modifier = Modifier.fillMaxSize(),
-            model = product.image,
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.Start
-        ) {
-            val x = remember { mutableStateOf(true) }
-            FavoriteIconButtonCircularBg(
-                isFavoriteState = x,
-                productId = product.id,
-                modifier = Modifier.padding(top = favoriteIconTopPadding, start = 8.dp),
-                onClick = onAddToFavClicked
-            )
-            LeftParallelogramCurve(product,painter) { onAddToCartClicked(product.id) }
-        }
-    }
-}
-
-@OptIn(ExperimentalGlideComposeApi::class)
-@Stable
-@Composable
-fun SmallRightParallelogramCards(
+fun SmallParallelogramCardFactory(
     product: UiProduct,
     onCardClicked: (Int) -> Unit = {},
     onAddToCartClicked: (Int) -> Unit = {},
     onAddToFavClicked: (Int) -> Unit = {},
-    favoriteIconTopPadding: Dp,
-    shape: Shape,
-    painter: Painter
+    cardIndex: Int
 ) {
 
+
+    when {
+        cardIndex == 0 -> SmallParallelogramCard(
+            product = product,
+            onCardClicked = onCardClicked,
+            onAddToCartClicked = onAddToCartClicked,
+            onAddToFavClicked = onAddToFavClicked,
+            isLeft = true,
+            isFirst = true
+        )
+
+        cardIndex == 1 -> SmallParallelogramCard(
+            product = product,
+            onCardClicked = onCardClicked,
+            onAddToCartClicked = onAddToCartClicked,
+            onAddToFavClicked = onAddToFavClicked,
+            isLeft = false,
+            isFirst = true
+
+        )
+
+        cardIndex % 2 == 0 -> SmallParallelogramCard(
+            product = product,
+            onCardClicked = onCardClicked,
+            onAddToCartClicked = onAddToCartClicked,
+            onAddToFavClicked = onAddToFavClicked,
+            isLeft = true,
+            isFirst = false,
+
+            )
+
+        else -> SmallParallelogramCard(
+            product = product,
+            onCardClicked = onCardClicked,
+            onAddToCartClicked = onAddToCartClicked,
+            onAddToFavClicked = onAddToFavClicked,
+            isLeft = false,
+            isFirst = false,
+
+            )
+
+    }
+
+}
+
+@Stable
+@Composable
+fun SmallParallelogramCard(
+    product: UiProduct,
+    onCardClicked: (Int) -> Unit = {},
+    onAddToCartClicked: (Int) -> Unit = {},
+    onAddToFavClicked: (Int) -> Unit = {},
+    isLeft: Boolean,
+    isFirst: Boolean
+) {
     Box(
         modifier = Modifier
-            .size(150.dp, 200.dp)
-            .clip(shape)
+            .fillMaxWidth()
+            .aspectRatio(0.75f)
+            .clip(shapeFactory(isLeft, isFirst))
             .clickable { onCardClicked(product.id) }
     ) {
-//        AsyncDescribedImage(
-//            modifier = Modifier.fillMaxSize(),
-//            imageLink = product.image,
-//            contentScale = ContentScale.Crop
-//        )
-        GlideImage(
-            modifier = Modifier
-                .fillMaxSize(),
-            model = product.image,
-            contentDescription = null,
+        AsyncDescribedImage(
+            modifier = Modifier.fillMaxSize(),
+            imageLink = product.image,
             contentScale = ContentScale.Crop
         )
+
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.End
+            horizontalAlignment = if (isLeft) Alignment.Start else Alignment.End
         ) {
             val x = remember { mutableStateOf(true) }
             FavoriteIconButtonCircularBg(
                 isFavoriteState = x,
                 productId = product.id,
-                modifier = Modifier.padding(top = favoriteIconTopPadding, end = 16.dp),
+                modifier = Modifier
+                    .padding(top = (if (isFirst) 8 else 24).dp)
+                    .padding(horizontal = 16.dp),
                 onClick = onAddToFavClicked
             )
-            RightParallelogramCurve(product,painter) { onAddToCartClicked(product.id) }
+            ParallelogramCurve(product, isLeft) { onAddToCartClicked(product.id) }
         }
     }
 
@@ -267,18 +140,25 @@ fun SmallRightParallelogramCards(
 
 @Stable
 @Composable
-fun LeftParallelogramCurve(
+fun ParallelogramCurve(
     product: UiProduct,
-    painter: Painter,
+    isLeft: Boolean,
     onAddToCartClicked: (Int) -> Unit
 ) {
-    Box(contentAlignment = Alignment.BottomCenter) {
-        Image(
-            modifier = Modifier.fillMaxWidth(),
-            painter = painter,
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds
-        )
+
+    Box(
+        contentAlignment = Alignment.BottomCenter, modifier = Modifier
+            .height(73.dp)
+            .fillMaxWidth()
+            .graphicsLayer {
+                shape = if (isLeft) leftCurve else rightCurve
+                clip = true
+                translationY = 7 * size.height / 73
+            }
+            .background(CachedBrushes.getBrush(isLeft))
+
+    ) {
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -286,14 +166,11 @@ fun LeftParallelogramCurve(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CartIconButton(
-                modifier = Modifier.padding(
-                    top = 20.dp,
-                    start = 16.dp
-                ),
+            if (isLeft) CartIconButton(
+                modifier = Modifier.padding(top = 20.dp, end = 16.dp),
                 productId = product.id,
                 onAddToCartClicked
-            )
+            ) else HorizontalSpacer24Dp()
             Column {
                 Text(text = product.name, style = MaterialTheme.typography.bodyMedium)
                 VerticalSpacer4Dp()
@@ -302,55 +179,43 @@ fun LeftParallelogramCurve(
                     style = MaterialTheme.typography.bodySmall
                 )
             }
-            HorizontalSpacer24Dp()
-        }
-    }
-}
 
-@Stable
-@Composable
-fun RightParallelogramCurve(
-    product: UiProduct,
-    painter: Painter,
-    onAddToCartClicked: (Int) -> Unit
-) {
-    Box(contentAlignment = Alignment.BottomCenter) {
-
-        Image(
-            modifier = Modifier
-                .fillMaxWidth()
-                ,
-            painter = painter,
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            HorizontalSpacer24Dp()
-            Column {
-                Text(text = product.name, style = MaterialTheme.typography.bodyMedium)
-                VerticalSpacer4Dp()
-                Text(
-                    text = "$" + product.price.toString(),
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-            CartIconButton(
-                modifier = Modifier.padding(
-                    top = 20.dp,
-                    end = 16.dp
-                ),
+            if (isLeft) HorizontalSpacer24Dp() else CartIconButton(
+                modifier = Modifier.padding(top = 20.dp, end = 16.dp),
                 productId = product.id,
                 onAddToCartClicked
             )
 
-
         }
     }
 }
+
+fun shapeFactory(isLeft: Boolean, isFirst: Boolean): Shape {
+    return when {
+        !isFirst -> if (isLeft) middleLeftShape else middleRightShape
+        else -> if (isLeft) firstLeftShape else firstRightShape
+
+    }
+}
+
+object CachedBrushes {
+    private val lefTCurveBrush = Brush.linearGradient(
+        (0f to Color(0xE6465A6A)),
+        (1f to Color(0xE61B2F3F)),
+        start = Offset.Zero,
+        end = Offset.Infinite
+    )
+    private val rightShapeBrush = Brush.linearGradient(
+        (0f to Color(0xE61B2F3F)),
+        (1f to Color(0xE6465A6A)),
+        start = Offset.Zero,
+        end = Offset.Infinite
+    )
+
+    fun getBrush(isLeft: Boolean) = if (isLeft) lefTCurveBrush else rightShapeBrush
+
+
+}
+
+
 

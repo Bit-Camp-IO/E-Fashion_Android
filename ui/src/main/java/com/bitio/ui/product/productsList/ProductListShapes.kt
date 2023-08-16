@@ -2,18 +2,19 @@ package com.bitio.ui.product.productsList
 
 import com.bitio.utils.makeShapeFromSvgPath
 
-val firstItemLargeShape =makeShapeFromSvgPath(SvgLargePaths.FIRST)
+val firstItemLargeShape = makeShapeFromSvgPath(SvgLargePaths.FIRST)
 
 val middleItemsLargeShape = makeShapeFromSvgPath(SvgLargePaths.MIDDLE)
 
 val lastItemLargeShape = makeShapeFromSvgPath(SvgLargePaths.LAST)
 
+
 val firstLeftShape = makeShapeFromSvgPath(SvgSmallPaths.FIRST_LEFT)
-
-
 val firstRightShape = makeShapeFromSvgPath(SvgSmallPaths.FIRST_RIGHT)
 val middleLeftShape = makeShapeFromSvgPath(SvgSmallPaths.MIDDLE_LEFT)
 val middleRightShape = makeShapeFromSvgPath(SvgSmallPaths.MIDDLE_RIGHT)
+val leftCurve = makeShapeFromSvgPath(SvgSmallPaths.LEFT_CURVE)
+val rightCurve = makeShapeFromSvgPath(SvgSmallPaths.Right_CURVE)
 
 
 object SvgLargePaths {
@@ -31,7 +32,14 @@ object SvgSmallPaths {
     const val FIRST_RIGHT = "M0 0H134C142.837 0 150 7.16344 150 16V200L0 180V0Z"
     const val MIDDLE_LEFT = "M150 0L0 20V200L150 180V0Z"
     const val MIDDLE_RIGHT = "M0 0L150 20V200L0 180V0Z"
+    const val LEFT_CURVE = "M0 73 H150 V13 C132.8 9.6 45.7 -6.8 0 3.32V73Z"
+    const val Right_CURVE = "M150 73 H0 V13 C17.2 9.5 104.3 -6.8 150 3.2 V72.9Z"
+
+
+
 
 
 }
+
+
 

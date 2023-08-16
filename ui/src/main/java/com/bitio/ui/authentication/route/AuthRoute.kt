@@ -7,11 +7,11 @@ import com.bitio.ui.authentication.AuthenticationScreen
 import com.bitio.ui.authentication.AuthenticationViewModel
 import com.bitio.ui.shared.sharedViewModel
 
-fun NavController.navigateToAuthScreen() {
+internal fun NavController.navigateToAuthScreen() {
     navigate(AuthRouterScreens.Login.route)
 }
 
-fun NavGraphBuilder.authRoute(navController: NavController) {
+internal fun NavGraphBuilder.authRoute(navController: NavController) {
     composable(AuthRouterScreens.ForgotPassword.route) {
         val viewModel = it.sharedViewModel<AuthenticationViewModel>(navController = navController)
         AuthenticationScreen(

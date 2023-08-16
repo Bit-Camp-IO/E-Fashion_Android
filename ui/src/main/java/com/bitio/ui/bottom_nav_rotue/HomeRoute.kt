@@ -1,11 +1,9 @@
-package com.bitio.ui.product.route
+package com.bitio.ui.bottom_nav_rotue
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.bitio.ui.authentication.AuthenticationViewModel
 import com.bitio.ui.product.home.HomeScreen
-import com.bitio.ui.shared.sharedViewModel
 
 fun NavController.navigateToHomeScreen() {
     navigate(HomeRouteScreens.Home.route)
@@ -13,11 +11,9 @@ fun NavController.navigateToHomeScreen() {
 
 fun NavGraphBuilder.homeRoute(navController: NavController) {
     composable(HomeRouteScreens.Home.route) {
-        val viewModel = it.sharedViewModel<AuthenticationViewModel>(navController = navController)
+//        val viewModel = it.sharedViewModel<AuthenticationViewModel>(navController = navController)
         HomeScreen(
             navController = navController
         )
     }
 }
-
-

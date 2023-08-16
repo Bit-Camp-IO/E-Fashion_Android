@@ -1,4 +1,4 @@
-package com.bitio.ui.product.route
+package com.bitio.ui.bottom_nav_rotue
 
 sealed class HomeRouteScreens(val route:String){
     object Home : HomeRouteScreens(route = "home_route")

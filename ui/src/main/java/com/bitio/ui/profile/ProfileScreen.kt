@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.ui.R
 import com.bitio.ui.profile.composable.SettingApp
@@ -42,8 +43,9 @@ import com.bitio.utils.profileShape
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
-    isDarkTheme: Boolean,
-    onSwitchTheme: () -> Unit
+    isDarkTheme: Boolean = false,
+    onSwitchTheme: () -> Unit = {},
+    navController: NavController
 ) {
     val state by viewModel.profileUiState.collectAsState()
     ProfileContent(state, isDarkTheme, onSwitchTheme)

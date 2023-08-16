@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.bitio.ui.R
 import com.bitio.ui.product.home.productWithOffer
 import com.bitio.ui.product.productsList.largeCards.ProductParallelogramColumn
@@ -30,7 +31,8 @@ import com.bitio.ui.product.productsList.smallCards.ProductParallelogramGrid
 
 @Composable
 fun FavoriteScreen(
-    viewModel: FavoriteViewModel = hiltViewModel()
+    viewModel: FavoriteViewModel,
+    navController: NavController
 ) {
     val state by viewModel.favoriteUIState.collectAsState()
     FavoriteContent(

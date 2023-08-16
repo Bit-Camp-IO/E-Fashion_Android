@@ -57,7 +57,7 @@ class FashionActivity : ComponentActivity() {
 
         setContent {
             val isDarkTheme by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
             EFashionTheme(
                 darkTheme = isDarkTheme

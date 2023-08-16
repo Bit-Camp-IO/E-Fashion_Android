@@ -30,7 +30,7 @@ class OrderStatusViewModel @Inject constructor() : ViewModel() {
                     OrderStatus(
                         title = "On Progress",
                         description = "Your order still on progress it may take hours",
-                        isOrderStatusActive = true,
+                        isOrderStatusActive = false,
                         typeOrderStatus = TypeOrderStatus.OnProgress
                     ),
                     OrderStatus(

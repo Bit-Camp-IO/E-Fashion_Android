@@ -94,7 +94,7 @@ fun CustomTopAppBar(
         title = {
             Text(
                 text = "Your Favorites",
-                style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).titleMedium,
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         colors = topAppBarColors(

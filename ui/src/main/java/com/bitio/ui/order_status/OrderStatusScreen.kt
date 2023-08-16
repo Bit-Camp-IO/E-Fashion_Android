@@ -23,20 +23,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bitio.ui.R
-import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer24Dp
-import com.bitio.ui.shared.VerticalSpacer64Dp
 
 @Composable
 fun OrderStatusScreen(
@@ -50,18 +53,28 @@ fun OrderStatusScreen(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun OrderStatusContent(state: OrderStatusUiState) {
+
+    var isThereOrderStatus by remember {
+        mutableStateOf(false)
+    }
+
     Scaffold(
         topBar = {
-            TopAppBar(title = {
-                Text("Order status")
-            },
+            TopAppBar(
+                title = {
+                    Text("Order status", style = MaterialTheme.typography.titleMedium)
+                },
                 navigationIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.arraw_back),
                         contentDescription = "back",
                         tint = MaterialTheme.colorScheme.primary
                     )
-                })
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                )
+            )
         }
     ) { paddingValue ->
 
@@ -74,13 +87,20 @@ private fun OrderStatusContent(state: OrderStatusUiState) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            val ordersStatus = state.ordersStatus
-            CheckOrderStatus(ordersStatus)
-            ordersStatus.filter { it.isOrderStatusActive }.let { ordersStatus ->
-                val order = ordersStatus.first()
+
+            CheckOrderStatus(state.ordersStatus)
+            state.ordersStatus.forEach {
+                it.takeIf { it.isOrderStatusActive }?.let { order ->
+                    isThereOrderStatus = true
+                    DetailsOfOrderStatus(
+                        typeOrderStatus = order.typeOrderStatus,
+                        description = order.description
+                    )
+                }
+            }
+            if (!isThereOrderStatus) {
                 DetailsOfOrderStatus(
-                    typeOrderStatus = order.typeOrderStatus,
-                    description = order.description
+                    description = "There is no order yet"
                 )
             }
             VerticalSpacer24Dp()
@@ -90,11 +110,14 @@ private fun OrderStatusContent(state: OrderStatusUiState) {
 
 @Composable
 private fun CheckOrderStatus(ordersStatus: List<OrderStatus>) {
-    Column {
+    Column(
+        modifier = Modifier
+            .padding(top = 24.dp)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 16.dp),
+                .padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             for (i in ordersStatus.indices) {
@@ -168,33 +191,45 @@ private fun TitleOfOrderStatus(ordersStatus: List<OrderStatus>) {
 
 @Composable
 private fun DetailsOfOrderStatus(
-    typeOrderStatus: TypeOrderStatus,
+    typeOrderStatus: TypeOrderStatus? = null,
     description: String,
 ) {
     Column(
-        modifier = Modifier.padding(vertical = 24.dp)
+        modifier = Modifier.padding(vertical = 16.dp)
     ) {
-        Image(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .size(width = 132.dp, height = 200.dp),
-            painter = painterResource(
-                id = when (typeOrderStatus) {
-                    TypeOrderStatus.OnProgress -> {
-                        R.drawable.order_progress
-                    }
+        when (typeOrderStatus) {
+            TypeOrderStatus.OnProgress -> {
+                CustomImage(
+                    painter = painterResource(id = R.drawable.order_progress),
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
 
-                    TypeOrderStatus.OnWay -> {
-                        R.drawable.order_on_way
-                    }
+            TypeOrderStatus.OnWay -> {
+                CustomImage(
+                    painter = painterResource(id = R.drawable.order_on_way),
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
 
-                    TypeOrderStatus.Delivered -> {
-                        R.drawable.order_delivered
-                    }
-                }
-            ), contentDescription = null
-        )
-        VerticalSpacer24Dp()
+            TypeOrderStatus.Delivered -> {
+                CustomImage(
+                    painter = painterResource(id = R.drawable.order_delivered),
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
+
+            else -> {
+                Icon(
+                    painter = painterResource(id = R.drawable.box_empty),
+                    tint = MaterialTheme.colorScheme.primary, contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 24.dp)
+                )
+            }
+        }
+
         Text(
             text = description,
             color = Color.Gray,
@@ -206,5 +241,19 @@ private fun DetailsOfOrderStatus(
         )
 
     }
+}
+
+@Composable
+private fun CustomImage(
+    painter: Painter,
+    modifier: Modifier = Modifier
+) {
+    Image(
+        modifier = modifier
+            .size(width = 200.dp, height = 250.dp)
+            .wrapContentSize(),
+        painter = painter,
+        contentDescription = null,
+    )
 }
 

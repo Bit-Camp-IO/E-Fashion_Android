@@ -1,7 +1,9 @@
 package com.bitio.ui.favorite
 
+import com.bitio.productscomponent.domain.entities.products.Product
+
 data class FavoriteUiState(
     val isLoading: Boolean = false,
-    val state: List<Favorite> = emptyList(),
+    val products: List<Product> = emptyList(),
     val error: String = ""
 )

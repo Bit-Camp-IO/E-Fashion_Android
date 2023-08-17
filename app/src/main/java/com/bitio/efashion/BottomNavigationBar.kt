@@ -1,6 +1,7 @@
 package com.bitio.efashion
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -30,6 +34,7 @@ import com.bitio.ui.bottom_nav_rotue.HomeRouteScreens
 import com.bitio.ui.order_status.OrderStatusViewModel
 import com.bitio.ui.product.favorite.FavoriteViewModel
 import com.bitio.ui.profile.ProfileViewModel
+import kotlin.math.log
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -40,15 +45,16 @@ fun BottomNavigationBar(
     orderStatusViewModel: OrderStatusViewModel
 ) {
     val navController = rememberNavController()
+    var isNavBottomVisible by remember {
+        mutableStateOf(false)
+    }
+
+    isNavBottomVisible = authenticationViewModel.checkIfLogin.value
+
+
     Scaffold(
         bottomBar = {
-            val visibility = currentRoute(navController) in listOf(
-                HomeRouteScreens.Home.route,
-                HomeRouteScreens.Cart.route,
-                HomeRouteScreens.Favorite.route,
-                HomeRouteScreens.Profile.route,
-            )
-            BottomBar(navController = navController,visibility = visibility)
+            BottomBar(navController = navController, visibility = isNavBottomVisible)
         },
     ) {
         AppNavGraph(
@@ -63,12 +69,6 @@ fun BottomNavigationBar(
 
 
 @Composable
-fun currentRoute(navController: NavHostController): String? {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    return navBackStackEntry?.destination?.route
-}
-
-@Composable
 fun BottomBar(navController: NavHostController, visibility: Boolean) {
 
     val screens = listOf(
@@ -80,7 +80,7 @@ fun BottomBar(navController: NavHostController, visibility: Boolean) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    if (true){
+    if (visibility) {
         Surface(
             modifier = Modifier
                 .padding(16.dp)

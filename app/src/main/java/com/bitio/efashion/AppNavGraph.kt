@@ -1,6 +1,7 @@
 package com.bitio.efashion
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.bitio.ui.authentication.AuthenticationViewModel
@@ -20,11 +21,11 @@ fun AppNavGraph(
     favoriteViewModel: FavoriteViewModel,
     profileViewModel: ProfileViewModel,
     authenticationViewModel: AuthenticationViewModel,
-    orderStatusViewModel: OrderStatusViewModel
+    orderStatusViewModel: OrderStatusViewModel,
 ) {
 
-    val isLogin = true
-    val startDestination = if (isLogin) HomeRouteScreens.Home.route else "auth"
+    val startDestination =
+        if (authenticationViewModel.checkIfLogin.value) HomeRouteScreens.Home.route else "auth"
 
     NavHost(navController = navController, startDestination = startDestination) {
 
@@ -33,7 +34,7 @@ fun AppNavGraph(
         cartRoute(navController)
         favoriteRoute(navController, favoriteViewModel)
 
-        profileGraph(navController, profileViewModel,orderStatusViewModel)
+        profileGraph(navController, profileViewModel, orderStatusViewModel)
 
         authGraph(
             navController = navController,

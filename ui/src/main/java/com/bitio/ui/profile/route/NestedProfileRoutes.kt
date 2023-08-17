@@ -1,6 +1,5 @@
 package com.bitio.ui.profile.route
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -9,17 +8,13 @@ import com.bitio.ui.order_status.OrderStatusScreen
 import com.bitio.ui.order_status.OrderStatusViewModel
 import com.bitio.ui.profile.chat.ChatScreen
 import com.bitio.ui.profile.notifications.NotificationsScreen
-import com.bitio.ui.profile.route.Routes.CHAT_SUPPORT_ROUTE
-import com.bitio.ui.profile.route.Routes.LOCATION_ROUTE
-import com.bitio.ui.profile.route.Routes.NOTIFICATIONS_ROUTE
-import com.bitio.ui.profile.route.Routes.ORDER_STATUS_ROUTE
 
 internal fun NavController.navigateToLocationScreen() {
-    navigate(LOCATION_ROUTE)
+    navigate(ProfileRouteScreens.Location.route)
 }
 
 internal fun NavGraphBuilder.locationRoute(navController: NavController) {
-    composable(LOCATION_ROUTE) {
+    composable(ProfileRouteScreens.Location.route) {
         LocationScreen(
             navController = navController
         )
@@ -28,14 +23,14 @@ internal fun NavGraphBuilder.locationRoute(navController: NavController) {
 
 /*--------------------  Order Status Route  --------------------*/
 internal fun NavController.navigateToOrderStatusScreen() {
-    navigate(ORDER_STATUS_ROUTE)
+    navigate(ProfileRouteScreens.OrderStatus.route)
 }
 
 internal fun NavGraphBuilder.orderStatusRoute(
     navController: NavController,
     orderStatusViewModel: OrderStatusViewModel
 ) {
-    composable(ORDER_STATUS_ROUTE) {
+    composable(ProfileRouteScreens.OrderStatus.route) {
         OrderStatusScreen(
             orderStatusViewModel = orderStatusViewModel,
             navController = navController
@@ -45,11 +40,11 @@ internal fun NavGraphBuilder.orderStatusRoute(
 
 /*--------------------  Chat Support Route  --------------------*/
 internal fun NavController.navigateToChatSupportScreen() {
-    navigate(CHAT_SUPPORT_ROUTE)
+    navigate(ProfileRouteScreens.ChatSupport.route)
 }
 
 internal fun NavGraphBuilder.chatSupportRoute(navController: NavController) {
-    composable(CHAT_SUPPORT_ROUTE) {
+    composable(ProfileRouteScreens.ChatSupport.route) {
         ChatScreen(
             navController = navController
         )
@@ -59,22 +54,13 @@ internal fun NavGraphBuilder.chatSupportRoute(navController: NavController) {
 
 /*--------------------  Notifications Route  --------------------*/
 internal fun NavController.navigateToNotificationsScreen() {
-    navigate(NOTIFICATIONS_ROUTE)
+    navigate(ProfileRouteScreens.Notifications.route)
 }
 
 internal fun NavGraphBuilder.notificationsRoute(navController: NavController) {
-    composable(NOTIFICATIONS_ROUTE) {
+    composable(ProfileRouteScreens.Notifications.route) {
         NotificationsScreen(
             navController = navController
         )
     }
-}
-
-
-private object Routes {
-    const val ORDER_STATUS_ROUTE = "order_status_route"
-    const val LOCATION_ROUTE = "location_route"
-    const val CHAT_SUPPORT_ROUTE = "chat_support_route"
-    const val NOTIFICATIONS_ROUTE = "notifications_route"
-
 }

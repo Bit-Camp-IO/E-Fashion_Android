@@ -80,7 +80,7 @@ fun BottomBar(navController: NavHostController, visibility: Boolean) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    if (visibility){
+    if (true){
         Surface(
             modifier = Modifier
                 .padding(16.dp)

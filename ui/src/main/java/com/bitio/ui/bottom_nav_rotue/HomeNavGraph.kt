@@ -7,8 +7,8 @@ import androidx.navigation.navigation
 import com.bitio.ui.product.home.HomeScreen
 
 fun NavGraphBuilder.homeGraph(navController: NavController) {
-    navigation(startDestination = HomeRouteScreens.Home.route, route = "home") {
-        composable(HomeRouteScreens.Home.route) {
+    navigation(startDestination = "home", route = HomeRouteScreens.Home.route) {
+        composable("home") {
             HomeScreen(
                 navController = navController
             )

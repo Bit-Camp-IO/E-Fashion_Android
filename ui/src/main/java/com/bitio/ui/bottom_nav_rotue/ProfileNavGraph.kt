@@ -1,6 +1,5 @@
 package com.bitio.ui.bottom_nav_rotue
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -19,8 +18,8 @@ fun NavGraphBuilder.profileGraph(
     profileViewModel: ProfileViewModel,
     orderStatusViewModel: OrderStatusViewModel
 ) {
-    navigation(startDestination = HomeRouteScreens.Profile.route, route = "profile") {
-        composable(HomeRouteScreens.Profile.route) {
+    navigation(startDestination = "profile", route = HomeRouteScreens.Profile.route) {
+        composable("profile") {
             ProfileScreen(
                 navController = navController,
                 profileViewModel = profileViewModel

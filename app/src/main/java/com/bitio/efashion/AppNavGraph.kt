@@ -24,7 +24,7 @@ fun AppNavGraph(
 ) {
 
     val isLogin = true
-    val startDestination = if (isLogin) "home" else "auth"
+    val startDestination = if (isLogin) HomeRouteScreens.Home.route else "auth"
 
     NavHost(navController = navController, startDestination = startDestination) {
 

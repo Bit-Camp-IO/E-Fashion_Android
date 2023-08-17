@@ -14,5 +14,5 @@ inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(navControll
     val parentEntry = remember(this) {
         navController.getBackStackEntry(navGraphRoute)
     }
-    return viewModel(parentEntry)
+    return hiltViewModel(parentEntry)
 }

@@ -14,20 +14,17 @@ import com.bitio.ui.shared.AsyncDescribedImage
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ImagesPager(modifier: Modifier = Modifier, images: List<String>) {
-    HorizontalPager(
-        modifier = modifier
-            .fillMaxWidth()
-            .aspectRatio(0.75f),
-        pageCount = images.size,
-        pageSize = PageSize.Fill
-    ) {
-        AsyncDescribedImage(
-            modifier = Modifier.fillMaxSize(),
-            imageLink = images[it],
-            contentScale = ContentScale.Crop
-        )
-
-
-    }
+//    HorizontalPager(
+//        modifier = modifier
+//            .fillMaxWidth()
+//            .aspectRatio(0.75f),
+//        pageCount = images.size,
+//        pageSize = PageSize.Fill
+//    ) {
+//        AsyncDescribedImage(
+//            modifier = Modifier.fillMaxSize(),
+//            imageLink = images[it],
+//            contentScale = ContentScale.Crop
+//        )}
 
 }

@@ -8,12 +8,17 @@ import com.bitio.ui.authentication.ForgotPasswordScreen
 import com.bitio.ui.shared.sharedViewModel
 
 internal fun NavController.navigateToForgotPasswordScreen(){
-    navigate(AuthRouterScreens.ForgotPassword.route)
+    navigate(AuthRouterScreens.ForgotPassword.route){
+        launchSingleTop = true
+    }
 }
 
-internal fun NavGraphBuilder.forgotPasswordRoute(navController: NavController){
+internal fun NavGraphBuilder.forgotPasswordRoute(
+    navController: NavController,
+    authenticationViewModel: AuthenticationViewModel
+){
     composable(AuthRouterScreens.ForgotPassword.route) {
-        val viewModel = it.sharedViewModel<AuthenticationViewModel>(navController = navController)
+//        val viewModel = it.sharedViewModel<AuthenticationViewModel>(navController = navController)
         ForgotPasswordScreen(navController = navController)
     }
 }

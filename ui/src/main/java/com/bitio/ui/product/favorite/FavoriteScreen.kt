@@ -31,8 +31,8 @@ import com.bitio.ui.product.productsList.smallCards.ProductParallelogramGrid
 
 @Composable
 fun FavoriteScreen(
-    viewModel: FavoriteViewModel,
-    navController: NavController
+    viewModel: FavoriteViewModel ,
+    navController: NavController,
 ) {
     val state by viewModel.favoriteUIState.collectAsState()
     FavoriteContent(

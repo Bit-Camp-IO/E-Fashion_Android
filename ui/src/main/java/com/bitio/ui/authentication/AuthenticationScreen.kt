@@ -27,6 +27,7 @@ import com.bitio.ui.R
 import com.bitio.ui.authentication.route.navigateToForgotPasswordScreen
 import com.bitio.ui.authentication.composable.CustomLogin
 import com.bitio.ui.authentication.composable.CustomSignUp
+import com.bitio.ui.bottom_nav_rotue.navigateToHomeScreen
 import com.bitio.utils.profileShape
 
 
@@ -37,15 +38,20 @@ fun AuthenticationScreen(
 ) {
     Box(
         modifier = Modifier
-            .fillMaxSize(), contentAlignment = Alignment.TopCenter
+            .fillMaxSize(),
+        contentAlignment = Alignment.TopCenter
     ) {
-        AuthenticationContent(onClickForgetPassword = navController::navigateToForgotPasswordScreen)
+        AuthenticationContent(
+            onClickForgetPassword = navController::navigateToForgotPasswordScreen,
+            onClickLoginButton = navController::navigateToHomeScreen
+        )
     }
 }
 
 @Composable
 private fun AuthenticationContent(
-    onClickForgetPassword: () -> Unit
+    onClickForgetPassword: () -> Unit,
+    onClickLoginButton: () -> Unit
 ) {
 
     val configuration = LocalConfiguration.current
@@ -97,7 +103,7 @@ private fun AuthenticationContent(
                 CustomLogin(
                     modifier = Modifier.offset(x = offsetXOfLogin),
                     onClickLoginButton = { username, password ->
-                        println("User info: $username $password")
+                        onClickLoginButton()
                     },
                     onCheckedChange = {},
                     onClickForgetPassword = onClickForgetPassword

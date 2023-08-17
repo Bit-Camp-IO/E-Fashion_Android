@@ -42,7 +42,7 @@ import com.bitio.utils.profileShape
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileViewModel = hiltViewModel(),
+    viewModel: ProfileViewModel,
     isDarkTheme: Boolean = false,
     onSwitchTheme: () -> Unit = {},
     navController: NavController
@@ -73,8 +73,8 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
             .fillMaxSize(), contentAlignment = Alignment.TopCenter
     ) {
         CustomBlurProfileImage(
-            image = state.profile.image,
-            contentDescription = state.profile.username
+            image = "",
+            contentDescription = "state.profile.username"
         )
 
         Column(

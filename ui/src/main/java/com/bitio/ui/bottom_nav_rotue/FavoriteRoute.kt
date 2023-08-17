@@ -5,20 +5,18 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.bitio.ui.product.favorite.FavoriteScreen
 import com.bitio.ui.product.favorite.FavoriteViewModel
-import com.bitio.ui.shared.sharedViewModel
 
 
 fun NavController.navigateToFavoriteScreen() {
     navigate(HomeRouteScreens.Favorite.route)
 }
 
-fun NavGraphBuilder.favoriteRoute(navController: NavController) {
+fun NavGraphBuilder.favoriteRoute(
+    navController: NavController,
+    favoriteViewModel: FavoriteViewModel
+) {
     composable(HomeRouteScreens.Favorite.route) {
-        val viewModel = it.sharedViewModel<FavoriteViewModel>(navController = navController)
-        FavoriteScreen(
-            viewModel = viewModel,
-            navController = navController
-        )
+        FavoriteScreen(navController = navController, viewModel = favoriteViewModel)
     }
 }
 

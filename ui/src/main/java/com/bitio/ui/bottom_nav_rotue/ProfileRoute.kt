@@ -5,17 +5,18 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.bitio.ui.profile.ProfileScreen
 import com.bitio.ui.profile.ProfileViewModel
-import com.bitio.ui.shared.sharedViewModel
 
 
 fun NavController.navigateToProfileScreen() {
     navigate(HomeRouteScreens.Profile.route)
 }
 
-fun NavGraphBuilder.profileRoute(navController: NavController) {
+fun NavGraphBuilder.profileRoute(navController: NavController, profileViewModel: ProfileViewModel) {
     composable(HomeRouteScreens.Profile.route) {
-        val viewModel = it.sharedViewModel<ProfileViewModel>(navController = navController)
-        ProfileScreen(navController = navController)
+        ProfileScreen(
+            navController = navController,
+            viewModel = profileViewModel
+        )
     }
 }
 

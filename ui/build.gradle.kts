@@ -70,11 +70,12 @@ dependencies {
 
     // Navigation
     api("androidx.hilt:hilt-navigation-compose:1.0.0")
-    api("androidx.navigation:navigation-compose:2.6.0")
+    api("androidx.navigation:navigation-compose:2.7.0")
 
     // Dagger-Hilt
     api("com.google.dagger:hilt-android:2.46.1")
     kapt("com.google.dagger:hilt-compiler:2.44")
+
 
     // Google maps
     api("com.google.maps.android:maps-compose:1.0.0")

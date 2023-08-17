@@ -11,11 +11,14 @@ internal fun NavController.navigateToAuthScreen() {
     navigate(AuthRouterScreens.Login.route)
 }
 
-internal fun NavGraphBuilder.authRoute(navController: NavController) {
-    composable(AuthRouterScreens.ForgotPassword.route) {
-        val viewModel = it.sharedViewModel<AuthenticationViewModel>(navController = navController)
+internal fun NavGraphBuilder.authRoute(
+    navController: NavController,
+    authenticationViewModel: AuthenticationViewModel
+) {
+    composable(AuthRouterScreens.Login.route) {
+//        val viewModel = it.sharedViewModel<AuthenticationViewModel>(navController = navController)
         AuthenticationScreen(
-            viewModel = viewModel,
+            viewModel = authenticationViewModel,
             navController = navController
         )
     }

@@ -6,7 +6,9 @@ import androidx.navigation.compose.composable
 import com.bitio.ui.product.home.HomeScreen
 
 fun NavController.navigateToHomeScreen() {
-    navigate(HomeRouteScreens.Home.route)
+    navigate(HomeRouteScreens.Home.route) {
+        launchSingleTop = true
+    }
 }
 
 fun NavGraphBuilder.homeRoute(navController: NavController) {

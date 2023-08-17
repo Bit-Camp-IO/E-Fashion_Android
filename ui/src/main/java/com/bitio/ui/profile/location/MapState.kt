@@ -1,4 +1,4 @@
-package com.bitio.ui.location
+package com.bitio.ui.profile.location
 
 import com.google.maps.android.compose.MapProperties
 

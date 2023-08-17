@@ -28,12 +28,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.ui.R
 import com.bitio.ui.profile.composable.SettingApp
 import com.bitio.ui.profile.composable.UserProfile
+import com.bitio.ui.profile.route.navigateToChatSupportScreen
+import com.bitio.ui.profile.route.navigateToLocationScreen
+import com.bitio.ui.profile.route.navigateToNotificationsScreen
+import com.bitio.ui.profile.route.navigateToOrderStatusScreen
 import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
 import com.bitio.ui.theme.Porcelain
@@ -42,17 +45,33 @@ import com.bitio.utils.profileShape
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileViewModel,
+    profileViewModel: ProfileViewModel,
     isDarkTheme: Boolean = false,
     onSwitchTheme: () -> Unit = {},
     navController: NavController
 ) {
-    val state by viewModel.profileUiState.collectAsState()
-    ProfileContent(state, isDarkTheme, onSwitchTheme)
+    val state by profileViewModel.profileUiState.collectAsState()
+    ProfileContent(
+        state,
+        isDarkTheme,
+        onSwitchTheme,
+        onClickLocationScreen = navController::navigateToLocationScreen,
+        onClickOrderStatusScreen = navController::navigateToOrderStatusScreen,
+        onClickChatSupportScreen = navController::navigateToChatSupportScreen,
+        onClickNotificationsScreen = navController::navigateToNotificationsScreen,
+    )
 }
 
 @Composable
-private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitchTheme: () -> Unit) {
+private fun ProfileContent(
+    state: ProfileUiState,
+    isDarkTheme: Boolean,
+    onSwitchTheme: () -> Unit,
+    onClickLocationScreen: () -> Unit,
+    onClickOrderStatusScreen: () -> Unit,
+    onClickChatSupportScreen: () -> Unit,
+    onClickNotificationsScreen: () -> Unit,
+) {
 
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
@@ -127,11 +146,13 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
                 SettingApp(
                     isDarkTheme = isDarkTheme,
                     onSwitchTheme = onSwitchTheme,
-                    modifier = Modifier
-                        .offset(x = offsetXOfProfileSettings)
-                ) {
-                    isUserProfileVisible = true
-                }
+                    modifier = Modifier.offset(x = offsetXOfProfileSettings),
+                    onClickMyProfile = { isUserProfileVisible = true },
+                    onClickLocationScreen = onClickLocationScreen,
+                    onClickOrderStatusScreen = onClickOrderStatusScreen,
+                    onClickChatSupportScreen = onClickChatSupportScreen,
+                    onClickNotificationsScreen = onClickNotificationsScreen,
+                )
 
                 UserProfile(
                     onClickBack = {

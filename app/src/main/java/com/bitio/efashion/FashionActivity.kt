@@ -61,6 +61,7 @@ class FashionActivity : ComponentActivity() {
                     favoriteViewModel = hiltViewModel(),
                     profileViewModel = hiltViewModel(),
                     authenticationViewModel = hiltViewModel(),
+                    orderStatusViewModel = hiltViewModel(),
                 )
             }
         }

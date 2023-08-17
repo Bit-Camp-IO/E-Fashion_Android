@@ -27,6 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bitio.ui.authentication.AuthenticationViewModel
 import com.bitio.ui.bottom_nav_rotue.HomeRouteScreens
+import com.bitio.ui.order_status.OrderStatusViewModel
 import com.bitio.ui.product.favorite.FavoriteViewModel
 import com.bitio.ui.profile.ProfileViewModel
 
@@ -36,6 +37,7 @@ fun BottomNavigationBar(
     favoriteViewModel: FavoriteViewModel,
     profileViewModel: ProfileViewModel,
     authenticationViewModel: AuthenticationViewModel,
+    orderStatusViewModel: OrderStatusViewModel
 ) {
     val navController = rememberNavController()
     Scaffold(
@@ -54,6 +56,7 @@ fun BottomNavigationBar(
             favoriteViewModel = favoriteViewModel,
             profileViewModel = profileViewModel,
             authenticationViewModel = authenticationViewModel,
+            orderStatusViewModel = orderStatusViewModel
         )
     }
 }

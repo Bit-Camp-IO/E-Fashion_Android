@@ -46,6 +46,10 @@ fun SettingApp(
     modifier: Modifier = Modifier,
     onSwitchTheme: () -> Unit,
     onClickMyProfile: () -> Unit,
+    onClickLocationScreen: () -> Unit,
+    onClickOrderStatusScreen: () -> Unit,
+    onClickChatSupportScreen: () -> Unit,
+    onClickNotificationsScreen: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -86,18 +90,23 @@ fun SettingApp(
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.location),
             text = "Location",
+            modifier = Modifier.clickable(onClick = onClickLocationScreen)
+
         )
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.bag),
             text = "Order status",
+            modifier = Modifier.clickable(onClick = onClickOrderStatusScreen)
         )
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.messages),
             text = "Chat Support",
+            modifier = Modifier.clickable(onClick = onClickChatSupportScreen)
         )
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.notification),
             text = "Notifications",
+            modifier = Modifier.clickable(onClick = onClickNotificationsScreen)
         )
 
         Row(

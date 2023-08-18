@@ -1,4 +1,4 @@
-package com.bitio.ui.order_status
+package com.bitio.ui.profile.order_status
 
 data class OrderStatusUiState(
     val isLoading: Boolean = false,

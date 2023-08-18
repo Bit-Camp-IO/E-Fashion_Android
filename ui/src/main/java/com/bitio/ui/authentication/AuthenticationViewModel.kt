@@ -8,6 +8,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor() : ViewModel() {
 
-    var checkIfLogin = mutableStateOf(false)
+    var checkIfLogin = mutableStateOf(true)
 
 }

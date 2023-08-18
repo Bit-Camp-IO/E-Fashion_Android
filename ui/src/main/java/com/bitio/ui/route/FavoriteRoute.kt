@@ -1,4 +1,4 @@
-package com.bitio.ui.bottom_nav_rotue
+package com.bitio.ui.route
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -8,15 +8,18 @@ import com.bitio.ui.product.favorite.FavoriteViewModel
 
 
 fun NavController.navigateToFavoriteScreen() {
-    navigate(HomeRouteScreens.Favorite.route)
+    navigate(RootRouteScreens.Favorite.route)
 }
 
 fun NavGraphBuilder.favoriteRoute(
     navController: NavController,
-    favoriteViewModel: FavoriteViewModel
+    favoriteViewModel: FavoriteViewModel,
 ) {
-    composable(HomeRouteScreens.Favorite.route) {
-        FavoriteScreen(navController = navController, viewModel = favoriteViewModel)
+    composable(RootRouteScreens.Favorite.route) {
+        FavoriteScreen(
+            navController = navController,
+            viewModel = favoriteViewModel,
+        )
     }
 }
 

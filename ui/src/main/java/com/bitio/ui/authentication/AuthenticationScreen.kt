@@ -27,9 +27,8 @@ import com.bitio.ui.R
 import com.bitio.ui.authentication.route.navigateToForgotPasswordScreen
 import com.bitio.ui.authentication.composable.CustomLogin
 import com.bitio.ui.authentication.composable.CustomSignUp
-import com.bitio.ui.bottom_nav_rotue.HomeRouteScreens
+import com.bitio.ui.route.RootRouteScreens
 import com.bitio.utils.profileShape
-import kotlinx.coroutines.flow.update
 
 
 @Composable
@@ -46,7 +45,7 @@ fun AuthenticationScreen(
             onClickForgetPassword = navController::navigateToForgotPasswordScreen,
             onClickLoginButton = {
                 viewModel.checkIfLogin.value = true
-                navController.navigate(route = HomeRouteScreens.Home.route)
+                navController.navigate(route = RootRouteScreens.Home.route)
             }
         )
     }

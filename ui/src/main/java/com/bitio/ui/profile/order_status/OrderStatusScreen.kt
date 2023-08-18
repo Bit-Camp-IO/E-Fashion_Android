@@ -1,4 +1,4 @@
-package com.bitio.ui.order_status
+package com.bitio.ui.profile.order_status
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image

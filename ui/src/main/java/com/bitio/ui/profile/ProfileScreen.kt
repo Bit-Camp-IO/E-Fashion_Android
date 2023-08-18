@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -31,12 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.ui.R
+import com.bitio.ui.profile.chat.navigateToChatSupportScreen
 import com.bitio.ui.profile.composable.SettingApp
 import com.bitio.ui.profile.composable.UserProfile
-import com.bitio.ui.profile.route.navigateToChatSupportScreen
-import com.bitio.ui.profile.route.navigateToLocationScreen
-import com.bitio.ui.profile.route.navigateToNotificationsScreen
-import com.bitio.ui.profile.route.navigateToOrderStatusScreen
+import com.bitio.ui.profile.location.navigateToLocationScreen
+import com.bitio.ui.profile.notifications.navigateToNotificationsScreen
+import com.bitio.ui.profile.order_status.navigateToOrderStatusScreen
 import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
 import com.bitio.ui.theme.Porcelain
@@ -48,7 +49,7 @@ fun ProfileScreen(
     profileViewModel: ProfileViewModel,
     isDarkTheme: Boolean = false,
     onSwitchTheme: () -> Unit = {},
-    navController: NavController
+    navController: NavController,
 ) {
     val state by profileViewModel.profileUiState.collectAsState()
     ProfileContent(
@@ -89,7 +90,8 @@ private fun ProfileContent(
 
     Box(
         modifier = Modifier
-            .fillMaxSize(), contentAlignment = Alignment.TopCenter
+            .fillMaxSize(),
+        contentAlignment = Alignment.TopCenter
     ) {
         CustomBlurProfileImage(
             image = "",

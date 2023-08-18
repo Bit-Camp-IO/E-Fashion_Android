@@ -1,4 +1,4 @@
-package com.bitio.ui.order_status
+package com.bitio.ui.profile.order_status
 
 import androidx.lifecycle.ViewModel
 import com.bitio.ui.R

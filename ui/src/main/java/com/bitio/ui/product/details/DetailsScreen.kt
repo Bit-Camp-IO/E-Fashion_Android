@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.bitio.productscomponent.domain.entities.products.ProductDetails
 import com.bitio.productscomponent.domain.entities.selectable.Option
 import com.bitio.productscomponent.domain.entities.selectable.SelectableProperty
@@ -15,7 +16,7 @@ import com.bitio.ui.product.details.composables.DetailsCard
 import com.bitio.ui.product.details.composables.ImagesPager
 
 @Composable
-fun DetailsScreen() {
+fun DetailsScreen(navController: NavController) {
     val productDetails = productDetails
     val scrollState = rememberScrollState()
 

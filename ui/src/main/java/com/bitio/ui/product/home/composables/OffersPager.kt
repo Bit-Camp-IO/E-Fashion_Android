@@ -4,6 +4,7 @@ package com.bitio.ui.product.home.composables
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,7 +48,8 @@ fun OffersPager(
     productsWithOffer: List<ProductWithOffer>,
     onSeeAllClicked: () -> Unit,
     onAddToCartClicked: (Int) -> Unit,
-    onAddToFavoriteClicked: (Int) -> Unit
+    onAddToFavoriteClicked: (Int) -> Unit,
+    onClickProduct: (Int) -> Unit
 
 ) {
     Column {
@@ -70,7 +72,8 @@ fun OffersPager(
                     product = productsWithOffer[it],
                     isInFocusMood = getFocusCardIndex(listState) == it,
                     onAddToCartClicked = onAddToCartClicked,
-                    onAddToFavoriteClicked = onAddToFavoriteClicked
+                    onAddToFavoriteClicked = onAddToFavoriteClicked,
+                    onClickProduct = onClickProduct
                 )
             }
         }
@@ -110,7 +113,8 @@ fun OfferCard(
     product: ProductWithOffer,
     isInFocusMood: Boolean,
     onAddToCartClicked: (Int) -> Unit,
-    onAddToFavoriteClicked: (Int) -> Unit
+    onAddToFavoriteClicked: (Int) -> Unit,
+    onClickProduct: (Int) -> Unit
 ) {
     val width = remember(isInFocusMood) { (if (isInFocusMood) 250 else 220).dp }
     val height = remember(isInFocusMood) { (if (isInFocusMood) 180 else 160).dp }
@@ -118,7 +122,8 @@ fun OfferCard(
     Box(
         modifier = Modifier
             .size(width, height)
-            .clip(RoundedCornerShape(16.dp)),
+            .clip(RoundedCornerShape(16.dp))
+            .clickable { onClickProduct(product.id) },
         contentAlignment = Alignment.BottomEnd
     ) {
 

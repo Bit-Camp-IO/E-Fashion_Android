@@ -1,4 +1,4 @@
-package com.bitio.ui.bottom_nav_rotue
+package com.bitio.ui.route
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -7,13 +7,13 @@ import com.bitio.ui.product.cart.CartScreen
 
 
 fun NavController.navigateToCartScreen() {
-    navigate(HomeRouteScreens.Cart.route)
+    navigate(RootRouteScreens.Cart.route)
 }
 
 fun NavGraphBuilder.cartRoute(navController: NavController) {
-    composable(HomeRouteScreens.Cart.route) {
+    composable(RootRouteScreens.Cart.route) {
         CartScreen(
-            navController = navController
+            navController = navController,
         )
     }
 }

@@ -1,7 +1,6 @@
 package com.bitio.efashion
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -30,11 +29,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bitio.ui.authentication.AuthenticationViewModel
-import com.bitio.ui.bottom_nav_rotue.HomeRouteScreens
-import com.bitio.ui.order_status.OrderStatusViewModel
+import com.bitio.ui.route.RootRouteScreens
+import com.bitio.ui.profile.order_status.OrderStatusViewModel
 import com.bitio.ui.product.favorite.FavoriteViewModel
 import com.bitio.ui.profile.ProfileViewModel
-import kotlin.math.log
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -48,16 +46,16 @@ fun BottomNavigationBar(
     var isNavBottomVisible by remember {
         mutableStateOf(false)
     }
-
     isNavBottomVisible = authenticationViewModel.checkIfLogin.value
-
 
     Scaffold(
         bottomBar = {
             BottomBar(navController = navController, visibility = isNavBottomVisible)
         },
-    ) {
+        containerColor = Color.Transparent
+    ) { innerPadding ->
         AppNavGraph(
+            innerPadding,
             navController = navController,
             favoriteViewModel = favoriteViewModel,
             profileViewModel = profileViewModel,
@@ -72,11 +70,12 @@ fun BottomNavigationBar(
 fun BottomBar(navController: NavHostController, visibility: Boolean) {
 
     val screens = listOf(
-        HomeRouteScreens.Home,
-        HomeRouteScreens.Cart,
-        HomeRouteScreens.Favorite,
-        HomeRouteScreens.Profile,
+        RootRouteScreens.Home,
+        RootRouteScreens.Cart,
+        RootRouteScreens.Favorite,
+        RootRouteScreens.Profile,
     )
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
@@ -85,11 +84,10 @@ fun BottomBar(navController: NavHostController, visibility: Boolean) {
             modifier = Modifier
                 .padding(16.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             NavigationBar(
                 containerColor = MaterialTheme.colorScheme.onBackground,
-                contentColor = MaterialTheme.colorScheme.primary,
             ) {
                 screens.forEach {
                     BottomItem(
@@ -99,13 +97,14 @@ fun BottomBar(navController: NavHostController, visibility: Boolean) {
                     )
                 }
             }
+
         }
     }
 }
 
 @Composable
 fun RowScope.BottomItem(
-    screen: HomeRouteScreens,
+    screen: RootRouteScreens,
     navController: NavHostController,
     currentNavDestination: NavDestination?
 ) {
@@ -116,7 +115,7 @@ fun RowScope.BottomItem(
         colors = NavigationBarItemDefaults.colors(
             selectedIconColor = MaterialTheme.colorScheme.secondary,
             unselectedIconColor = Color.White,
-            indicatorColor = MaterialTheme.colorScheme.onBackground,
+            indicatorColor =  MaterialTheme.colorScheme.onBackground,
         ),
         alwaysShowLabel = false,
         icon = {

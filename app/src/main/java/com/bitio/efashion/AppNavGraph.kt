@@ -1,22 +1,25 @@
 package com.bitio.efashion
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.bitio.ui.authentication.AuthenticationViewModel
 import com.bitio.ui.authentication.route.authGraph
-import com.bitio.ui.bottom_nav_rotue.HomeRouteScreens
-import com.bitio.ui.bottom_nav_rotue.cartRoute
-import com.bitio.ui.bottom_nav_rotue.favoriteRoute
-import com.bitio.ui.bottom_nav_rotue.homeGraph
-import com.bitio.ui.bottom_nav_rotue.profileGraph
-import com.bitio.ui.order_status.OrderStatusViewModel
+import com.bitio.ui.route.RootRouteScreens
+import com.bitio.ui.route.cartRoute
+import com.bitio.ui.route.favoriteRoute
+import com.bitio.ui.route.homeGraph
+import com.bitio.ui.route.profileGraph
+import com.bitio.ui.profile.order_status.OrderStatusViewModel
 import com.bitio.ui.product.favorite.FavoriteViewModel
 import com.bitio.ui.profile.ProfileViewModel
 
 @Composable
 fun AppNavGraph(
+    innerPadding: PaddingValues,
     navController: NavHostController,
     favoriteViewModel: FavoriteViewModel,
     profileViewModel: ProfileViewModel,
@@ -25,9 +28,13 @@ fun AppNavGraph(
 ) {
 
     val startDestination =
-        if (authenticationViewModel.checkIfLogin.value) HomeRouteScreens.Home.route else "auth"
+        if (authenticationViewModel.checkIfLogin.value) RootRouteScreens.Home.route else "auth"
 
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        modifier = Modifier.padding(innerPadding)
+    ) {
 
         homeGraph(navController)
 

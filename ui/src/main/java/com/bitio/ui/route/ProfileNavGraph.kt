@@ -1,28 +1,28 @@
-package com.bitio.ui.bottom_nav_rotue
+package com.bitio.ui.route
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.bitio.ui.order_status.OrderStatusViewModel
+import com.bitio.ui.profile.order_status.OrderStatusViewModel
 import com.bitio.ui.profile.ProfileScreen
 import com.bitio.ui.profile.ProfileViewModel
-import com.bitio.ui.profile.route.chatSupportRoute
-import com.bitio.ui.profile.route.locationRoute
-import com.bitio.ui.profile.route.notificationsRoute
-import com.bitio.ui.profile.route.orderStatusRoute
+import com.bitio.ui.profile.chat.chatSupportRoute
+import com.bitio.ui.profile.location.locationRoute
+import com.bitio.ui.profile.notifications.notificationsRoute
+import com.bitio.ui.profile.order_status.orderStatusRoute
 
 
 fun NavGraphBuilder.profileGraph(
     navController: NavController,
     profileViewModel: ProfileViewModel,
-    orderStatusViewModel: OrderStatusViewModel
+    orderStatusViewModel: OrderStatusViewModel,
 ) {
-    navigation(startDestination = "profile", route = HomeRouteScreens.Profile.route) {
+    navigation(startDestination = "profile", route = RootRouteScreens.Profile.route) {
         composable("profile") {
             ProfileScreen(
                 navController = navController,
-                profileViewModel = profileViewModel
+                profileViewModel = profileViewModel,
             )
         }
         locationRoute(navController = navController)

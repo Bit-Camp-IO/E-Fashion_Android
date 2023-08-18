@@ -22,18 +22,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.bitio.ui.R
 import com.bitio.ui.product.home.productWithOffer
 import com.bitio.ui.product.models.toUiProduct
 import com.bitio.ui.product.productsList.largeCards.ProductParallelogramColumn
 import com.bitio.ui.product.productsList.smallCards.ProductParallelogramGrid
-import com.bitio.ui.theme.textStyles.AppThemeTextStyles
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun FavoriteScreen(
-    viewModel: FavoriteViewModel = hiltViewModel()
-) {
+fun FavoriteScreen() {
+    val viewModel = getViewModel<FavoriteViewModel>()
     val state by viewModel.favoriteUIState.collectAsState()
     FavoriteContent(
         state,

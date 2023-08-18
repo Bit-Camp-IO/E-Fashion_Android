@@ -39,14 +39,15 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.bitio.ui.R
 import com.bitio.ui.shared.VerticalSpacer24Dp
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun OrderStatusScreen(
-    viewModel: OrderStatusViewModel = hiltViewModel()
+
 ) {
+    val viewModel = getViewModel<OrderStatusViewModel>()
     val state by viewModel.checkOrderString.collectAsState()
     OrderStatusContent(state)
 }

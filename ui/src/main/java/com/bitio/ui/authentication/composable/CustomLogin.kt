@@ -16,6 +16,7 @@ import androidx.compose.material3.CheckboxDefaults.colors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,13 +38,14 @@ import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 @Composable
 fun CustomLogin(
     modifier: Modifier = Modifier,
+    email: MutableState<String>,
+    password: MutableState<String>,
     onClickLoginButton: (String, String) -> Unit,
     onCheckedChange: (Boolean) -> Unit,
     onClickForgetPassword: () -> Unit,
     onClickSignUp: () -> Unit
 ) {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+
     var isShowPassword by remember { mutableStateOf(false) }
     val iconPassword =
         if (isShowPassword) painterResource(id = R.drawable.hide_eye) else painterResource(
@@ -64,21 +66,19 @@ fun CustomLogin(
         VerticalSpacer32Dp()
 
         CustomTextField(
-            value = username,
+            value = email.value,
             placeholder = "Username",
             leadingIcon = painterResource(id = R.drawable.profile),
-            onValueChange = {
-                username = it
-            },
+            onValueChange = { email.value = it },
         )
 
         CustomTextFieldPassword(
-            value = password,
+            value = password.value,
             leadingIcon = painterResource(id = R.drawable.password),
             trailingIcon = iconPassword,
             keyboardType = KeyboardType.Password,
             isShowPassword = isShowPassword,
-            onValueChange = { password = it }
+            onValueChange = { password.value = it }
         ) { isShowPassword = !isShowPassword }
 
         CustomCheckBox(
@@ -92,7 +92,7 @@ fun CustomLogin(
                 .padding(vertical = 32.dp, horizontal = 24.dp),
             title = "Log in"
         ) {
-            onClickLoginButton(username, password)
+            onClickLoginButton(email.value, password.value)
         }
 
         Row(

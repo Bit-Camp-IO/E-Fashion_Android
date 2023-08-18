@@ -15,17 +15,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
-import com.bitio.authcomponent.data.remote.AuthApi
-import com.bitio.authcomponent.data.remote.dto.request.LoginBody
-import com.bitio.productscomponent.domain.entities.products.CollectionGroup
-import com.bitio.ui.favorite.FavoriteScreen
+
+import com.bitio.ui.authentication.AuthenticationScreen
 import com.bitio.ui.theme.EFashionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+
 
 
 class FashionActivity : ComponentActivity() {
@@ -58,14 +53,8 @@ class FashionActivity : ComponentActivity() {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         askPermissions()
-        val api by inject<AuthApi>()
-        GlobalScope.launch(Dispatchers.IO) {
-            val x = api.login(LoginBody("kosomDahApplication@gmail.com", "Aa123456789"))
 
-            Log.d("Xxxx", x.toString())
-            val y = api.refreshAccessToken(x.data!!.refreshToken)
-            Log.d("Xxxx", y.toString())
-        }
+
         setContent {
             val isDarkTheme by remember {
                 mutableStateOf(true)
@@ -77,23 +66,10 @@ class FashionActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
 
-                    FavoriteScreen()
+                    AuthenticationScreen()
                 }
             }
         }
     }
-}
-
-val collection = object : CollectionGroup {
-    override val id: Int
-        get() = 1
-    override val name: String
-        get() = "Summer COLLECTION"
-    override val image: String
-        get() = "https://previews.123rf.com/images/f8studio/f8studio1707/f8studio170701400/82842066-young-girl-in-stylish-clothes-posing-in-the-city-street.jpg"
-    override val description: String
-        get() = "For Selected collection"
-    override val saleRatio: Float
-        get() = 0.4f
 }
 

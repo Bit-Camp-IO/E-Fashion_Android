@@ -12,7 +12,7 @@ import org.koin.dsl.module
 val presentationDiModule = module {
 
     includes(productUiDi)
-    viewModel { AuthenticationViewModel() }
+    viewModel { AuthenticationViewModel(get(), get(), get()) }
     viewModel { ChatViewModel() }
     viewModel { FavoriteViewModel() }
     viewModel { MapViewModel() }

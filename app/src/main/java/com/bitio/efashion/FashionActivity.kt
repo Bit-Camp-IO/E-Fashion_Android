@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import com.bitio.authcomponent.data.remote.AuthApi
 import com.bitio.authcomponent.data.remote.dto.request.LoginBody
 import com.bitio.productscomponent.domain.entities.products.CollectionGroup
+import com.bitio.ui.authentication.AuthenticationScreen
 import com.bitio.ui.favorite.FavoriteScreen
 import com.bitio.ui.theme.EFashionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -77,7 +78,7 @@ class FashionActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
 
-                    FavoriteScreen()
+                    AuthenticationScreen()
                 }
             }
         }

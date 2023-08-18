@@ -21,22 +21,22 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.ui.R
 import com.bitio.ui.authentication.composable.CustomLogin
 import com.bitio.ui.authentication.composable.CustomSignUp
 import com.bitio.utils.profileShape
+import org.koin.androidx.compose.getViewModel
 
 
 @Composable
-fun AuthenticationScreen(
-    viewModel: AuthenticationViewModel = hiltViewModel()
-) {
+fun AuthenticationScreen() {
+    val viewModel = getViewModel<AuthenticationViewModel>()
     Box(
         modifier = Modifier
             .fillMaxSize(), contentAlignment = Alignment.TopCenter
     ) {
+
         AuthenticationContent()
     }
 }

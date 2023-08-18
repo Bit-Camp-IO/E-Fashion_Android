@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package com.bitio.ui.favorite
 
@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bitio.ui.R
 import com.bitio.ui.product.home.productWithOffer
+import com.bitio.ui.product.models.toUiProduct
 import com.bitio.ui.product.productsList.largeCards.ProductParallelogramColumn
 import com.bitio.ui.product.productsList.smallCards.ProductParallelogramGrid
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
@@ -75,7 +76,7 @@ fun FavoriteContent(
             label = ""
         ) { targetIsGrid ->
             if (targetIsGrid) {
-                ProductParallelogramGrid(products = List(50) { productWithOffer })
+                ProductParallelogramGrid(products = List(50) { productWithOffer.toUiProduct() })
             } else {
                 ProductParallelogramColumn(products = List(50) { productWithOffer })
             }

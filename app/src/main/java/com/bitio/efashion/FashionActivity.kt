@@ -3,6 +3,7 @@ package com.bitio.efashion
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,33 +15,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
+import com.bitio.authcomponent.data.remote.AuthApi
+import com.bitio.authcomponent.data.remote.dto.request.LoginBody
 import com.bitio.productscomponent.domain.entities.products.CollectionGroup
 import com.bitio.ui.favorite.FavoriteScreen
-import com.bitio.ui.product.details.DetailsScreen
-import com.bitio.ui.product.home.productWithOffer
-import com.bitio.ui.product.productsList.largeCards.ProductParallelogramColumn
 import com.bitio.ui.theme.EFashionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
-@AndroidEntryPoint
+
 class FashionActivity : ComponentActivity() {
 
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
 
-            }
         }
+    }
 
     private fun askPermissions() = when (PackageManager.PERMISSION_GRANTED) {
         ContextCompat.checkSelfPermission(
-            this,
-            ACCESS_FINE_LOCATION
+            this, ACCESS_FINE_LOCATION
         ) -> {
             // TODO
         }
@@ -57,7 +58,14 @@ class FashionActivity : ComponentActivity() {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
         askPermissions()
+        val api by inject<AuthApi>()
+        GlobalScope.launch(Dispatchers.IO) {
+            val x = api.login(LoginBody("kosomDahApplication@gmail.com", "Aa123456789"))
 
+            Log.d("Xxxx", x.toString())
+            val y = api.refreshAccessToken(x.data!!.refreshToken)
+            Log.d("Xxxx", y.toString())
+        }
         setContent {
             val isDarkTheme by remember {
                 mutableStateOf(true)
@@ -66,8 +74,7 @@ class FashionActivity : ComponentActivity() {
                 darkTheme = isDarkTheme
             ) {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
 
                     FavoriteScreen()
@@ -83,8 +90,7 @@ val collection = object : CollectionGroup {
     override val name: String
         get() = "Summer COLLECTION"
     override val image: String
-        get() =
-            "https://previews.123rf.com/images/f8studio/f8studio1707/f8studio170701400/82842066-young-girl-in-stylish-clothes-posing-in-the-city-street.jpg"
+        get() = "https://previews.123rf.com/images/f8studio/f8studio1707/f8studio170701400/82842066-young-girl-in-stylish-clothes-posing-in-the-city-street.jpg"
     override val description: String
         get() = "For Selected collection"
     override val saleRatio: Float

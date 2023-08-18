@@ -3,8 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("kotlin-parcelize")
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+
+
 }
 
 
@@ -49,7 +49,8 @@ android {
 dependencies {
 
     //project
-    api(project(":productsComponent"))
+   // api(project(":productsComponent"))
+    api(project(":infrastructure"))
 
     api("androidx.core:core-ktx:1.10.1")
     api("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
@@ -60,21 +61,14 @@ dependencies {
     api("androidx.compose.ui:ui-tooling-preview")
     api("androidx.compose.material3:material3")
 
-    // Room
-    api("androidx.room:room-runtime:2.5.2")
+
     implementation("com.google.android.gms:play-services-location:21.0.1")
-    //noinspection KaptUsageInsteadOfKsp
-    kapt("androidx.room:room-compiler:2.5.2")
-    // Kotlin Extensions and Coroutines support for Room
-    api("androidx.room:room-ktx:2.5.2")
+
 
     // Navigation
     api("androidx.hilt:hilt-navigation-compose:1.0.0")
     api("androidx.navigation:navigation-compose:2.6.0")
 
-    // Dagger-Hilt
-    api("com.google.dagger:hilt-android:2.46.1")
-    kapt("com.google.dagger:hilt-compiler:2.44")
 
     // Google maps
     api("com.google.maps.android:maps-compose:1.0.0")
@@ -90,10 +84,12 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.4.0")
 
 
-    //glide
-    implementation("com.github.bumptech.glide:compose:1.0.0-alpha.1")
+
     //google fonts
     implementation("androidx.compose.ui:ui-text-google-fonts:1.4.3")
+    //
+    api ("io.insert-koin:koin-androidx-compose:3.4.6")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

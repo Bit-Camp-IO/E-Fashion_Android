@@ -37,7 +37,7 @@ fun BottomNavigationBar(navController: NavHostController, checkIfLogin: Boolean)
     var isNavBottomVisible by remember {
         mutableStateOf(false)
     }
-    isNavBottomVisible = checkIfLogin
+//    isNavBottomVisible = checkIfLogin
 
     Scaffold(
         bottomBar = {
@@ -45,7 +45,7 @@ fun BottomNavigationBar(navController: NavHostController, checkIfLogin: Boolean)
         },
         containerColor = Color.Transparent
     ) { innerPadding ->
-        AppNavGraph(innerPadding, navController, isNavBottomVisible)
+        AppNavGraph(innerPadding, navController, true)
     }
 }
 

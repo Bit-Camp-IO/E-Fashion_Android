@@ -22,7 +22,7 @@ fun AppNavGraph(
     checkIfLogin: Boolean
 ) {
 
-    val startDestination = if (checkIfLogin) RootRouteScreens.Home.route else "auth"
+    val startDestination = if (checkIfLogin) RootRouteScreens.Profile.route else "auth"
     NavHost(
         navController = navController,
         startDestination = startDestination,

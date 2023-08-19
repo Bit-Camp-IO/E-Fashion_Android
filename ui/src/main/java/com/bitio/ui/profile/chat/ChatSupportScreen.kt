@@ -2,7 +2,6 @@ package com.bitio.ui.profile.chat
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
@@ -40,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -50,7 +48,6 @@ import androidx.navigation.NavController
 import com.bitio.ui.R
 import com.bitio.ui.shared.SharedTopAppBar
 import com.bitio.ui.shared.VerticalSpacer2Dp
-import com.bitio.ui.shared.VerticalSpacer8Dp
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 import org.koin.androidx.compose.getViewModel
 
@@ -174,68 +171,62 @@ private fun ChatsSupportBody(
 
 @Composable
 private fun SenderChats(sender: Sender) {
-    Column(
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Box(
-            modifier = Modifier
-                .clip(
-                    shape = RoundedCornerShape(
-                        topStart = 100.dp,
-                        topEnd = 30.dp,
-                        bottomStart = 100.dp
-                    )
-                )
-                .wrapContentSize()
-                .background(MaterialTheme.colorScheme.secondary)
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = sender.message,
-                style = MaterialTheme.typography.bodySmall,
-                color = Color.White
-            )
-        }
-        Text(
-            text = sender.messageTime,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.secondary
-        )
-    }
+    CustomMessageCard(
+        sender.message,
+        sender.messageTime
+    )
 }
 
 @Composable
 private fun ReceiverChats(receiver: Receiver) {
+    CustomMessageCard(
+        receiver.message,
+        receiver.messageTime,
+        Alignment.Start,
+        Color(0xFFDEE3EB),
+        Color.Black,
+        RoundedCornerShape(
+            topStart = 30.dp,
+            topEnd = 100.dp,
+            bottomEnd = 100.dp
+        )
+    )
+}
+
+@Composable
+private fun CustomMessageCard(
+    message: String,
+    messageTime: String,
+    alignment: Alignment.Horizontal = Alignment.End,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    textColor: Color = Color.White,
+    shape: Shape = RoundedCornerShape(
+        topStart = 100.dp,
+        topEnd = 30.dp,
+        bottomStart = 100.dp
+    )
+) {
     Column(
-        horizontalAlignment = Alignment.Start,
+        horizontalAlignment = alignment,
         verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
         Box(
             modifier = Modifier
-                .clip(
-                    shape = RoundedCornerShape(
-                        topStart = 30.dp,
-                        topEnd = 100.dp,
-                        bottomEnd = 100.dp
-                    )
-                )
+                .clip(shape = shape)
                 .wrapContentSize()
-                .background(Color(0xFFDEE3EB))
+                .background(backgroundColor)
                 .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = receiver.message,
+                text = message,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = textColor
             )
         }
         Text(
-            text = receiver.messageTime,
+            text = messageTime,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.secondary
         )

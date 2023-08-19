@@ -20,11 +20,61 @@ class ChatSupportViewModel : ViewModel() {
 
     private fun getAllChatSupport() {
         viewModelScope.launch {
-            delay(1000L)
             _chatSupportUiState.update {
                 it.copy(
                     isLoading = false,
-
+                        chatSupport = listOf(
+                            Sender(
+                                id = "1",
+                                message = "Hi",
+                                messageTime = "11:54 PM"
+                            ),
+                            Receiver(
+                                id = "1",
+                                message = "Hi, Can I help you",
+                                messageTime = "12:00 AM"
+                            ),
+                            Sender(
+                                id = "1",
+                                message = "Hi",
+                                messageTime = "11:54 PM"
+                            ),
+                            Receiver(
+                                id = "1",
+                                message = "Hi, Can I help you",
+                                messageTime = "12:00 AM"
+                            ),
+                            Sender(
+                                id = "1",
+                                message = "Hi",
+                                messageTime = "11:54 PM"
+                            ),
+                            Receiver(
+                                id = "1",
+                                message = "Hi, Can I help you",
+                                messageTime = "12:00 AM"
+                            ),
+                            Sender(
+                                id = "1",
+                                message = "Hi",
+                                messageTime = "11:54 PM"
+                            ),
+                            Receiver(
+                                id = "1",
+                                message = "Hi, Can I help you",
+                                messageTime = "12:00 AM"
+                            ),
+                            Sender(
+                                id = "1",
+                                message = "Hi",
+                                messageTime = "11:54 PM"
+                            ),
+                            Receiver(
+                                id = "1",
+                                message = "Hi, Can I help you",
+                                messageTime = "12:00 AM"
+                            ),
+                        )
                     )
             }
         }

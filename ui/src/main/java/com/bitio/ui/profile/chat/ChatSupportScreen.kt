@@ -9,12 +9,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
@@ -33,11 +38,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bitio.ui.R
@@ -90,12 +97,12 @@ private fun ChatSupportContainer(chatSupport: List<ChatSupport>) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        VerticalSpacer2Dp()
         if (chatSupport.isEmpty()) {
+            VerticalSpacer2Dp()
             ChatSupportHint()
         } else {
             ChatSupportHeader()
-            ChatsSupportBody(chatSupport)
+            ChatsSupportBody(chatSupport, Modifier.weight(1f))
         }
         Footer({}, {})
     }
@@ -121,23 +128,46 @@ private fun ChatSupportHint() {
 @Composable
 private fun ChatSupportHeader() {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Icon(painter = painterResource(id = R.drawable.lock), contentDescription = null)
+        Icon(
+            painter = painterResource(id = R.drawable.lock),
+            contentDescription = null,
+        )
         Text(
             text = "Message and calls are end-to end encrypted, no one outside of this chat can read them",
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.Gray,
+            textAlign = TextAlign.Center
         )
     }
 }
 
 @Composable
-private fun ChatsSupportBody(chatSupport: List<ChatSupport>) {
-    chatSupport.forEach {
-        if (it is Sender) {
-            SenderChats(it)
-        } else {
-            ReceiverChats(it as Receiver)
+private fun ChatsSupportBody(
+    chatSupport: List<ChatSupport>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .fillMaxSize(),
+        contentPadding = PaddingValues(vertical = 16.dp),
+        reverseLayout = true
+    ) {
+        items(
+            count = chatSupport.size,
+            contentType = { ChatSupport::class.java },
+            key = { it }
+        ) { index ->
+            if (chatSupport[index] is Sender) {
+                SenderChats(chatSupport[index] as Sender)
+            } else {
+                ReceiverChats(chatSupport[index] as Receiver)
+            }
         }
     }
 }
@@ -145,13 +175,22 @@ private fun ChatsSupportBody(chatSupport: List<ChatSupport>) {
 @Composable
 private fun SenderChats(sender: Sender) {
     Column(
-        horizontalAlignment = Alignment.End
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
         Box(
             modifier = Modifier
-                .size(sender.message.length.dp)
-                .padding(16.dp)
-                .background(MaterialTheme.colorScheme.secondary),
+                .clip(
+                    shape = RoundedCornerShape(
+                        topStart = 100.dp,
+                        topEnd = 30.dp,
+                        bottomStart = 100.dp
+                    )
+                )
+                .wrapContentSize()
+                .background(MaterialTheme.colorScheme.secondary)
+                .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -171,13 +210,22 @@ private fun SenderChats(sender: Sender) {
 @Composable
 private fun ReceiverChats(receiver: Receiver) {
     Column(
-        horizontalAlignment = Alignment.Start
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
         Box(
             modifier = Modifier
-                .size(receiver.message.length.dp)
-                .padding(16.dp)
-                .background(MaterialTheme.colorScheme.surface),
+                .clip(
+                    shape = RoundedCornerShape(
+                        topStart = 30.dp,
+                        topEnd = 100.dp,
+                        bottomEnd = 100.dp
+                    )
+                )
+                .wrapContentSize()
+                .background(Color(0xFFDEE3EB))
+                .padding(16.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(

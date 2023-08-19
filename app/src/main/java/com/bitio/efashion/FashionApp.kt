@@ -1,7 +1,18 @@
 package com.bitio.efashion
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import com.bitio.infrastructure.auth.di.authModule
+import com.bitio.ui.presentationDiModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
 
-@HiltAndroidApp
-class FashionApp:Application()
+class FashionApp : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidContext(this@FashionApp)
+            modules(authModule, presentationDiModule)
+
+        }
+    }
+}

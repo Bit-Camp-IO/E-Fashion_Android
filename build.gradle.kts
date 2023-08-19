@@ -4,8 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.46.1")
+        classpath ("com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1")
     }
 }
 
@@ -16,6 +15,6 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.8.10" apply false
     id("org.jetbrains.kotlin.jvm") version "1.8.10" apply false
     id("com.android.library") version "8.1.0" apply false
-    id("com.google.dagger.hilt.android") version "2.44" apply false
+  //  id ("com.google.dagger.hilt.android") version "2.47" apply false
 }
 

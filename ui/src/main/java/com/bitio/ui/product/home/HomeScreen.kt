@@ -1,32 +1,37 @@
 package com.bitio.ui.product.home
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import com.bitio.productscomponent.domain.entities.Brand
 import com.bitio.productscomponent.domain.entities.products.CollectionGroup
 import com.bitio.productscomponent.domain.entities.products.ProductWithOffer
-import com.bitio.ui.product.details.navigateToProductDetailsScreen
+import com.bitio.productscomponent.domain.entities.selectable.SelectableProperty
+
 import com.bitio.ui.product.home.composables.BrandRow
 import com.bitio.ui.product.home.composables.CategoriesRow
 import com.bitio.ui.product.home.composables.CollectionPager
 import com.bitio.ui.product.home.composables.OffersPager
 import com.bitio.ui.product.home.composables.myImage
-import com.bitio.ui.product.home.offers.navigateToOffersScreen
-
 
 @Composable
 fun HomeScreen(
     navController: NavController,
 ) {
+fun HomeScreen() {
+    val viewModel = koinViewModel<HomeViewModel>()
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-       CollectionPager(collectionGroups = List(5) { collection })
+        CollectionPager(collectionGroups = List(5) { collection })
         CategoriesRow()
 
+        OffersPager(
+            productsWithOffer = List(10) { productWithOffer },
+            onSeeAllClicked = { },
+            onAddToCartClicked = {},
+            onAddToFavoriteClicked = {}
+        )
             OffersPager(
                 productsWithOffer = List(10) { productWithOffer },
                 onSeeAllClicked = navController::navigateToOffersScreen,
@@ -36,44 +41,44 @@ fun HomeScreen(
             )
 
 
-            BrandRow(
-                brand = brand,
-                products = List(20) { productWithOffer },
-                onSeeAllClicked ={},
-                onCardClicked ={},
-                onAddToFavoriteClicked ={},
-                onAddToCartClicked ={}
-            )
+        BrandRow(
+            brand = brand,
+            products = List(20) { productWithOffer },
+            onSeeAllClicked = {},
+            onCardClicked = {},
+            onAddToFavoriteClicked = {},
+            onAddToCartClicked = {}
+        )
 
 
-            BrandRow(
-                brand = brand,
-                products = List(20) { productWithOffer },
-                onSeeAllClicked ={},
-                onCardClicked ={},
-                onAddToFavoriteClicked ={},
-                onAddToCartClicked ={}
-            )
+        BrandRow(
+            brand = brand,
+            products = List(20) { productWithOffer },
+            onSeeAllClicked = {},
+            onCardClicked = {},
+            onAddToFavoriteClicked = {},
+            onAddToCartClicked = {}
+        )
 
 
-            BrandRow(
-                brand = brand,
-                products = List(20) { productWithOffer },
-                onSeeAllClicked ={},
-                onCardClicked ={},
-                onAddToFavoriteClicked ={},
-                onAddToCartClicked ={}
-            )
+        BrandRow(
+            brand = brand,
+            products = List(20) { productWithOffer },
+            onSeeAllClicked = {},
+            onCardClicked = {},
+            onAddToFavoriteClicked = {},
+            onAddToCartClicked = {}
+        )
 
 
-            BrandRow(
-                brand = brand,
-                products = List(20) { productWithOffer },
-                onSeeAllClicked ={},
-                onCardClicked ={},
-                onAddToFavoriteClicked ={},
-                onAddToCartClicked ={}
-            )
+        BrandRow(
+            brand = brand,
+            products = List(20) { productWithOffer },
+            onSeeAllClicked = {},
+            onCardClicked = {},
+            onAddToFavoriteClicked = {},
+            onAddToCartClicked = {}
+        )
 
 
     }

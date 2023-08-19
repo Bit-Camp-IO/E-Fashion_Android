@@ -21,25 +21,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.ui.R
-import com.bitio.ui.authentication.route.navigateToForgotPasswordScreen
 import com.bitio.ui.authentication.composable.CustomLogin
 import com.bitio.ui.authentication.composable.CustomSignUp
-import com.bitio.ui.route.RootRouteScreens
 import com.bitio.utils.profileShape
+import org.koin.androidx.compose.getViewModel
 
 
 @Composable
-fun AuthenticationScreen(
-    viewModel: AuthenticationViewModel,
-    navController: NavController
-) {
+fun AuthenticationScreen() {
+    val viewModel = getViewModel<AuthenticationViewModel>()
     Box(
         modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.TopCenter
+            .fillMaxSize(), contentAlignment = Alignment.TopCenter
     ) {
         AuthenticationContent(
             onClickForgetPassword = navController::navigateToForgotPasswordScreen,
@@ -48,6 +43,8 @@ fun AuthenticationScreen(
                 navController.navigate(route = RootRouteScreens.Home.route)
             }
         )
+
+        AuthenticationContent(viewModel)
     }
 }
 
@@ -103,13 +100,15 @@ private fun AuthenticationContent(
                     .background(MaterialTheme.colorScheme.background)
             ) {
 
-                CustomLogin(
-                    modifier = Modifier.offset(x = offsetXOfLogin),
+                CustomLogin(modifier = Modifier.offset(x = offsetXOfLogin),
+                    email = viewModel.email,
+                    password = viewModel.password,
                     onClickLoginButton = { username, password ->
-                        onClickLoginButton()
+                        println("User info: $username $password")
+                        viewModel.loginUser()
                     },
                     onCheckedChange = {},
-                    onClickForgetPassword = onClickForgetPassword
+                    onClickForgetPassword = {}
                 ) {
                     isClickOnSignUp = true
                 }

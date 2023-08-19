@@ -1,12 +1,10 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
-package com.bitio.ui.product.favorite
+package com.bitio.ui.favorite
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,22 +22,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavController
 import com.bitio.ui.R
 import com.bitio.ui.product.home.productWithOffer
+import com.bitio.ui.product.models.toUiProduct
 import com.bitio.ui.product.productsList.largeCards.ProductParallelogramColumn
 import com.bitio.ui.product.productsList.smallCards.ProductParallelogramGrid
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun FavoriteScreen(
-    viewModel: FavoriteViewModel,
-    navController: NavController,
-) {
+fun FavoriteScreen() {
+    val viewModel = getViewModel<FavoriteViewModel>()
     val state by viewModel.favoriteUIState.collectAsState()
     FavoriteContent(
         state,
         onClickFavoriteButton = {},
-    ) {}
+        onClickBagButton = {}
+    )
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -76,7 +74,7 @@ fun FavoriteContent(
             label = ""
         ) { targetIsGrid ->
             if (targetIsGrid) {
-                ProductParallelogramGrid(products = List(50) { productWithOffer })
+                ProductParallelogramGrid(products = List(50) { productWithOffer.toUiProduct() })
             } else {
                 ProductParallelogramColumn(products = List(50) { productWithOffer })
             }

@@ -6,24 +6,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
+import androidx.navigation.compose.rememberNavController
+import com.bitio.ui.authentication.AuthenticationViewModel
 
-import com.bitio.ui.authentication.AuthenticationScreen
 import com.bitio.ui.theme.EFashionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-
+import org.koin.android.ext.android.inject
 
 
 class FashionActivity : ComponentActivity() {
-
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -59,32 +55,11 @@ class FashionActivity : ComponentActivity() {
             val isDarkTheme by remember {
                 mutableStateOf(false)
             }
+            val navController = rememberNavController()
 
-                    AuthenticationScreen()
-                }
             EFashionTheme(darkTheme = isDarkTheme) {
-                BottomNavigationBar(
-                    favoriteViewModel = hiltViewModel(),
-                    profileViewModel = hiltViewModel(),
-                    authenticationViewModel = hiltViewModel(),
-                    orderStatusViewModel = hiltViewModel(),
-                )
+                BottomNavigationBar(navController, true)
             }
         }
     }
 }
-
-val collection = object : CollectionGroup {
-    override val id: Int
-        get() = 1
-    override val name: String
-        get() = "Summer COLLECTION"
-    override val image: String
-        get() =
-            "https://previews.123rf.com/images/f8studio/f8studio1707/f8studio170701400/82842066-young-girl-in-stylish-clothes-posing-in-the-city-street.jpg"
-    override val description: String
-        get() = "For Selected collection"
-    override val saleRatio: Float
-        get() = 0.4f
-}
-

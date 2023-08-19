@@ -7,8 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 
-
-class OrderStatusViewModel   : ViewModel() {
+class OrderStatusViewModel : ViewModel() {
 
     private val _checkOrderUiState = MutableStateFlow(OrderStatusUiState())
     val checkOrderString = _checkOrderUiState.asStateFlow()
@@ -31,7 +30,7 @@ class OrderStatusViewModel   : ViewModel() {
                         title = "On Progress",
                         description = "Your order still on progress it may take hours",
                         isOrderStatusActive = false,
-                       imageOfOrderStatus = R.drawable.order_progress
+                        imageOfOrderStatus = R.drawable.order_progress
                     ),
                     OrderStatus(
                         title = "On its way",

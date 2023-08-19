@@ -13,7 +13,7 @@ import com.bitio.ui.product.home.zara.zaraRoute
 fun NavGraphBuilder.homeGraph(navController: NavController) {
     navigation(startDestination = "home", route = RootRouteScreens.Home.route) {
         composable("home") {
-            HomeScreen(navController = navController)
+            HomeScreen(navController)
         }
         filtersRoute(navController)
         offersRoute(navController)

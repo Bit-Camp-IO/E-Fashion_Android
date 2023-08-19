@@ -28,28 +28,41 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.ui.R
+import com.bitio.ui.profile.chat.navigateToChatSupportScreen
 import com.bitio.ui.profile.composable.SettingApp
 import com.bitio.ui.profile.composable.UserProfile
+import com.bitio.ui.profile.location.navigateToLocationScreen
+import com.bitio.ui.profile.notifications.navigateToNotificationsScreen
+import com.bitio.ui.profile.order_status.navigateToOrderStatusScreen
 import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
 import com.bitio.ui.theme.Porcelain
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 import com.bitio.utils.profileShape
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ProfileScreen(
-    profileViewModel: ProfileViewModel,
     isDarkTheme: Boolean = false,
     onSwitchTheme: () -> Unit = {},
     navController: NavController,
 ) {
     val viewModel = getViewModel<ProfileViewModel>()
     val state by viewModel.profileUiState.collectAsState()
-    ProfileContent(state, isDarkTheme, onSwitchTheme)
+    ProfileContent(
+        state,
+        isDarkTheme,
+        onSwitchTheme,
+        onClickLocationScreen = navController::navigateToLocationScreen,
+        onClickOrderStatusScreen = navController::navigateToOrderStatusScreen,
+        onClickChatSupportScreen = navController::navigateToChatSupportScreen,
+        onClickNotificationsScreen = navController::navigateToNotificationsScreen,
+    )
 }
+
 
 @Composable
 private fun ProfileContent(

@@ -1,4 +1,4 @@
-package com.bitio.ui.order_status
+package com.bitio.ui.profile.order_status
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -39,9 +39,10 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.bitio.ui.R
 import com.bitio.ui.shared.VerticalSpacer24Dp
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun OrderStatusScreen(

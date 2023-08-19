@@ -13,6 +13,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,41 +28,24 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.bitio.ui.authentication.AuthenticationViewModel
 import com.bitio.ui.route.RootRouteScreens
-import com.bitio.ui.profile.order_status.OrderStatusViewModel
-import com.bitio.ui.product.favorite.FavoriteViewModel
-import com.bitio.ui.profile.ProfileViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun BottomNavigationBar(
-    favoriteViewModel: FavoriteViewModel,
-    profileViewModel: ProfileViewModel,
-    authenticationViewModel: AuthenticationViewModel,
-    orderStatusViewModel: OrderStatusViewModel
-) {
-    val navController = rememberNavController()
+fun BottomNavigationBar(navController: NavHostController, checkIfLogin: Boolean) {
+
     var isNavBottomVisible by remember {
         mutableStateOf(false)
     }
-    isNavBottomVisible = authenticationViewModel.checkIfLogin.value
+    isNavBottomVisible = checkIfLogin
 
     Scaffold(
         bottomBar = {
-            BottomBar(navController = navController, visibility = isNavBottomVisible)
+            BottomBar(navController, isNavBottomVisible)
         },
         containerColor = Color.Transparent
     ) { innerPadding ->
-        AppNavGraph(
-            innerPadding,
-            navController = navController,
-            favoriteViewModel = favoriteViewModel,
-            profileViewModel = profileViewModel,
-            authenticationViewModel = authenticationViewModel,
-            orderStatusViewModel = orderStatusViewModel
-        )
+        AppNavGraph(innerPadding, navController, isNavBottomVisible)
     }
 }
 
@@ -115,7 +99,7 @@ fun RowScope.BottomItem(
         colors = NavigationBarItemDefaults.colors(
             selectedIconColor = MaterialTheme.colorScheme.secondary,
             unselectedIconColor = Color.White,
-            indicatorColor =  MaterialTheme.colorScheme.onBackground,
+            indicatorColor = MaterialTheme.colorScheme.onBackground,
         ),
         alwaysShowLabel = false,
         icon = {

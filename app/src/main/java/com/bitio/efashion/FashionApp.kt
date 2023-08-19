@@ -12,7 +12,6 @@ class FashionApp : Application() {
         startKoin {
             androidContext(this@FashionApp)
             modules(authModule, presentationDiModule)
-
         }
     }
 }

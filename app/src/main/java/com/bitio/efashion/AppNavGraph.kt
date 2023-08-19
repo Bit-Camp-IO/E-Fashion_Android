@@ -13,39 +13,25 @@ import com.bitio.ui.route.cartRoute
 import com.bitio.ui.route.favoriteRoute
 import com.bitio.ui.route.homeGraph
 import com.bitio.ui.route.profileGraph
-import com.bitio.ui.profile.order_status.OrderStatusViewModel
-import com.bitio.ui.product.favorite.FavoriteViewModel
-import com.bitio.ui.profile.ProfileViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun AppNavGraph(
     innerPadding: PaddingValues,
     navController: NavHostController,
-    favoriteViewModel: FavoriteViewModel,
-    profileViewModel: ProfileViewModel,
-    authenticationViewModel: AuthenticationViewModel,
-    orderStatusViewModel: OrderStatusViewModel,
+    checkIfLogin: Boolean
 ) {
 
-    val startDestination =
-        if (authenticationViewModel.checkIfLogin.value) RootRouteScreens.Home.route else "auth"
-
+    val startDestination = if (checkIfLogin) RootRouteScreens.Home.route else "auth"
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = Modifier.padding(innerPadding)
     ) {
-
         homeGraph(navController)
-
         cartRoute(navController)
-        favoriteRoute(navController, favoriteViewModel)
-
-        profileGraph(navController, profileViewModel, orderStatusViewModel)
-
-        authGraph(
-            navController = navController,
-            authenticationViewModel = authenticationViewModel
-        )
+        favoriteRoute(navController)
+        profileGraph(navController)
+        authGraph(navController)
     }
 }

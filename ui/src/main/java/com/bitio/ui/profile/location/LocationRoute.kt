@@ -11,8 +11,6 @@ internal fun NavController.navigateToLocationScreen() {
 
 internal fun NavGraphBuilder.locationRoute(navController: NavController) {
     composable(ProfileRouteScreens.Location.route) {
-        LocationScreen(
-            navController = navController
-        )
+        LocationScreen(navController)
     }
 }

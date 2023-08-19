@@ -9,15 +9,9 @@ internal fun NavController.navigateToOrderStatusScreen() {
     navigate(ProfileRouteScreens.OrderStatus.route)
 }
 
-internal fun NavGraphBuilder.orderStatusRoute(
-    navController: NavController,
-    orderStatusViewModel: OrderStatusViewModel
-) {
+internal fun NavGraphBuilder.orderStatusRoute(navController: NavController) {
     composable(ProfileRouteScreens.OrderStatus.route) {
-        OrderStatusScreen(
-            orderStatusViewModel = orderStatusViewModel,
-            navController = navController
-        )
+        OrderStatusScreen(navController)
     }
 }
 

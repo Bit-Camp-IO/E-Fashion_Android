@@ -1,27 +1,22 @@
 package com.bitio.ui.profile.chat
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.VectorConverter
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,9 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bitio.ui.R
 import com.bitio.ui.shared.SharedTopAppBar
-import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer2Dp
-import com.bitio.ui.shared.VerticalSpacer64Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 import org.koin.androidx.compose.getViewModel
@@ -206,60 +199,50 @@ private fun Footer(
     onClickLinkButton: () -> Unit,
     onClickSendButton: () -> Unit
 ) {
-    var chatMessage by remember {
-        mutableStateOf("")
+
+    var isMessageBoxEmpty by remember {
+        mutableStateOf(true)
     }
 
-    val transition =
-        updateTransition(targetState = chatMessage.isNotEmpty(), label = "chatButtonTransition")
-    val iconSize by transition.animateDp(
-        transitionSpec = { tween(durationMillis = 300) },
-        targetValueByState = { if (it) 24.dp else 18.dp }, label = ""
-    )
-    val iconPainter: Painter =
-        painterResource(id = if (chatMessage.isEmpty()) R.drawable.send_outline else R.drawable.send_full)
-
-
-    Row(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            ChatBox(
-                modifier = Modifier.weight(1f),
-                chatMessage,
-                onClickLinkButton,
-                onValueChange = { chatMessage = it }
-            )
-            IconButton(
-                modifier = Modifier
-                    .size(48.dp),
-                onClick = onClickSendButton
-            ) {
-                Icon(
-                    painter = iconPainter,
-                    contentDescription = null,
-                    modifier = Modifier.size(iconSize),
-                )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        ChatBox(
+            modifier = Modifier.weight(1f),
+            onClickLinkButton,
+            checkIfMessageBoxEmpty = {
+                isMessageBoxEmpty = it
             }
-        }
+        )
+        CustomSendButton(
+            onClickSendButton,
+            isMessageBoxEmpty
+        )
     }
 }
 
 @Composable
 fun ChatBox(
     modifier: Modifier = Modifier,
-    value: String,
     onClickLinkButton: () -> Unit,
-    onValueChange: (String) -> Unit,
+    checkIfMessageBoxEmpty: (Boolean) -> Unit,
 ) {
+
+    var chatMessage by remember {
+        mutableStateOf("")
+    }
 
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
-        value = value, onValueChange = onValueChange,
+        value = chatMessage,
+        onValueChange = {
+            checkIfMessageBoxEmpty(it.isEmpty())
+            chatMessage = it
+        },
         textStyle = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).bodySmall,
         placeholder = {
             Text(
@@ -292,4 +275,31 @@ fun ChatBox(
             imeAction = ImeAction.Done
         ),
     )
+}
+
+@Composable
+private fun CustomSendButton(
+    onClickSendButton: () -> Unit,
+    isMessageBoxEmpty: Boolean
+) {
+
+    val transition =
+        updateTransition(targetState = isMessageBoxEmpty, label = "chatButtonTransition")
+    val iconSize by transition.animateDp(
+        targetValueByState = { if (it) 18.dp else 24.dp }, label = ""
+    )
+    val iconPainter: Painter =
+        painterResource(id = if (transition.currentState) R.drawable.send_outline else R.drawable.send_full)
+
+    IconButton(
+        modifier = Modifier
+            .size(48.dp),
+        onClick = onClickSendButton
+    ) {
+        Icon(
+            painter = iconPainter,
+            contentDescription = null,
+            modifier = Modifier.size(iconSize),
+        )
+    }
 }

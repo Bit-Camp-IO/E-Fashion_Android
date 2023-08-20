@@ -4,7 +4,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.bitio.ui.profile.ProfileRouteScreens
 import com.bitio.ui.profile.ProfileScreen
 import com.bitio.ui.profile.chat.chatSupportRoute
 import com.bitio.ui.profile.location.locationRoute
@@ -15,7 +14,7 @@ import com.bitio.ui.profile.order_status.orderStatusRoute
 fun NavGraphBuilder.profileGraph(
     navController: NavController,
 ) {
-    navigation(startDestination = ProfileRouteScreens.ChatSupport.route, route = RootRouteScreens.Profile.route) {
+    navigation(startDestination = "profile", route = RootRouteScreens.Profile.route) {
         composable("profile") {
             ProfileScreen(navController = navController)
         }

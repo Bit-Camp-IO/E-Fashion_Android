@@ -2,6 +2,7 @@ package com.bitio.ui.profile.chat
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -50,6 +51,7 @@ import com.bitio.ui.shared.SharedTopAppBar
 import com.bitio.ui.shared.VerticalSpacer2Dp
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 import org.koin.androidx.compose.getViewModel
+import kotlin.random.Random
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -58,14 +60,29 @@ fun ChatSupportScreen(
 ) {
     val viewModel = getViewModel<ChatSupportViewModel>()
     val state by viewModel.chatSupportUiState.collectAsState()
-    ChatSupportContent(state)
+    ChatSupportContent(
+        state,
+        onClickLinkButton ={},
+        viewModel::sendMessage,
+        navController::popBackStack
+    )
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-private fun ChatSupportContent(state: ChatSupportUIState) {
+private fun ChatSupportContent(
+    state: ChatSupportUIState,
+    onClickLinkButton: () -> Unit,
+    onClickSendButton: (Sender) -> Unit,
+    onClickBackButton: () -> Unit
+) {
     Scaffold(
-        topBar = { SharedTopAppBar(title = "Chat Support") {} }
+        topBar = {
+            SharedTopAppBar(
+                title = "Chat Support",
+                onClickBackButton = onClickBackButton
+            )
+        }
     ) {
         Box(
             modifier = Modifier
@@ -79,14 +96,22 @@ private fun ChatSupportContent(state: ChatSupportUIState) {
             } else if (state.errorMessage.isNotBlank()) {
                 Text(text = state.errorMessage)
             } else {
-                ChatSupportContainer(state.chatSupport)
+                ChatSupportContainer(
+                    state.chatSupport,
+                    onClickLinkButton,
+                    onClickSendButton
+                )
             }
         }
     }
 }
 
 @Composable
-private fun ChatSupportContainer(chatSupport: List<ChatSupport>) {
+private fun ChatSupportContainer(
+    chatSupport: List<ChatSupport>,
+    onClickLinkButton: () -> Unit,
+    onClickSendButton: (Sender) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -101,7 +126,7 @@ private fun ChatSupportContainer(chatSupport: List<ChatSupport>) {
             ChatSupportHeader()
             ChatsSupportBody(chatSupport, Modifier.weight(1f))
         }
-        Footer({}, {})
+        Footer(onClickLinkButton, onClickSendButton)
     }
 }
 
@@ -150,8 +175,7 @@ private fun ChatsSupportBody(
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = 16.dp),
         reverseLayout = true
     ) {
@@ -236,11 +260,10 @@ private fun CustomMessageCard(
 @Composable
 private fun Footer(
     onClickLinkButton: () -> Unit,
-    onClickSendButton: () -> Unit
+    onClickSendButton: (Sender) -> Unit
 ) {
-
-    var isMessageBoxEmpty by remember {
-        mutableStateOf(true)
+    var message by remember {
+        mutableStateOf("")
     }
 
     Row(
@@ -250,38 +273,37 @@ private fun Footer(
     ) {
         ChatBox(
             modifier = Modifier.weight(1f),
-            onClickLinkButton,
-            checkIfMessageBoxEmpty = {
-                isMessageBoxEmpty = it
-            }
+            value = message,
+            onValueChange = { message = it },
+            onClickLinkButton = onClickLinkButton
         )
-        CustomSendButton(
-            onClickSendButton,
-            isMessageBoxEmpty
-        )
+
+        CustomSendButton(message.isEmpty()) {
+            onClickSendButton(
+                Sender(
+                    id = Random(100).nextInt().toString(),
+                    message = message,
+                    messageTime = "11:45 PM"
+                )
+            )
+            message = ""
+        }
     }
 }
 
 @Composable
 fun ChatBox(
     modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
     onClickLinkButton: () -> Unit,
-    checkIfMessageBoxEmpty: (Boolean) -> Unit,
 ) {
-
-    var chatMessage by remember {
-        mutableStateOf("")
-    }
-
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
-        value = chatMessage,
-        onValueChange = {
-            checkIfMessageBoxEmpty(it.isEmpty())
-            chatMessage = it
-        },
+        value = value,
+        onValueChange = onValueChange,
         textStyle = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).bodySmall,
         placeholder = {
             Text(
@@ -305,27 +327,30 @@ fun ChatBox(
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent,
-            focusedContainerColor = Color(0xFFC2C8D1),
-            unfocusedContainerColor = Color(0xFFDEE3EB),
+            focusedContainerColor = Color(0xFFDEE3EB),
+            unfocusedContainerColor = Color(0xBFDEE3EB),
             cursorColor = MaterialTheme.colorScheme.primary
         ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Done
+            imeAction = ImeAction.None
         ),
     )
 }
 
 @Composable
 private fun CustomSendButton(
+    isMessageBoxEmpty: Boolean,
     onClickSendButton: () -> Unit,
-    isMessageBoxEmpty: Boolean
 ) {
 
     val transition =
         updateTransition(targetState = isMessageBoxEmpty, label = "chatButtonTransition")
     val iconSize by transition.animateDp(
-        targetValueByState = { if (it) 18.dp else 24.dp }, label = ""
+        targetValueByState = { if (it) 18.dp else 24.dp }, label = "",
+        transitionSpec = {
+            tween(durationMillis = 25)
+        }
     )
     val iconPainter: Painter =
         painterResource(id = if (transition.currentState) R.drawable.send_outline else R.drawable.send_full)
@@ -333,7 +358,8 @@ private fun CustomSendButton(
     IconButton(
         modifier = Modifier
             .size(48.dp),
-        onClick = onClickSendButton
+        onClick = onClickSendButton,
+        enabled = !transition.currentState
     ) {
         Icon(
             painter = iconPainter,

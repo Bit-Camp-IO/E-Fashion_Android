@@ -22,14 +22,18 @@ fun SharedTopAppBar(
     onClickBackButton: () -> Unit
 ) {
     TopAppBar(
-        modifier = modifier.padding(horizontal = 24.dp),
+        modifier = modifier,
         title = {
-            Text(title, style = MaterialTheme.typography.titleMedium)
+            Text(
+                title,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(start = 8.dp),
+            )
         },
         navigationIcon = {
             IconButton(onClick = onClickBackButton) {
                 Icon(
-                    modifier = Modifier.padding(end = 16.dp),
+                    modifier = Modifier.padding(start = 16.dp),
                     painter = painterResource(id = R.drawable.arraw_back),
                     contentDescription = "back",
                     tint = MaterialTheme.colorScheme.primary

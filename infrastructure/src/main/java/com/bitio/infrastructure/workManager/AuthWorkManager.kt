@@ -20,9 +20,7 @@ object AuthWorkManager : KoinComponent {
     private val authWorkRequest =
         PeriodicWorkRequestBuilder<AuthWorker>(
             DURATION_TO_UPDATE_ACCESS_TOKEN_MIN,
-            TimeUnit.MINUTES
-
-        ).setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+            TimeUnit.MINUTES)
             .setConstraints(constraints)
             .setBackoffCriteria(policy, Duration.ofSeconds(2L))
             .build()

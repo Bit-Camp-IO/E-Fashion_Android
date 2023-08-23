@@ -67,7 +67,7 @@ class FashionActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
 
-                    AuthenticationScreen()
+                  //  AuthenticationScreen()
                 }
             }
         }

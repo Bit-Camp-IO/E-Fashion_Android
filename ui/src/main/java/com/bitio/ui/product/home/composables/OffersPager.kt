@@ -46,7 +46,8 @@ fun OffersPager(
     productsWithOffer: List<ProductWithOffer>,
     onSeeAllClicked: () -> Unit,
     onAddToCartClicked: (String) -> Unit,
-    onAddToFavoriteClicked: (String) -> Unit
+    onAddToFavoriteClicked: (String) -> Unit,
+    onClickProduct: (String) -> Unit
 
 ) {
     Column {

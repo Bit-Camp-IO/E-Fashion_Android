@@ -31,9 +31,8 @@ fun HomeScreen(
             productsWithOffer = List(10) { productWithOffer },
             onSeeAllClicked = { },
             onAddToCartClicked = {},
-            onAddToFavoriteClicked = {},
-            onClickProduct = {}
-        )
+            onAddToFavoriteClicked = {}
+        ) {}
         OffersPager(
             productsWithOffer = List(10) { productWithOffer },
             onSeeAllClicked = navController::navigateToOffersScreen,

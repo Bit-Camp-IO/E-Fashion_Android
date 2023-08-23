@@ -9,7 +9,7 @@ import androidx.navigation.navArgument
 import com.bitio.ui.product.home.HomeRouteScreens
 
 
-internal fun NavController.navigateToProductDetailsScreen(id: Int) {
+internal fun NavController.navigateToProductDetailsScreen(id: String) {
     navigate("${HomeRouteScreens.ProductDetails.route}/$id") {
         launchSingleTop = true
     }

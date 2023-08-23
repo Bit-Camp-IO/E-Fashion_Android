@@ -1,11 +1,11 @@
 package com.bitio.infrastructure.auth.remote
 
 import com.bitio.authcomponent.data.remote.AuthApi
-import com.bitio.authcomponent.data.remote.dto.request.LoginBody
-import com.bitio.authcomponent.data.remote.dto.request.RegisterBody
-import com.bitio.authcomponent.data.remote.dto.response.AccessTokenResponse
-import com.bitio.authcomponent.data.remote.dto.response.AuthDataResponse
-import com.bitio.authcomponent.data.remote.dto.response.ResponseWrapper
+import com.bitio.authcomponent.data.remote.request.LoginBody
+import com.bitio.authcomponent.data.remote.request.RegisterBody
+import com.bitio.authcomponent.data.remote.response.AccessTokenResponse
+import com.bitio.authcomponent.data.remote.response.AuthDataResponse
+import com.bitio.sharedcomponent.data.ResponseWrapper
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header

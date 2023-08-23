@@ -1,7 +1,8 @@
 package com.bitio.efashion
 
 import android.app.Application
-import com.bitio.infrastructure.auth.di.authModule
+import com.bitio.infrastructure.infrastructureKoinModule
+import com.bitio.infrastructure.workManager.AuthWorkManager
 import com.bitio.ui.presentationDiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
@@ -11,8 +12,10 @@ class FashionApp : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@FashionApp)
-            modules(authModule, presentationDiModule)
 
+            modules(infrastructureKoinModule, presentationDiModule)
         }
+        AuthWorkManager.enqueueWork()
+
     }
 }

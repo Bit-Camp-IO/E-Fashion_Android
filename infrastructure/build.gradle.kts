@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -24,11 +25,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
@@ -51,12 +52,16 @@ dependencies {
 
     //room
     val roomVersion = "2.5.2"
-    implementation("androidx.room:room-runtime:$roomVersion")
+    api("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 
-   // api("io.insert-koin:koin-android:3.4.6")
     implementation("io.insert-koin:koin-core:3.4.3")
+    implementation("io.insert-koin:koin-androidx-workmanager:3.4.3")
+    implementation("io.insert-koin:koin-android:3.4.3")
 
+    //work manager
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
     //data store
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 

@@ -13,7 +13,7 @@ import com.bitio.infrastructure.auth.remote.AuthRetrofit
 import org.koin.dsl.module
 
 
-val authModule = module {
+val authKoinModule = module {
     single<AuthApi> { AuthRetrofit.service }
     single<AuthDao> { AuthDaoImpl(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get(), get()) }

@@ -1,7 +1,7 @@
 plugins {
     id("java-library")
     id("org.jetbrains.kotlin.jvm")
-    id("org.jetbrains.kotlin.plugin.serialization").version("1.8.10")
+    kotlin("plugin.serialization")
 }
 
 java {
@@ -15,6 +15,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    api(project(":sharedComponent"))
+   // implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
 }

@@ -89,9 +89,9 @@ val collection = object : CollectionGroup {
 val productWithOffer = object : ProductWithOffer {
     override val oldPrice: Float
         get() = 200f
-    override val id: Int
-        get() = 1
-    override val name: String
+    override val id: String
+        get() = "1"
+    override val title: String
         get() = "idk"
     override val image: String
         get() = myImage
@@ -100,8 +100,8 @@ val productWithOffer = object : ProductWithOffer {
 
 }
 val brand = object : Brand {
-    override val id: Int
-        get() = 1
+    override val id: String
+        get() = ""
     override val name: String
         get() = "Any"
     override val description: String

@@ -2,10 +2,11 @@ package com.bitio.authcomponent.data.repository
 
 import com.bitio.authcomponent.data.local.AuthDao
 import com.bitio.authcomponent.data.remote.AuthApi
-import com.bitio.authcomponent.data.remote.dto.request.LoginBody
-import com.bitio.authcomponent.data.remote.dto.request.RegisterBody
+import com.bitio.authcomponent.data.remote.request.LoginBody
+import com.bitio.authcomponent.data.remote.request.RegisterBody
 import com.bitio.authcomponent.domain.entities.AuthData
 import com.bitio.authcomponent.domain.repository.AuthRepository
+import kotlinx.coroutines.flow.Flow
 
 class AuthRepositoryImpl(private val api: AuthApi, private val dao: AuthDao) : AuthRepository {
     private var cashedAccessToken: String? = null
@@ -31,6 +32,10 @@ class AuthRepositoryImpl(private val api: AuthApi, private val dao: AuthDao) : A
         if (cashedAccessToken == null)
             refreshAccessToken()
         return cashedAccessToken!!
+    }
+
+    override fun getAccessTokenStream(): Flow<String> {
+        return dao.getAccessTokenStream()
     }
 
     /*shall be invoked every <10 min due to the fact

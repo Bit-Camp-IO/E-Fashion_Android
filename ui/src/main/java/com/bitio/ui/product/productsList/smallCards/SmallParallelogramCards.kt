@@ -44,9 +44,9 @@ import com.bitio.ui.shared.VerticalSpacer4Dp
 @Composable
 fun SmallParallelogramCardFactory(
     product: UiProduct,
-    onCardClicked: (Int) -> Unit = {},
-    onAddToCartClicked: (Int) -> Unit = {},
-    onAddToFavClicked: (Int) -> Unit = {},
+    onCardClicked: (String) -> Unit = {},
+    onAddToCartClicked: (String) -> Unit = {},
+    onAddToFavClicked: (String) -> Unit = {},
     cardIndex: Int
 ) {
 
@@ -99,9 +99,9 @@ fun SmallParallelogramCardFactory(
 @Composable
 fun SmallParallelogramCard(
     product: UiProduct,
-    onCardClicked: (Int) -> Unit = {},
-    onAddToCartClicked: (Int) -> Unit = {},
-    onAddToFavClicked: (Int) -> Unit = {},
+    onCardClicked: (String) -> Unit = {},
+    onAddToCartClicked: (String) -> Unit = {},
+    onAddToFavClicked: (String) -> Unit = {},
     isLeft: Boolean,
     isFirst: Boolean
 ) {
@@ -143,7 +143,7 @@ fun SmallParallelogramCard(
 fun ParallelogramCurve(
     product: UiProduct,
     isLeft: Boolean,
-    onAddToCartClicked: (Int) -> Unit
+    onAddToCartClicked: (String) -> Unit
 ) {
 
     Box(

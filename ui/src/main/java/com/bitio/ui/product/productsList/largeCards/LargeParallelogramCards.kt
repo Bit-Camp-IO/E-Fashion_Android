@@ -37,9 +37,9 @@ import com.bitio.ui.shared.VerticalSpacer4Dp
 @Composable
 fun ProductFirstParallelogramCard(
     product: Product,
-    onCardClicked: (Int) -> Unit = {},
-    onAddToCartClicked: (Int) -> Unit = {},
-    onAddToFavClicked: (Int) -> Unit = {}
+    onCardClicked: (String) -> Unit = {},
+    onAddToCartClicked: (String) -> Unit = {},
+    onAddToFavClicked: (String) -> Unit = {}
 ) {
     ProductLargeParallelogramCard(
         product = product,
@@ -56,9 +56,9 @@ fun ProductFirstParallelogramCard(
 @Composable
 fun ProductMiddleParallelogramCard(
     product: Product,
-    onCardClicked: (Int) -> Unit = {},
-    onAddToCartClicked: (Int) -> Unit = {},
-    onAddToFavClicked: (Int) -> Unit = {}
+    onCardClicked: (String) -> Unit = {},
+    onAddToCartClicked: (String) -> Unit = {},
+    onAddToFavClicked: (String) -> Unit = {}
 ) {
     ProductLargeParallelogramCard(
         product = product,
@@ -74,9 +74,9 @@ fun ProductMiddleParallelogramCard(
 @Composable
 fun ProductLastParallelogramCard(
     product: Product,
-    onCardClicked: (Int) -> Unit = {},
-    onAddToCartClicked: (Int) -> Unit = {},
-    onAddToFavClicked: (Int) -> Unit = {}
+    onCardClicked: (String) -> Unit = {},
+    onAddToCartClicked: (String) -> Unit = {},
+    onAddToFavClicked: (String) -> Unit = {}
 ) {
     ProductLargeParallelogramCard(
         product = product,
@@ -93,9 +93,9 @@ fun ProductLastParallelogramCard(
 @Composable
 fun ProductLargeParallelogramCard(
     product: Product,
-    onCardClicked: (Int) -> Unit = {},
-    onAddToCartClicked: (Int) -> Unit = {},
-    onAddToFavClicked: (Int) -> Unit = {},
+    onCardClicked: (String) -> Unit = {},
+    onAddToCartClicked: (String) -> Unit = {},
+    onAddToFavClicked: (String) -> Unit = {},
     favoriteIconTopPadding: Dp,
     shape: Shape
 ) {
@@ -127,7 +127,7 @@ fun ProductLargeParallelogramCard(
 @Composable
 fun ProductParallelogramDetailsCurve(
     product: Product,
-    onAddToCartClicked: (Int) -> Unit
+    onAddToCartClicked: (String) -> Unit
 ) {
     Box(contentAlignment = Alignment.BottomCenter) {
         Image(
@@ -143,7 +143,7 @@ fun ProductParallelogramDetailsCurve(
         ) {
             HorizontalSpacer24Dp()
             Column {
-                Text(text = product.name, style = MaterialTheme.typography.titleLarge)
+                Text(text = product.title, style = MaterialTheme.typography.titleLarge)
                 VerticalSpacer4Dp()
                 Text(
                     text = "$" + product.price.toString(),

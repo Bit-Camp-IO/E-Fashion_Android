@@ -1,10 +1,8 @@
 package com.bitio.productscomponent.domain.entities.products
 
 interface Product {
-    val id: Int
-    val name: String
+    val id: String
+    val title: String
     val image: String
     val price: Float
 }
-
-

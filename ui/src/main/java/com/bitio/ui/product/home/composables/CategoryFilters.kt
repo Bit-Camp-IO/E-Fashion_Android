@@ -28,7 +28,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.bitio.productscomponent.domain.entities.categories.GenderCategory
-import com.bitio.productscomponent.domain.entities.categories.ProductCategory
+import com.bitio.productscomponent.domain.entities.categories.Category
+import com.bitio.productscomponent.domain.entities.categories.GenderType
 import com.bitio.ui.shared.HorizontalSpacer4Dp
 import com.bitio.ui.shared.HorizontalSpacer8Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
@@ -136,7 +137,7 @@ fun GenderCategoryCard(genderCategory: GenderCategory) {
 }
 
 @Composable
-fun ProductCategoriesRow(productCategories: List<ProductCategory>) {
+fun ProductCategoriesRow(productCategories: List<Category>) {
     Row(
         modifier = Modifier.background(
             color = MaterialTheme.colorScheme.surface,
@@ -152,7 +153,7 @@ fun ProductCategoriesRow(productCategories: List<ProductCategory>) {
         )
         HorizontalSpacer4Dp()
         for (productCategory in productCategories) {
-            ProductCategoryCard(productCategory = productCategory)
+            ProductCategoryCard(category = productCategory)
 
         }
         HorizontalSpacer8Dp()
@@ -160,16 +161,16 @@ fun ProductCategoriesRow(productCategories: List<ProductCategory>) {
 }
 
 @Composable
-fun ProductCategoryCard(productCategory: ProductCategory) {
+fun ProductCategoryCard(category: Category) {
     CategoryCard(
-        id = productCategory.id,
-        name = productCategory.name,
-        image = productCategory.image,
+        id = category.id,
+        name = category.name,
+        image = category.image,
     ) {}
 }
 
 @Composable
-fun CategoryCard(id: Int, name: String, image: String, onClick: (Int) -> Unit) {
+fun CategoryCard(id: String, name: String, image: String, onClick: (String) -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -198,23 +199,25 @@ fun CategoryCard(id: Int, name: String, image: String, onClick: (Int) -> Unit) {
 
 
 val genderCategory = object : GenderCategory {
-    override val id: Int
-        get() = 1
+    override val id: String
+        get() = "asda"
     override val name: String
         get() = "Male"
     override val image: String
         get() = myImage
 }
 val genderCategories = List(2) { genderCategory }
-val productCategory = object : ProductCategory {
-    override val id: Int
-        get() = 1
+val category = object : Category {
+    override val id: String
+        get() = "asd"
     override val name: String
         get() = "Skirt"
     override val image: String
         get() = myImage
+    override val gender: GenderType
+        get() = GenderType.MALE
 }
-val productCategories = List(10) { productCategory }
+val productCategories = List(10) { category }
 
 
 const val myImage ="https://picsum.photos/100.webp"

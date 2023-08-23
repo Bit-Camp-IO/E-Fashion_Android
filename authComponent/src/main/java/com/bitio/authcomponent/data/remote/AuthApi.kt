@@ -1,10 +1,10 @@
 package com.bitio.authcomponent.data.remote
 
-import com.bitio.authcomponent.data.remote.dto.request.LoginBody
-import com.bitio.authcomponent.data.remote.dto.request.RegisterBody
-import com.bitio.authcomponent.data.remote.dto.response.AccessTokenResponse
-import com.bitio.authcomponent.data.remote.dto.response.AuthDataResponse
-import com.bitio.authcomponent.data.remote.dto.response.ResponseWrapper
+import com.bitio.authcomponent.data.remote.request.LoginBody
+import com.bitio.authcomponent.data.remote.request.RegisterBody
+import com.bitio.authcomponent.data.remote.response.AccessTokenResponse
+import com.bitio.authcomponent.data.remote.response.AuthDataResponse
+import com.bitio.sharedcomponent.data.ResponseWrapper
 
 
 interface AuthApi {

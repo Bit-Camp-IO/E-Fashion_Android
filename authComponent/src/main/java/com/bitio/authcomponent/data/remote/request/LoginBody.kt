@@ -1,4 +1,4 @@
-package com.bitio.authcomponent.data.remote.dto.request
+package com.bitio.authcomponent.data.remote.request
 
 import kotlinx.serialization.Serializable
 

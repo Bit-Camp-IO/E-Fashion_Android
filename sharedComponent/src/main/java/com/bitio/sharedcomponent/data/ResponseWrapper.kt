@@ -1,4 +1,4 @@
-package com.bitio.authcomponent.data.remote.dto.response
+package com.bitio.sharedcomponent.data
 
 
 import kotlinx.serialization.SerialName
@@ -10,7 +10,7 @@ data class ResponseWrapper<T>(
     val status: String,
     @SerialName(value = "data")
     val data: T?=null,
-    val error: ApiError?=null
+    val error: ApiErrorData?=null
 )
 
 

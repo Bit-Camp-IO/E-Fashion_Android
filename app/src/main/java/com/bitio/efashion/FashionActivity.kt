@@ -3,7 +3,6 @@ package com.bitio.efashion
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,12 +14,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
-
+import androidx.room.Room
+import com.bitio.infrastructure.roomConfiguration.AppDatabase
 import com.bitio.ui.authentication.AuthenticationScreen
 import com.bitio.ui.theme.EFashionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class FashionActivity : ComponentActivity() {
@@ -69,6 +70,18 @@ class FashionActivity : ComponentActivity() {
                     AuthenticationScreen()
                 }
             }
+        }
+       // val productRepo by inject<ProductRoomDao>()
+        val roomDb = Room.databaseBuilder(
+            context = applicationContext,
+            klass = AppDatabase::class.java,
+            name = "app-database"
+        ).build()
+       // val productRepo by inject<AppDatabase>()
+        GlobalScope.launch {
+            roomDb.productRoomDao()
+            //val products = productRepo.getProductsByCategoryAndBrand(null, null, 1, 20)
+          //  Log.d("xxxx", products.toString())
         }
     }
 }

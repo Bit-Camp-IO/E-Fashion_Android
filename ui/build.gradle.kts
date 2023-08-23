@@ -3,8 +3,6 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("kotlin-parcelize")
-
-
 }
 
 
@@ -14,10 +12,8 @@ android {
 
     defaultConfig {
         minSdk = 26
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-
     }
 
     buildTypes {
@@ -36,7 +32,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
     buildFeatures {
         compose = true
         buildConfig = true

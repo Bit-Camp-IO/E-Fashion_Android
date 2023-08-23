@@ -42,8 +42,8 @@ fun FavoriteIconButton(
 fun FavoriteIconButtonCircularBg(
     modifier: Modifier = Modifier,
     isFavoriteState: MutableState<Boolean>,
-    productId: Int,
-    onClick: (Int) -> Unit
+    productId: String,
+    onClick: (String) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -64,7 +64,7 @@ fun FavoriteIconButtonCircularBg(
 }
 
 @Composable
-fun CartIconButton(modifier: Modifier = Modifier, productId: Int, onClick: (Int) -> Unit = {}) {
+fun CartIconButton(modifier: Modifier = Modifier, productId: String, onClick: (String) -> Unit = {}) {
     Icon(
         modifier = modifier.clickable { onClick(productId) },
         painter = painterResource(id = R.drawable.ic_bag),

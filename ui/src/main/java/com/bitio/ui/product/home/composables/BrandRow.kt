@@ -36,10 +36,10 @@ import com.bitio.ui.shared.VerticalSpacer2Dp
 fun BrandRow(
     brand: Brand,
     products: List<Product>,
-    onSeeAllClicked: (Int) -> Unit,
-    onCardClicked: (Int) -> Unit,
-    onAddToFavoriteClicked: (Int) -> Unit,
-    onAddToCartClicked: (Int) -> Unit,
+    onSeeAllClicked: (String) -> Unit,
+    onCardClicked: (String) -> Unit,
+    onAddToFavoriteClicked: (String) -> Unit,
+    onAddToCartClicked: (String) -> Unit,
 ) {
     ItemsTitleComponent(name = brand.name) { onSeeAllClicked(brand.id) }
     LazyRow(contentPadding = PaddingValues(start = 24.dp, end = 8.dp)) {
@@ -58,9 +58,9 @@ fun BrandRow(
 @Composable
 fun ProductCard(
     product: Product,
-    onCardClicked: (Int) -> Unit,
-    onAddToCartClicked: (Int) -> Unit,
-    onAddToFavoriteClicked: (Int) -> Unit
+    onCardClicked: (String) -> Unit,
+    onAddToCartClicked: (String) -> Unit,
+    onAddToFavoriteClicked: (String) -> Unit
 ) {
     Box(modifier = Modifier
         .padding(end = 16.dp)
@@ -88,7 +88,7 @@ fun ProductCard(
 }
 
 @Composable
-fun ProductCardDetailsCurve(product: Product, onAddToCartClicked: (Int) -> Unit) {
+fun ProductCardDetailsCurve(product: Product, onAddToCartClicked: (String) -> Unit) {
     Box {
         Image(
             modifier = Modifier.fillMaxWidth(),
@@ -106,7 +106,7 @@ fun ProductCardDetailsCurve(product: Product, onAddToCartClicked: (Int) -> Unit)
         ) {
             Column {
                 Text(
-                    text = product.name, style = MaterialTheme.typography.bodyMedium
+                    text = product.title, style = MaterialTheme.typography.bodyMedium
                 )
                 VerticalSpacer2Dp()
                 Text(

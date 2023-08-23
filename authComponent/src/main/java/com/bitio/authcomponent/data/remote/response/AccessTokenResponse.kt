@@ -1,4 +1,4 @@
-package com.bitio.authcomponent.data.remote.dto.response
+package com.bitio.authcomponent.data.remote.response
 
 import com.bitio.authcomponent.domain.entities.AccessToken
 import kotlinx.serialization.SerialName

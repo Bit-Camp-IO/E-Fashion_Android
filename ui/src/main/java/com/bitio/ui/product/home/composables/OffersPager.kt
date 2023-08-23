@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -46,8 +45,8 @@ import com.bitio.ui.shared.VerticalSpacer8Dp
 fun OffersPager(
     productsWithOffer: List<ProductWithOffer>,
     onSeeAllClicked: () -> Unit,
-    onAddToCartClicked: (Int) -> Unit,
-    onAddToFavoriteClicked: (Int) -> Unit
+    onAddToCartClicked: (String) -> Unit,
+    onAddToFavoriteClicked: (String) -> Unit
 
 ) {
     Column {
@@ -109,8 +108,8 @@ fun getFocusCardIndex(listState: LazyListState): Int {
 fun OfferCard(
     product: ProductWithOffer,
     isInFocusMood: Boolean,
-    onAddToCartClicked: (Int) -> Unit,
-    onAddToFavoriteClicked: (Int) -> Unit
+    onAddToCartClicked: (String) -> Unit,
+    onAddToFavoriteClicked: (String) -> Unit
 ) {
     val width = remember(isInFocusMood) { (if (isInFocusMood) 250 else 220).dp }
     val height = remember(isInFocusMood) { (if (isInFocusMood) 180 else 160).dp }
@@ -155,7 +154,7 @@ fun OfferCard(
 
 fun CurveDetailsBar(
     product: ProductWithOffer,
-    onAddToCartClicked: (Int) -> Unit,
+    onAddToCartClicked: (String) -> Unit,
 ) {
 
     Box(contentAlignment = Alignment.BottomEnd) {
@@ -174,7 +173,7 @@ fun CurveDetailsBar(
         ) {
             HorizontalSpacer24Dp()
             Column {
-                Text(text = product.name)
+                Text(text = product.title)
                 Row {
                     OldPriceText(oldPrice = product.oldPrice.toString())
                     HorizontalSpacer4Dp()

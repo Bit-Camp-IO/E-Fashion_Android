@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
-package com.bitio.ui.favorite
+package com.bitio.ui.product.favorite
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
@@ -22,15 +22,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavController
 import com.bitio.ui.R
-import com.bitio.ui.product.home.productWithOffer
-import com.bitio.ui.product.models.toUiProduct
-import com.bitio.ui.product.productsList.largeCards.ProductParallelogramColumn
-import com.bitio.ui.product.productsList.smallCards.ProductParallelogramGrid
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun FavoriteScreen() {
+fun FavoriteScreen(navController: NavController) {
     val viewModel = getViewModel<FavoriteViewModel>()
     val state by viewModel.favoriteUIState.collectAsState()
     FavoriteContent(
@@ -74,9 +71,9 @@ fun FavoriteContent(
             label = ""
         ) { targetIsGrid ->
             if (targetIsGrid) {
-                ProductParallelogramGrid(products = List(50) { productWithOffer.toUiProduct() })
+//                ProductParallelogramGrid(products = List(50) { productWithOffer.toUiProduct() })
             } else {
-                ProductParallelogramColumn(products = List(50) { productWithOffer })
+//                ProductParallelogramColumn(products = List(50) { productWithOffer })
             }
         }
 

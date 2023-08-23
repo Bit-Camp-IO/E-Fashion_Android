@@ -1,4 +1,4 @@
-package com.bitio.ui.favorite
+package com.bitio.ui.product.favorite
 
 import com.bitio.productscomponent.domain.entities.products.Product
 

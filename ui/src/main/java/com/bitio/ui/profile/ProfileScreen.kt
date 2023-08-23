@@ -28,11 +28,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.ui.R
+import com.bitio.ui.profile.chat.navigateToChatSupportScreen
 import com.bitio.ui.profile.composable.SettingApp
 import com.bitio.ui.profile.composable.UserProfile
+import com.bitio.ui.profile.location.navigateToLocationScreen
+import com.bitio.ui.profile.notifications.navigateToNotificationsScreen
+import com.bitio.ui.profile.order_status.navigateToOrderStatusScreen
 import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
 import com.bitio.ui.theme.Porcelain
@@ -42,17 +46,34 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ProfileScreen(
-
-    isDarkTheme: Boolean,
-    onSwitchTheme: () -> Unit
+    isDarkTheme: Boolean = false,
+    onSwitchTheme: () -> Unit = {},
+    navController: NavController,
 ) {
     val viewModel = getViewModel<ProfileViewModel>()
     val state by viewModel.profileUiState.collectAsState()
-    ProfileContent(state, isDarkTheme, onSwitchTheme)
+    ProfileContent(
+        state,
+        isDarkTheme,
+        onSwitchTheme,
+        onClickLocationScreen = navController::navigateToLocationScreen,
+        onClickOrderStatusScreen = navController::navigateToOrderStatusScreen,
+        onClickChatSupportScreen = navController::navigateToChatSupportScreen,
+        onClickNotificationsScreen = navController::navigateToNotificationsScreen,
+    )
 }
 
+
 @Composable
-private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitchTheme: () -> Unit) {
+private fun ProfileContent(
+    state: ProfileUiState,
+    isDarkTheme: Boolean,
+    onSwitchTheme: () -> Unit,
+    onClickLocationScreen: () -> Unit,
+    onClickOrderStatusScreen: () -> Unit,
+    onClickChatSupportScreen: () -> Unit,
+    onClickNotificationsScreen: () -> Unit,
+) {
 
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
@@ -70,11 +91,12 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
 
     Box(
         modifier = Modifier
-            .fillMaxSize(), contentAlignment = Alignment.TopCenter
+            .fillMaxSize(),
+        contentAlignment = Alignment.TopCenter
     ) {
         CustomBlurProfileImage(
-            image = state.profile.image,
-            contentDescription = state.profile.username
+            image = "",
+            contentDescription = "state.profile.username"
         )
 
         Column(
@@ -127,11 +149,13 @@ private fun ProfileContent(state: ProfileUiState, isDarkTheme: Boolean, onSwitch
                 SettingApp(
                     isDarkTheme = isDarkTheme,
                     onSwitchTheme = onSwitchTheme,
-                    modifier = Modifier
-                        .offset(x = offsetXOfProfileSettings)
-                ) {
-                    isUserProfileVisible = true
-                }
+                    modifier = Modifier.offset(x = offsetXOfProfileSettings),
+                    onClickMyProfile = { isUserProfileVisible = true },
+                    onClickLocationScreen = onClickLocationScreen,
+                    onClickOrderStatusScreen = onClickOrderStatusScreen,
+                    onClickChatSupportScreen = onClickChatSupportScreen,
+                    onClickNotificationsScreen = onClickNotificationsScreen,
+                )
 
                 UserProfile(
                     onClickBack = {

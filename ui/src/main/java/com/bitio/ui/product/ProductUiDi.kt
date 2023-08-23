@@ -5,6 +5,7 @@ import com.bitio.ui.product.details.DetailsViewModel
 import com.bitio.ui.product.home.HomeViewModel
 import com.bitio.ui.product.productsList.ProductListViewModel
 import com.bitio.ui.product.search.SearchViewModel
+import com.bitio.ui.profile.order_status.OrderStatusViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -15,5 +16,5 @@ val productUiDi = module {
     viewModel { CartViewModel() }
     viewModel { SearchViewModel() }
     viewModel { ProductListViewModel() }
-
+    viewModel { OrderStatusViewModel() }
 }

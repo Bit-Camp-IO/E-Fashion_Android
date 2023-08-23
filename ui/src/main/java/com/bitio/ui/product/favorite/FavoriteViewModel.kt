@@ -1,4 +1,4 @@
-package com.bitio.ui.favorite
+package com.bitio.ui.product.favorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

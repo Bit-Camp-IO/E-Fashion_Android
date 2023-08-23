@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.bitio.authcomponent.domain.useCases.GetAccessTokenUseCase
 import com.bitio.authcomponent.domain.useCases.LoginUseCase
 import com.bitio.authcomponent.domain.useCases.RegisterUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 
@@ -20,6 +21,8 @@ class AuthenticationViewModel(
     val password = mutableStateOf("")
     val passwordConfirmation = mutableStateOf("")
 
+    val checkIfLogin = mutableStateOf(false)
+
     fun loginUser() {
         viewModelScope.launch {
             loginUseCase(email.value, password.value)
@@ -27,5 +30,4 @@ class AuthenticationViewModel(
             Log.d("zzz", token)
         }
     }
-
 }

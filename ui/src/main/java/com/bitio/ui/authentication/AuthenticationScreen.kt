@@ -1,5 +1,6 @@
 package com.bitio.ui.authentication
 
+import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,28 +22,42 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.ui.R
 import com.bitio.ui.authentication.composable.CustomLogin
 import com.bitio.ui.authentication.composable.CustomSignUp
+import com.bitio.ui.authentication.route.navigateToForgotPasswordScreen
+import com.bitio.ui.route.RootRouteScreens
 import com.bitio.utils.profileShape
 import org.koin.androidx.compose.getViewModel
 
 
 @Composable
-fun AuthenticationScreen() {
+fun AuthenticationScreen(navController: NavController) {
     val viewModel = getViewModel<AuthenticationViewModel>()
-    Box(
-        modifier = Modifier
-            .fillMaxSize(), contentAlignment = Alignment.TopCenter
-    ) {
+    Log.d("TAG", "HashCodeOfAuthViewModel AuthenticationScreen: ${viewModel.hashCode()}")
 
-        AuthenticationContent(viewModel)
+    Box(
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter
+    ) {
+        AuthenticationContent(
+            viewModel = viewModel,
+            onClickForgetPassword = navController::navigateToForgotPasswordScreen,
+            onClickLoginButton = {
+                viewModel.checkIfLogin.value = true
+                navController.navigate(route = RootRouteScreens.Home.route)
+            }
+        )
     }
 }
 
 @Composable
-private fun AuthenticationContent(viewModel: AuthenticationViewModel) {
+private fun AuthenticationContent(
+    viewModel: AuthenticationViewModel,
+    onClickForgetPassword: () -> Unit,
+    onClickLoginButton: () -> Unit,
+) {
 
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
@@ -90,15 +105,16 @@ private fun AuthenticationContent(viewModel: AuthenticationViewModel) {
                     .background(MaterialTheme.colorScheme.background)
             ) {
 
-                CustomLogin(modifier = Modifier.offset(x = offsetXOfLogin),
+                CustomLogin(
+                    modifier = Modifier.offset(x = offsetXOfLogin),
                     email = viewModel.email,
                     password = viewModel.password,
                     onClickLoginButton = { username, password ->
-                        println("User info: $username $password")
-                        viewModel.loginUser()
+                        onClickLoginButton()
+//                        viewModel.loginUser()
                     },
                     onCheckedChange = {},
-                    onClickForgetPassword = {}
+                    onClickForgetPassword = onClickForgetPassword
                 ) {
                     isClickOnSignUp = true
                 }

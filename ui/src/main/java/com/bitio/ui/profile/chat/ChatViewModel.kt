@@ -1,4 +1,4 @@
-package com.bitio.ui.chat
+package com.bitio.ui.profile.chat
 
 import androidx.lifecycle.ViewModel
 

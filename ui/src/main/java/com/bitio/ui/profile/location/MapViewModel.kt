@@ -1,4 +1,4 @@
-package com.bitio.ui.location
+package com.bitio.ui.profile.location
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

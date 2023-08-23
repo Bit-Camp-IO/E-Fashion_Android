@@ -48,15 +48,15 @@ import java.util.regex.Pattern
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CollectionPager(collectionGroups: List<CollectionGroup>) {
-    val pagerState = rememberPagerState()
+//    val pagerState = rememberPagerState()
     Box(
         contentAlignment = Alignment.BottomStart, modifier = Modifier
             .wrapContentSize()
     ) {
-        HorizontalPager(collectionGroups.size, state = pagerState, pageSpacing = 16.dp) {
-            CollectionCard(collectionGroups[it])
-        }
-        PagerIndicator(size = collectionGroups.size, currentIndex = pagerState.currentPage)
+//        HorizontalPager(collectionGroups.size, state = pagerState, pageSpacing = 16.dp) {
+//            CollectionCard(collectionGroups[it])
+//        }
+//        PagerIndicator(size = collectionGroups.size, currentIndex = pagerState.currentPage)
 
     }
 }

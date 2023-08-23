@@ -1,8 +1,7 @@
-package com.bitio.ui.location
+package com.bitio.ui.profile.location
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -20,7 +20,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LocationScreen() {
+fun LocationScreen(navController: NavController) {
 
     val uiSettings = remember {
         MapUiSettings(zoomControlsEnabled = true)

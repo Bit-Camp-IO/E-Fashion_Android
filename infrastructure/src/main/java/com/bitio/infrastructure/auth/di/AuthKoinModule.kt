@@ -17,6 +17,7 @@ val authKoinModule = module {
     single<AuthApi> { AuthRetrofit.service }
     single<AuthDao> { AuthDaoImpl(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
+
     factory { GetAccessTokenUseCase(get()) }
     factory { RefreshAccessTokenUseCase(get()) }
     factory { RegisterUseCase(get()) }

@@ -79,12 +79,11 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.4.0")
 
 
-
     //google fonts
     implementation("androidx.compose.ui:ui-text-google-fonts:1.4.3")
-    //
-    api ("io.insert-koin:koin-androidx-compose:3.4.6")
 
+    // Koin
+    api ("io.insert-koin:koin-androidx-compose:3.4.6")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

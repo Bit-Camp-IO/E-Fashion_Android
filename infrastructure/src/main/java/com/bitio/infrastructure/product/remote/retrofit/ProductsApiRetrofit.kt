@@ -1,6 +1,6 @@
-package com.bitio.infrastructure.product.remote
+package com.bitio.infrastructure.product.remote.retrofit
 
-import com.bitio.productscomponent.data.remote.ProductsApi
+import com.bitio.infrastructure.product.remote.data.CategoryAdaptee
 import com.bitio.productscomponent.data.remote.response.CategoryResponse
 import com.bitio.productscomponent.data.remote.response.ProductResponse
 import com.bitio.productscomponent.data.remote.response.ProductsPage
@@ -9,10 +9,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface ProductsApiRetrofit : ProductsApi {
+interface ProductsApiRetrofit  {
 
     @GET("product/list")
-    override suspend fun getProductsByCategoryAndBrand(
+     suspend fun getProductsByCategoryAndBrand(
         @Query("brands") brandId: String?,
         @Query("categories", encoded = true) categoryIds: List<String>?,
         @Query("page") page: Int,
@@ -20,15 +20,15 @@ interface ProductsApiRetrofit : ProductsApi {
     ): ResponseWrapper<ProductsPage>
 
     @GET("product/{id}")
-    override suspend fun getProductById(
+     suspend fun getProductById(
         @Path("id") id: String
     ): ResponseWrapper<ProductResponse>
 
     @GET("category/list")
-    override suspend fun getAllCategories(): ResponseWrapper<CategoryResponse>
+     suspend fun getAllCategories(@Query("gender") genderId:Int?): ResponseWrapper<List<CategoryAdaptee>>
 
     @GET("category/{id}")
-    override suspend fun getCategoryById(@Path("id") id: String): CategoryResponse
+     suspend fun getCategoryById(@Path("id") id: String): CategoryResponse
 
 
 }

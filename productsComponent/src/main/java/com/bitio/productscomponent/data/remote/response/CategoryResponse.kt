@@ -10,12 +10,4 @@ data class CategoryResponse(
     override val name: String,
     override val image: String,
     override val gender: GenderType,
-) : Category {
-    constructor(id: String, name: String, image: String, genderId: Int) : this(
-        id,
-        name,
-        image,
-        GenderType.getFromId(genderId)
-    )
-}
-
+) : Category

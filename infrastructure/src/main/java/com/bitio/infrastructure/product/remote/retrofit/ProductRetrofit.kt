@@ -1,4 +1,4 @@
-package com.bitio.infrastructure.product.remote
+package com.bitio.infrastructure.product.remote.retrofit
 
 
 import com.bitio.infrastructure.retrofitConfiguration.USER_BASE_URL

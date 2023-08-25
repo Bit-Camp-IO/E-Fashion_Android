@@ -3,6 +3,7 @@ package com.bitio.efashion
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,12 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.room.Room
 import com.bitio.infrastructure.roomConfiguration.AppDatabase
-import com.bitio.ui.authentication.AuthenticationScreen
+import com.bitio.productscomponent.data.remote.ProductsApi
+import com.bitio.productscomponent.domain.entities.products.Product
+import com.bitio.productscomponent.domain.repository.ProductRepository
 import com.bitio.ui.theme.EFashionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 
 class FashionActivity : ComponentActivity() {
@@ -67,21 +71,25 @@ class FashionActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
 
-                  //  AuthenticationScreen()
+                    //  AuthenticationScreen()
                 }
             }
         }
-       // val productRepo by inject<ProductRoomDao>()
+        // val productRepo by inject<ProductRoomDao>()
         val roomDb = Room.databaseBuilder(
             context = applicationContext,
             klass = AppDatabase::class.java,
             name = "app-database"
         ).build()
-       // val productRepo by inject<AppDatabase>()
+        // val productRepo by inject<AppDatabase>()
+        val productApi by inject<ProductRepository>()
         GlobalScope.launch {
-            roomDb.productRoomDao()
+           // val catgories = productApi.get
+           // Log.d("xxxx", catgories.toString())
+
+            //roomDb.productRoomDao()
             //val products = productRepo.getProductsByCategoryAndBrand(null, null, 1, 20)
-          //  Log.d("xxxx", products.toString())
+            //  Log.d("xxxx", products.toString())
         }
     }
 }

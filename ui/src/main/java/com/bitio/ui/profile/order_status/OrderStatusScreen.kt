@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bitio.ui.R
+import com.bitio.ui.shared.SharedTopAppBar
 import com.bitio.ui.shared.VerticalSpacer24Dp
 import org.koin.androidx.compose.getViewModel
 
@@ -53,7 +54,6 @@ fun OrderStatusScreen(
     OrderStatusContent(state)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun OrderStatusContent(state: OrderStatusUiState) {
@@ -63,27 +63,7 @@ private fun OrderStatusContent(state: OrderStatusUiState) {
     }
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                modifier = Modifier.padding(horizontal = 24.dp),
-                title = {
-                    Text("Order status", style = MaterialTheme.typography.titleMedium)
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            modifier = Modifier.padding(end = 16.dp),
-                            painter = painterResource(id = R.drawable.arraw_back),
-                            contentDescription = "back",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                )
-            )
-        }
+        topBar = { SharedTopAppBar(title = "Order status") {} }
     ) { paddingValue ->
 
         Column(

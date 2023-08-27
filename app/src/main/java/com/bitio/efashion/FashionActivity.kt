@@ -20,6 +20,7 @@ import com.bitio.infrastructure.roomConfiguration.AppDatabase
 import com.bitio.productscomponent.data.remote.ProductsApi
 import com.bitio.productscomponent.domain.entities.products.Product
 import com.bitio.productscomponent.domain.repository.ProductRepository
+import com.bitio.ui.authentication.AuthenticationScreen
 import com.bitio.ui.theme.EFashionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -62,7 +63,7 @@ class FashionActivity : ComponentActivity() {
 
         setContent {
             val isDarkTheme by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
             EFashionTheme(
                 darkTheme = isDarkTheme
@@ -71,7 +72,7 @@ class FashionActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
 
-                    //  AuthenticationScreen()
+                    BottomNavigationBar(checkIfLogin = true)
                 }
             }
         }
@@ -84,8 +85,8 @@ class FashionActivity : ComponentActivity() {
         // val productRepo by inject<AppDatabase>()
         val productApi by inject<ProductRepository>()
         GlobalScope.launch {
-           // val catgories = productApi.get
-           // Log.d("xxxx", catgories.toString())
+            // val catgories = productApi.get
+            // Log.d("xxxx", catgories.toString())
 
             //roomDb.productRoomDao()
             //val products = productRepo.getProductsByCategoryAndBrand(null, null, 1, 20)

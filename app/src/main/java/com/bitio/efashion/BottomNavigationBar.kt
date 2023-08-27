@@ -27,12 +27,15 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.bitio.ui.profile.ProfileRouteScreens
 import com.bitio.ui.route.RootRouteScreens
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun BottomNavigationBar(navController: NavHostController, checkIfLogin: Boolean) {
+fun BottomNavigationBar(checkIfLogin: Boolean) {
+
+    val navController = rememberNavController()
 
     var isNavBottomVisible by remember {
         mutableStateOf(false)

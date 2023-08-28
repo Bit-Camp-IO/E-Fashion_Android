@@ -24,10 +24,10 @@ interface UserApiProvider : UserApi {
 
     @Multipart
     @POST("user/profile-image")
-    override suspend fun updateUserImage(@Part image: String)
+    override suspend fun addUserImage(@Part image: String)
 
     @POST("user/address")
-    override suspend fun updateAddressOfUser(@Body addressBody: AddressBody)
+    override suspend fun addAddressOfUser(@Body addressBody: AddressBody)
 
     @DELETE("user/address/{address_id}")
     override suspend fun deleteAddressOfUser(@Path("address_id") addressId: String)

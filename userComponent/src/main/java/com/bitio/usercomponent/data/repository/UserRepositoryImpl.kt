@@ -19,18 +19,18 @@ class UserRepositoryImpl(
        return userApi.getAddressesOfUser()
     }
 
-    override suspend fun updateUserImage(image: String) {
-        userApi.updateUserImage(image)
+    override suspend fun addUserImage(image: String) {
+        userApi.addUserImage(image)
     }
 
-    override suspend fun updateAddressOfUser(address: Address) {
+    override suspend fun addAddressOfUser(address: Address) {
         val addressBody = AddressBody(
             city = address.city,
             state = address.state,
             postalCode = address.postalCode,
             isPrimary = false
         )
-        userApi.updateAddressOfUser(addressBody)
+        userApi.addAddressOfUser(addressBody)
     }
 
     override suspend fun deleteAddressOfUser(addressId: String) {

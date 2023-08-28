@@ -8,7 +8,7 @@ import com.bitio.usercomponent.domain.entities.Address
 interface UserApi {
     suspend fun getUserInformation(): ResponseWrapper<UserResponse>
     suspend fun getAddressesOfUser(): ResponseWrapper<List<Address>>
-    suspend fun updateUserImage(image: String)
-    suspend fun updateAddressOfUser(addressBody: AddressBody)
+    suspend fun addUserImage(image: String)
+    suspend fun addAddressOfUser(addressBody: AddressBody)
     suspend fun deleteAddressOfUser(addressId: String)
 }

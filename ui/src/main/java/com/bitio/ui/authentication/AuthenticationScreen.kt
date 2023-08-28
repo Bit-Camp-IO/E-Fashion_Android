@@ -110,6 +110,7 @@ private fun AuthenticationContent(
                     email = viewModel.email,
                     password = viewModel.password,
                     onClickLoginButton = { username, password ->
+
                         onClickLoginButton()
 //                        viewModel.loginUser()
                     },

@@ -16,6 +16,6 @@ val presentationDiModule = module {
     viewModel { ChatSupportViewModel() }
     viewModel { FavoriteViewModel() }
     viewModel { MapViewModel() }
-    viewModel { ProfileViewModel() }
+    viewModel { ProfileViewModel(get(), get(), get(), get(), get()) }
 
 }

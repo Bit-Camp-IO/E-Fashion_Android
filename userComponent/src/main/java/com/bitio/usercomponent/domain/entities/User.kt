@@ -7,7 +7,6 @@ interface User {
     val provider: String
     val isVerified:Boolean
     val address: String
-    val settings: List<String>
-    val addresses: List<Address>
+    val settings: Settings
 }
 

@@ -15,12 +15,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
+import androidx.navigation.compose.rememberNavController
 import androidx.room.Room
 import com.bitio.infrastructure.roomConfiguration.AppDatabase
 import com.bitio.productscomponent.data.remote.ProductsApi
 import com.bitio.productscomponent.domain.entities.products.Product
 import com.bitio.productscomponent.domain.repository.ProductRepository
 import com.bitio.ui.authentication.AuthenticationScreen
+import com.bitio.ui.profile.ProfileScreen
 import com.bitio.ui.theme.EFashionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -72,7 +74,10 @@ class FashionActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
 
-                    BottomNavigationBar(checkIfLogin = true)
+                    val navController = rememberNavController()
+
+//                    BottomNavigationBar(checkIfLogin = true)
+                    ProfileScreen(navController = navController)
                 }
             }
         }

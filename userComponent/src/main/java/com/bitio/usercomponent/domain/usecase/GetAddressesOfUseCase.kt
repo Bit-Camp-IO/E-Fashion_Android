@@ -1,6 +1,6 @@
 package com.bitio.usercomponent.domain.usecase
 
-import com.bitio.usercomponent.domain.ResponseStatus
+import com.bitio.usercomponent.domain.utils.ResponseStatus
 import com.bitio.usercomponent.domain.entities.Address
 import com.bitio.usercomponent.domain.repository.UserRepository
 

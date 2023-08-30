@@ -46,6 +46,7 @@ fun AuthenticationScreen(navController: NavController) {
             onClickForgetPassword = navController::navigateToForgotPasswordScreen,
             onClickLoginButton = {
                 viewModel.checkIfLogin.value = true
+                viewModel.loginUser()
                 navController.navigate(route = RootRouteScreens.Home.route)
             }
         )

@@ -172,7 +172,7 @@ fun ParallelogramCurve(
                 onAddToCartClicked
             ) else HorizontalSpacer24Dp()
             Column {
-                Text(text = product.name, style = MaterialTheme.typography.bodyMedium)
+                Text(text = product.title, style = MaterialTheme.typography.bodyMedium)
                 VerticalSpacer4Dp()
                 Text(
                     text = "$" + product.price.toString(),

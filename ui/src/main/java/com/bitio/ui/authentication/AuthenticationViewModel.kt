@@ -27,7 +27,7 @@ class AuthenticationViewModel(
         viewModelScope.launch {
             loginUseCase(email.value, password.value)
             val token = getAccessTokenUseCase()
-            Log.d("zzz", token)
+
         }
     }
 }

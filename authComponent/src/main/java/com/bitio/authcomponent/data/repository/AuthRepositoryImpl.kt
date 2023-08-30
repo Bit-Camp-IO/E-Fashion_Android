@@ -31,7 +31,13 @@ class AuthRepositoryImpl(private val api: AuthApi, private val dao: AuthDao) : A
     override suspend fun getAccessToken(): String {
         if (cashedAccessToken == null)
             refreshAccessToken()
+
         return cashedAccessToken!!
+    }
+
+    override fun quickRetriveAccessToken():String?{
+
+        return cashedAccessToken
     }
 
     override fun getAccessTokenStream(): Flow<String> {
@@ -54,6 +60,7 @@ class AuthRepositoryImpl(private val api: AuthApi, private val dao: AuthDao) : A
     private suspend fun saveAuthDataHelper(authData: AuthData) {
         cashedAccessToken = authData.accessToken
         cashedRefreshToken = authData.refreshToken
+        println("cc"+ cashedRefreshToken.toString())
         dao.updateRefreshToken(cashedRefreshToken!!)
 
     }

@@ -5,4 +5,6 @@ interface Product {
     val title: String
     val image: String
     val price: Float
+    val oldPrice:Float
+    val discount:Float
 }

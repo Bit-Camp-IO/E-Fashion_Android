@@ -1,12 +1,10 @@
 package com.bitio.ui.product.home
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
-import com.bitio.productscomponent.domain.entities.Brand
 import com.bitio.productscomponent.domain.entities.products.CollectionGroup
 import com.bitio.productscomponent.domain.entities.products.ProductWithOffer
 import com.bitio.ui.product.details.navigateToProductDetailsScreen
@@ -16,6 +14,9 @@ import com.bitio.ui.product.home.composables.CollectionPager
 import com.bitio.ui.product.home.composables.OffersPager
 import com.bitio.ui.product.home.composables.myImage
 import com.bitio.ui.product.home.offers.navigateToOffersScreen
+import com.bitio.ui.shared.screenState.ErrorScreen
+import com.bitio.ui.shared.screenState.LoadingScreen
+import com.bitio.ui.shared.screenState.UiDataState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -23,66 +24,65 @@ fun HomeScreen(
     navController: NavController,
 ) {
     val viewModel = koinViewModel<HomeViewModel>()
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-        CollectionPager(collectionGroups = List(5) { collection })
-        CategoriesRow()
 
-        OffersPager(
-            productsWithOffer = List(10) { productWithOffer },
-            onSeeAllClicked = { },
-            onAddToCartClicked = {},
-            onAddToFavoriteClicked = {}
-        ) {}
-        OffersPager(
-            productsWithOffer = List(10) { productWithOffer },
-            onSeeAllClicked = navController::navigateToOffersScreen,
-            onAddToCartClicked = {},
-            onAddToFavoriteClicked = {},
-            onClickProduct = navController::navigateToProductDetailsScreen
+    Box {
+        HomeScreenContent(
+            navController = navController,
+            viewModel = viewModel
         )
+        when (val dataState = viewModel.uiDataState) {
+
+            is UiDataState.Error -> ErrorScreen(message = dataState.message)
+            is UiDataState.Loading -> LoadingScreen()
+            is UiDataState.Success -> {}
 
 
-        BrandRow(
-            brand = brand,
-            products = List(20) { productWithOffer },
-            onSeeAllClicked = {},
-            onCardClicked = {},
-            onAddToFavoriteClicked = {},
-            onAddToCartClicked = {}
-        )
+        }
+    }
+}
 
 
-        BrandRow(
-            brand = brand,
-            products = List(20) { productWithOffer },
-            onSeeAllClicked = {},
-            onCardClicked = {},
-            onAddToFavoriteClicked = {},
-            onAddToCartClicked = {}
-        )
+@Composable
+fun HomeScreenContent(navController: NavController, viewModel: HomeViewModel) {
+ //   viewModel.zaraProducts.collectAsState()
+    val brandsRows = viewModel.productStateHoldersFlow.collectAsState()
+    // Column(modifier = Modifier.verticalScroll(rememberScrollState()))
 
-
-        BrandRow(
-            brand = brand,
-            products = List(20) { productWithOffer },
-            onSeeAllClicked = {},
-            onCardClicked = {},
-            onAddToFavoriteClicked = {},
-            onAddToCartClicked = {}
-        )
-
-
-        BrandRow(
-            brand = brand,
-            products = List(20) { productWithOffer },
-            onSeeAllClicked = {},
-            onCardClicked = {},
-            onAddToFavoriteClicked = {},
-            onAddToCartClicked = {}
-        )
+    LazyColumn {
+        item { CollectionPager(collectionGroups = List(5) { collection }) }
+        item {
+            CategoriesRow(
+                viewModel.categoriesFlow,
+                viewModel.booleanState,
+                viewModel::changeGenderState,
+                viewModel::applyFilters
+            )
+        }
+        item {
+            val offersStateHolder=viewModel.offersStateHolder
+            val products=offersStateHolder.productsFlow.collectAsState().value
+            OffersPager(
+                productsWithOffer = products,
+                onSeeAllClicked = navController::navigateToOffersScreen,
+                onClickProduct = navController::navigateToProductDetailsScreen
+            )
+        }
+        items(count = brandsRows.value.size) {
+            val stateHolder=brandsRows.value[it]
+            val products=stateHolder.productsFlow.collectAsState().value
+            BrandRow(
+                brand = stateHolder.brand!!,
+                products = products,
+                onSeeAllClicked = {},
+                onCardClicked = {},
+                onAddToFavoriteClicked = {},
+                onAddToCartClicked = {}
+            )
+        }
 
 
     }
+
 }
 
 val collection = object : CollectionGroup {
@@ -109,17 +109,8 @@ val productWithOffer = object : ProductWithOffer {
         get() = myImage
     override val price: Float
         get() = 150f
+    override val discount: Float
+        get() = 5f
 
 }
-val brand = object : Brand {
-    override val id: String
-        get() = ""
-    override val name: String
-        get() = "Any"
-    override val description: String
-        get() = "any"
-    override val image: String
-        get() = myImage
-}
-
 

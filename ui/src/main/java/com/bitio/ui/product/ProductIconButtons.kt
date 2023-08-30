@@ -3,6 +3,7 @@ package com.bitio.ui.product
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
@@ -66,7 +67,7 @@ fun FavoriteIconButtonCircularBg(
 @Composable
 fun CartIconButton(modifier: Modifier = Modifier, productId: String, onClick: (String) -> Unit = {}) {
     Icon(
-        modifier = modifier.clickable { onClick(productId) },
+        modifier = modifier.requiredSize(24.dp).clickable { onClick(productId) },
         painter = painterResource(id = R.drawable.ic_bag),
         contentDescription = "add to cart button",
         tint = Color.Unspecified

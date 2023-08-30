@@ -11,11 +11,19 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keep class org.koin.* { *; }
+-keep class * extends org.koin.core.component.KoinComponent
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keepattributes SourceFile,LineNumberTable
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+#-keepattributes Signature
+#-keepattributes *Annotation*
+#-printusage <output-dir>/usage.txt
+#-dontobfuscate
+-dontshrink
+-dontwarn java.lang.invoke.StringConcatFactory

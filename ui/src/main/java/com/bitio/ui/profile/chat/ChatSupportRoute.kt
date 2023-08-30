@@ -11,7 +11,7 @@ internal fun NavController.navigateToChatSupportScreen() {
 
 internal fun NavGraphBuilder.chatSupportRoute(navController: NavController) {
     composable(ProfileRouteScreens.ChatSupport.route) {
-        ChatScreen(
+        ChatSupportScreen(
             navController = navController
         )
     }

@@ -13,7 +13,6 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +27,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.bitio.ui.profile.ProfileRouteScreens
 import com.bitio.ui.route.RootRouteScreens
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -41,12 +41,22 @@ fun BottomNavigationBar(navController: NavHostController, checkIfLogin: Boolean)
 
     Scaffold(
         bottomBar = {
-            BottomBar(navController, isNavBottomVisible)
+            val visibility = currentRoute(navController = navController) !in listOf(
+                ProfileRouteScreens.Location.route,
+                ProfileRouteScreens.ChatSupport.route,
+            )
+            BottomBar(navController, visibility)
         },
         containerColor = Color.Transparent
     ) { innerPadding ->
         AppNavGraph(innerPadding, navController, isNavBottomVisible)
     }
+}
+
+@Composable
+fun currentRoute(navController: NavHostController): String? {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    return navBackStackEntry?.destination?.route
 }
 
 

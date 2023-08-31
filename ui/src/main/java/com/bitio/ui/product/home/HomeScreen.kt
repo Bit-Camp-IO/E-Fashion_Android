@@ -14,6 +14,7 @@ import com.bitio.ui.product.home.composables.CollectionPager
 import com.bitio.ui.product.home.composables.OffersPager
 import com.bitio.ui.product.home.composables.myImage
 import com.bitio.ui.product.home.offers.navigateToOffersScreen
+import com.bitio.ui.product.home.zara.navigateToZaraScreen
 import com.bitio.ui.shared.screenState.ErrorScreen
 import com.bitio.ui.shared.screenState.LoadingScreen
 import com.bitio.ui.shared.screenState.UiDataState
@@ -44,7 +45,6 @@ fun HomeScreen(
 
 @Composable
 fun HomeScreenContent(navController: NavController, viewModel: HomeViewModel) {
- //   viewModel.zaraProducts.collectAsState()
     val brandsRows = viewModel.productStateHoldersFlow.collectAsState()
     // Column(modifier = Modifier.verticalScroll(rememberScrollState()))
 
@@ -73,8 +73,8 @@ fun HomeScreenContent(navController: NavController, viewModel: HomeViewModel) {
             BrandRow(
                 brand = stateHolder.brand!!,
                 products = products,
-                onSeeAllClicked = {},
-                onCardClicked = {},
+                onSeeAllClicked ={},// navController::navigateToZaraScreen,
+                onCardClicked = navController::navigateToProductDetailsScreen,
                 onAddToFavoriteClicked = {},
                 onAddToCartClicked = {}
             )

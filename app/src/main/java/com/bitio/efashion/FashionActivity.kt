@@ -64,9 +64,9 @@ class FashionActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen(navController = rememberNavController())
+                  //  HomeScreen(navController = rememberNavController())
                    // AuthenticationScreen(navController = rememberNavController())
-                    //BottomNavigationBar(navController = rememberNavController(), checkIfLogin =true)
+                    BottomNavigationBar(navController = rememberNavController(), checkIfLogin =true)
                 }
             }
         }

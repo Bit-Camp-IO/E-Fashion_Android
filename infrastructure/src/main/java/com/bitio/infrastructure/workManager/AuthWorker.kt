@@ -21,6 +21,7 @@ class AuthWorker(
     private val refreshAccessTokenUseCase: RefreshAccessTokenUseCase by inject()
     override suspend fun doWork(): Result =
         withContext(Dispatchers.IO) {
+
             val result = refreshAccessTokenUseCase()
             return@withContext if (result.isSuccess) Result.success() else Result.retry()
         }

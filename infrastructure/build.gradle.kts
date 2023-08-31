@@ -18,7 +18,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -52,15 +52,20 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
+
     //room
     val roomVersion = "2.5.2"
     api("androidx.room:room-runtime:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
+    val koinVersion ="3.4.3"
+    api("io.insert-koin:koin-core:$koinVersion")
+    api("io.insert-koin:koin-android:$koinVersion")
+    val koinKspVersion ="1.2.2"
+    api("io.insert-koin:koin-annotations:$koinKspVersion")
+    ksp ("io.insert-koin:koin-ksp-compiler:$koinKspVersion")
+    // api("io.insert-koin:koin-androidx-workmanager:3.4.3")
 
-    implementation("io.insert-koin:koin-core:3.4.3")
-    implementation("io.insert-koin:koin-androidx-workmanager:3.4.3")
-    implementation("io.insert-koin:koin-android:3.4.3")
+
 
     //work manager
     implementation("androidx.work:work-runtime-ktx:2.8.1")

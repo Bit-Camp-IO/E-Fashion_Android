@@ -1,6 +1,7 @@
 package com.bitio.infrastructure.auth.local
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -29,8 +30,10 @@ class AuthDaoImpl(private val context: Context) : AuthDao {
         val scope = CoroutineScope(Dispatchers.IO)
         val job = scope.launch {
             context.dataStore.data.collectLatest {
-                token = it[tokenKey] ?: ""
+                token = it[tokenKey]
+                Log.d("vvv",token.toString())
                 scope.cancel()
+
             }
         }
         job.join()
@@ -51,7 +54,8 @@ class AuthDaoImpl(private val context: Context) : AuthDao {
         coroutineScope.launch {
             context.dataStore.data.collect {
                 val token = it[tokenKey]
-                tokenFlow.emit(token!!)
+                if (token!=null)
+                    tokenFlow.emit(token)
             }
         }
 

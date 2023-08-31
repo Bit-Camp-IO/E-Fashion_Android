@@ -16,40 +16,40 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bitio.productscomponent.domain.entities.Brand
 import com.bitio.productscomponent.domain.entities.products.Product
 import com.bitio.ui.R
 import com.bitio.ui.product.CartIconButton
 import com.bitio.ui.product.FavoriteIconButtonCircularBg
+import com.bitio.ui.product.models.UiProduct
 import com.bitio.ui.shared.AsyncDescribedImage
 import com.bitio.ui.shared.VerticalSpacer2Dp
 
 @Composable
 fun BrandRow(
     brand: Brand,
-    products: List<Product>,
+    products: List<UiProduct>,
     onSeeAllClicked: (String) -> Unit,
     onCardClicked: (String) -> Unit,
-    onAddToFavoriteClicked: (String) -> Unit,
+    onAddToFavoriteClicked: (UiProduct) -> Unit,
     onAddToCartClicked: (String) -> Unit,
 ) {
     ItemsTitleComponent(name = brand.name) { onSeeAllClicked(brand.id) }
     LazyRow(contentPadding = PaddingValues(start = 24.dp, end = 8.dp)) {
-        items(products.size, key = { it }, contentType = { Product::class }) {
+        items(products.size, key = { it }, contentType = { UiProduct::class }) {
 
             ProductCard(
                 products[it],
-                onCardClicked = onCardClicked,
+                onCardClicked =onCardClicked ,
                 onAddToCartClicked = onAddToCartClicked,
-                onAddToFavoriteClicked = onAddToFavoriteClicked
+                onAddToFavoriteClicked = products[it].onAddToFavoriteClicked
             )
         }
     }
@@ -57,28 +57,28 @@ fun BrandRow(
 
 @Composable
 fun ProductCard(
-    product: Product,
+    product: UiProduct,
     onCardClicked: (String) -> Unit,
     onAddToCartClicked: (String) -> Unit,
-    onAddToFavoriteClicked: (String) -> Unit
+    onAddToFavoriteClicked: (UiProduct) -> Unit
 ) {
     Box(modifier = Modifier
         .padding(end = 16.dp)
         .size(150.dp, 200.dp)
         .clip(RoundedCornerShape(16.dp))
         .clickable { onCardClicked(product.id) }) {
-        AsyncDescribedImage(imageLink = product.image)
+        AsyncDescribedImage(imageLink = product.image, modifier = Modifier.fillMaxSize())
         Column(
             Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.End
         ) {
-            val isFav = remember { mutableStateOf(true) }
+          //  val isFav = remember { mutableStateOf(true) }
 
             FavoriteIconButtonCircularBg(
-                modifier = Modifier.padding(12.dp), isFav,
+                modifier = Modifier.padding(12.dp), product.isFavoriteState,
                 productId = product.id
-            ) { onAddToFavoriteClicked(product.id) }
+            ) { onAddToFavoriteClicked(product) }
             ProductCardDetailsCurve(product, onAddToCartClicked)
 
         }
@@ -106,7 +106,11 @@ fun ProductCardDetailsCurve(product: Product, onAddToCartClicked: (String) -> Un
         ) {
             Column {
                 Text(
-                    text = product.title, style = MaterialTheme.typography.bodyMedium
+                    text = product.title.take(12),
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Clip,
+                    softWrap = false
                 )
                 VerticalSpacer2Dp()
                 Text(

@@ -31,10 +31,10 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.bitio.productscomponent.domain.entities.products.ProductWithOffer
 import com.bitio.ui.R
 import com.bitio.ui.product.CartIconButtonCircularBg
 import com.bitio.ui.product.FavoriteIconButton
+import com.bitio.ui.product.models.UiProduct
 import com.bitio.ui.shared.HorizontalSpacer24Dp
 import com.bitio.ui.shared.HorizontalSpacer4Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
@@ -43,10 +43,8 @@ import com.bitio.ui.shared.VerticalSpacer8Dp
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OffersPager(
-    productsWithOffer: List<ProductWithOffer>,
+    productsWithOffer: List<UiProduct>,
     onSeeAllClicked: () -> Unit,
-    onAddToCartClicked: (String) -> Unit,
-    onAddToFavoriteClicked: (String) -> Unit,
     onClickProduct: (String) -> Unit
 
 ) {
@@ -66,11 +64,11 @@ fun OffersPager(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(productsWithOffer.size) {
+                val product = productsWithOffer[it]
                 OfferCard(
-                    product = productsWithOffer[it],
+                    product = product,
                     isInFocusMood = getFocusCardIndex(listState) == it,
-                    onAddToCartClicked = onAddToCartClicked,
-                    onAddToFavoriteClicked = onAddToFavoriteClicked
+
                 )
             }
         }
@@ -107,10 +105,8 @@ fun getFocusCardIndex(listState: LazyListState): Int {
 @SuppressLint("NewApi")
 @Composable
 fun OfferCard(
-    product: ProductWithOffer,
+    product: UiProduct,
     isInFocusMood: Boolean,
-    onAddToCartClicked: (String) -> Unit,
-    onAddToFavoriteClicked: (String) -> Unit
 ) {
     val width = remember(isInFocusMood) { (if (isInFocusMood) 250 else 220).dp }
     val height = remember(isInFocusMood) { (if (isInFocusMood) 180 else 160).dp }
@@ -134,15 +130,15 @@ fun OfferCard(
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.End
         ) {
-            val x = remember { mutableStateOf(false) }
+
             FavoriteIconButton(
                 Modifier.padding(12.dp),
-                isFavoriteState = x
-            ) { onAddToFavoriteClicked(product.id) }
+                isFavoriteState =product.isFavoriteState
+            ) { product.onAddToFavoriteClicked(product) }
 
             CurveDetailsBar(
                 product = product,
-                onAddToCartClicked = onAddToCartClicked,
+                onAddToCartClicked = { product.onAddToCartClicked(product) },
 
                 )
         }
@@ -154,7 +150,7 @@ fun OfferCard(
 @Composable
 
 fun CurveDetailsBar(
-    product: ProductWithOffer,
+    product: UiProduct,
     onAddToCartClicked: (String) -> Unit,
 ) {
 

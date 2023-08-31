@@ -1,6 +1,5 @@
 package com.bitio.ui.product.home.composables
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -11,104 +10,97 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.bitio.productscomponent.domain.entities.categories.GenderCategory
-import com.bitio.productscomponent.domain.entities.categories.Category
-import com.bitio.productscomponent.domain.entities.categories.GenderType
+import com.bitio.ui.R
+import com.bitio.ui.product.models.UiCategory
+import com.bitio.ui.shared.HorizontalSpacer2Dp
 import com.bitio.ui.shared.HorizontalSpacer4Dp
 import com.bitio.ui.shared.HorizontalSpacer8Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
 import com.bitio.ui.theme.PeacockBlue
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
-fun CategoriesRow() {
+fun CategoriesRow(
+    categoriesFlow: StateFlow<List<UiCategory>>,
+    selectGenderList: List<MutableState<Boolean>>,
+    onGenderCardClicked: (Int) -> Unit,
+    onApplyFilterClicked:()->Unit,
+) {
     val scrollState = rememberScrollState()
     Column {
-        ItemsTitleComponent(name = "Filter") {}
-        Row(Modifier.horizontalScroll(scrollState).padding(horizontal = 24.dp),
+        CategoryTitleComponent(onApplyFilterClicked)
+        Row(
+            Modifier
+                .horizontalScroll(scrollState)
+                .padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-            GenderCategoryRow(genderCategories, scrollState)
-            ProductCategoriesRow(productCategories = productCategories)
+        ) {
+            GenderCategoryRow(selectGenderList, scrollState, onGenderCardClicked)
+            ProductCategoriesRow(categoriesFlow)
 
         }
     }
 }
 
-object CachedOffsets {
-    private var offSet: Float? = null
-    private var offSet2: Float? = null
-
-
-    fun getFirstCachedOffset(currentOffset: Float): Float {
-        if (offSet == null) offSet = currentOffset
-        return offSet!!
-    }
-
-    fun getSecCachedOffset(currentOffset: Float): Float {
-        if (offSet2 == null) offSet2 = currentOffset
-        return offSet2!!
-    }
-}
-
-fun getXTranslation(listState: LazyListState): Float {
-
-
-    return try {
-        val offset1 =
-            CachedOffsets.getFirstCachedOffset(listState.layoutInfo.visibleItemsInfo[0].offset.toFloat())
-        val offset2 =
-            CachedOffsets.getSecCachedOffset(listState.layoutInfo.visibleItemsInfo[1].offset.toFloat())
-
-        offset1 - 0.5f * (listState.layoutInfo.visibleItemsInfo[1].offset.toFloat() - offset2)
-    } catch (e: IndexOutOfBoundsException) {
-        CachedOffsets.getFirstCachedOffset(0f) +
-                -listState.layoutInfo.visibleItemsInfo[0].offset
-    }
-
-}
 
 @Composable
-fun GenderCategoryRow(genderCategories: List<GenderCategory>, scrollState: ScrollState) {
+fun GenderCategoryRow(
+    isSelectedList: List<MutableState<Boolean>>,
+    scrollState: ScrollState,
+    onClick: (Int) -> Unit
+) {
 
 
-        Row(Modifier.graphicsLayer {
-            Log.d("aaa",scrollState.value.toString())
-            translationX = 0.5f* scrollState.value  },
-            verticalAlignment = Alignment.CenterVertically
+    Row(
+        Modifier.graphicsLayer {
+
+            translationX = 0.5f * scrollState.value
+        },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        HorizontalSpacer8Dp()
+        Row(
+            modifier = Modifier.background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(16.dp)
+            )
         ) {
-            GoButton {}
-            HorizontalSpacer8Dp()
-            Row(
-                modifier = Modifier.background(
-                    color = MaterialTheme.colorScheme.surface,
-                    shape = RoundedCornerShape(16.dp)
-                )
-            ) {
 
-                HorizontalSpacer8Dp()
-                for (genderCategory in genderCategories) {
-                    GenderCategoryCard(genderCategory = genderCategory)
-                }
-                HorizontalSpacer8Dp()
-            }
+            HorizontalSpacer8Dp()
+
+            GenderCategoryCard("Men", isSelectedList[0]) { onClick(0) }
+            GenderCategoryCard("Women", isSelectedList[1]) { onClick(1) }
+
+
+            HorizontalSpacer8Dp()
+        }
 
     }
 }
@@ -126,18 +118,18 @@ fun GoButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun GenderCategoryCard(genderCategory: GenderCategory) {
+fun GenderCategoryCard(name: String, isSelected: MutableState<Boolean>, onClick: () -> Unit) {
     CategoryCard(
-        id = genderCategory.id,
-        name = genderCategory.name,
-        image = genderCategory.image,
-    ) {
-
-    }
+        id = "",
+        name = name,
+        image = myImage,
+        isSelected,
+    ) { onClick() }
 }
 
 @Composable
-fun ProductCategoriesRow(productCategories: List<Category>) {
+fun ProductCategoriesRow(categoriesFlow: StateFlow<List<UiCategory>>) {
+    val categories by categoriesFlow.collectAsState()
     Row(
         modifier = Modifier.background(
             color = MaterialTheme.colorScheme.surface,
@@ -152,8 +144,8 @@ fun ProductCategoriesRow(productCategories: List<Category>) {
                 .background(color = PeacockBlue, shape = RoundedCornerShape(16.dp))
         )
         HorizontalSpacer4Dp()
-        for (productCategory in productCategories) {
-            ProductCategoryCard(category = productCategory)
+        for (category in categories) {
+            ProductCategoryCard(category = category)
 
         }
         HorizontalSpacer8Dp()
@@ -161,31 +153,46 @@ fun ProductCategoriesRow(productCategories: List<Category>) {
 }
 
 @Composable
-fun ProductCategoryCard(category: Category) {
+fun ProductCategoryCard(category: UiCategory) {
     CategoryCard(
         id = category.id,
         name = category.name,
         image = category.image,
-    ) {}
+        isSelected = category.selectedState,
+        onClick = category.onCategoryClicked,
+    )
 }
 
 @Composable
-fun CategoryCard(id: String, name: String, image: String, onClick: (String) -> Unit) {
+fun CategoryCard(
+    id: String,
+    name: String,
+    image: String,
+    isSelected: MutableState<Boolean>,
+    onClick: (String) -> Unit
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .clickable { onClick(id) }
+            .clickable { isSelected.value = !isSelected.value; onClick(id) }
             .padding(all = 8.dp)
     ) {
+        val value = isSelected.value
         AsyncImage(
             model = image,
             contentDescription = null,
             modifier = Modifier
                 .size(40.dp)
                 .clip(shape = CircleShape)
-                .border(
-                    border = BorderStroke(2.dp, color = MaterialTheme.colorScheme.secondary),
-                    shape = CircleShape
+                .then(
+                    if (isSelected.value)
+                        Modifier.border(
+                            border = BorderStroke(
+                                2.dp,
+                                color = MaterialTheme.colorScheme.secondary
+                            ),
+                            shape = CircleShape
+                        ) else Modifier
                 ),
             contentScale = ContentScale.FillBounds
         )
@@ -197,28 +204,36 @@ fun CategoryCard(id: String, name: String, image: String, onClick: (String) -> U
     }
 }
 
+@Composable
+fun CategoryTitleComponent(onClick: () -> Unit) {
 
-val genderCategory = object : GenderCategory {
-    override val id: String
-        get() = "asda"
-    override val name: String
-        get() = "Male"
-    override val image: String
-        get() = myImage
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(horizontal = 24.dp)
+            .padding(top = 16.dp, bottom = 8.dp)
+            .fillMaxWidth()
+    ) {
+        Text(text = "Filter", style = MaterialTheme.typography.bodyMedium)
+        Button(
+            onClick = onClick,
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = Color.White
+            )
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(painter = painterResource(R.drawable.ic_filter_8), contentDescription = null)
+                HorizontalSpacer2Dp()
+                Text(text = "Apply", style = MaterialTheme.typography.labelSmall)
+            }
+        }
+
+
+    }
 }
-val genderCategories = List(2) { genderCategory }
-val category = object : Category {
-    override val id: String
-        get() = "asd"
-    override val name: String
-        get() = "Skirt"
-    override val image: String
-        get() = myImage
-    override val gender: GenderType
-        get() = GenderType.MALE
-}
-val productCategories = List(10) { category }
 
-
-const val myImage ="https://picsum.photos/100.webp"
- //   "https://previews.123rf.com/images/f8studio/f8studio1707/f8studio170701400/82842066-young-girl-in-stylish-clothes-posing-in-the-city-street.jpg"
+const val myImage =
+    "https://previews.123rf.com/images/f8studio/f8studio1707/f8studio170701400/82842066-young-girl-in-stylish-clothes-posing-in-the-city-street.jpg"

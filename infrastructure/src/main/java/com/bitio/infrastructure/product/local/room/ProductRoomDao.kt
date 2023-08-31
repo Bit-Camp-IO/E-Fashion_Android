@@ -29,7 +29,7 @@ interface ProductRoomDao {
     @Query("SELECT * FROM categories")
     fun getAllCategories(): List<CategoryDto>
 
-    @Query("SELECT * FROM categories WHERE gender = :genderType")
+    @Query("SELECT * FROM categories WHERE genderType = :genderType")
     fun getCategoriesByGender(genderType: GenderType): List<CategoryDto>
 
     @Insert

@@ -1,44 +1,69 @@
 package com.bitio.infrastructure.retrofitConfiguration
 
+import android.util.Log
 import com.bitio.authcomponent.domain.useCases.GetAccessTokenUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class AuthInterceptor(private var getAccessTokenUseCase: GetAccessTokenUseCase,updateAccessTokenUseCase: GetAccessTokenUseCase) : Interceptor {
-    private var accessToken = ""
+
+class AuthInterceptor : Interceptor, KoinComponent {
+    private val getAccessTokenUseCase: GetAccessTokenUseCase by inject()
+    private var accessToken = getAccessTokenUseCase.getQuickAccessToken()
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private var currentJob: Job? = null
-    private var seed: Int = 0
 
     init {
-      //  updateToken()
+        observeToken()
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        val newRequest: Request = request.newBuilder()
-            .header("Authorization", "Bearer $accessToken")
-            .build()
-        val response = chain.proceed(newRequest)
+        val newRequest: Request = createNewRequest(request, accessToken)
+        var response = chain.proceed(newRequest)
 
-        if (!response.isSuccessful && response.code == 401)
-            updateToken()
+        if (!response.isSuccessful && response.code == 401) {
+            Log.d("xxxxx", "zzzzzzzzzzzz")
+            response.close()
+            runBlocking {
+                try {
+                    accessToken = getAccessTokenUseCase.invoke()
+                    Log.d("xxxx", accessToken)
+                    response = chain.proceed(createNewRequest(request, accessToken))
+                }catch (e:Throwable){
 
+                }
+
+            }
+        }
+
+
+
+        Log.d("xxxx", response.toString())
         return response
     }
 
-    private fun updateToken() {
-//        currentJob?.cancel()
-//        currentJob = coroutineScope.launch {
-//            accessToken = getAccessTokenUseCase()
-//            delay(DURATION_TO_UPDATE_ACCESS_TOKEN_MIN)
-//
-//        }
+    private fun createNewRequest(request: Request, accessToken: String?): Request {
+        return request.newBuilder()
+            .header("Authorization", "Bearer $accessToken")
+            .build()
+    }
 
+    private fun observeToken() {
+        currentJob = coroutineScope.launch {
+            try {
+                getAccessTokenUseCase.getAsStream().collect {
+                    accessToken = it }
+            }catch (e:Throwable){}
+
+        }
     }
 
 }

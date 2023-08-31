@@ -9,4 +9,5 @@ interface AuthRepository {
     suspend fun updateRefreshToken()
     suspend fun getAccessToken(): String
     fun getAccessTokenStream(): Flow<String>
+    fun quickRetriveAccessToken(): String?
 }

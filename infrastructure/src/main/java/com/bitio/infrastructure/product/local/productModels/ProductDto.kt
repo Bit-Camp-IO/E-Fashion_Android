@@ -10,13 +10,17 @@ data class ProductDto constructor(
     override val title: String,
     override val image: String,
     override val price: Float,
-    val isFavorite: Boolean
+    override val oldPrice: Float,
+    override val discount: Float,
+    val isFavorite: Boolean,
 ) : Product {
     constructor(product: Product, isFavorite: Boolean) : this(
         product.id,
         product.title,
         product.image,
         product.price,
+        product.oldPrice,
+        product.discount,
         isFavorite
     )
 }

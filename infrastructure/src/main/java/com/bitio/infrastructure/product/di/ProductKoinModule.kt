@@ -10,6 +10,12 @@ import com.bitio.productscomponent.data.local.dataSource.ProductDao
 import com.bitio.productscomponent.data.remote.ProductsApi
 import com.bitio.productscomponent.data.repository.ProductRepositoryImpl
 import com.bitio.productscomponent.domain.repository.ProductRepository
+import com.bitio.productscomponent.domain.useCase.AddOrRemoveProductFromFavorite
+import com.bitio.productscomponent.domain.useCase.GetBrandsUseCase
+import com.bitio.productscomponent.domain.useCase.GetCategoryByGenderUseCase
+import com.bitio.productscomponent.domain.useCase.GetFavoriteIdsUseCase
+import com.bitio.productscomponent.domain.useCase.GetProductByIdUseCase
+import com.bitio.productscomponent.domain.useCase.GetProductsByBrandAndCategoryUseCase
 import org.koin.dsl.module
 
 
@@ -22,6 +28,13 @@ val productKoinModule = module {
     single<ProductDao> { ProductDaoAdapter(get()) }
     //repo
     single<ProductRepository> { ProductRepositoryImpl(get(), get()) }
+    //useCases
+    factory { GetProductsByBrandAndCategoryUseCase(get()) }
+    factory { GetProductByIdUseCase(get()) }
+    factory { GetCategoryByGenderUseCase(get()) }
+    factory { GetBrandsUseCase(get()) }
+    factory { AddOrRemoveProductFromFavorite(get()) }
+    factory { GetFavoriteIdsUseCase(get()) }
 
 
 }

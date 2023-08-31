@@ -5,5 +5,5 @@ interface Category {
     val id: String
     val name: String
     val image: String
-    val gender:GenderType
+    val genderType:GenderType
 }

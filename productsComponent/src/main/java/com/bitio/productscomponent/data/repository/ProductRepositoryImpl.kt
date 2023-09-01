@@ -40,7 +40,7 @@ class ProductRepositoryImpl(private val api: ProductsApi, private val dao: Produ
 
 
     override suspend fun getProductsById(id: String): ProductDetails {
-        TODO("Not yet implemented")
+        return api.getProductDetailsById(id).data!!
     }
 
     override suspend fun getCategoriesByGender(genderType: GenderType): List<Category> {
@@ -96,11 +96,11 @@ class ProductRepositoryImpl(private val api: ProductsApi, private val dao: Produ
 
     }
 
-    companion object {
-        private var isLastFavoriteCallWasError = false
-        private val favoriteProductsSet =
-            MutableStateFlow<HashSet<String>>(hashSetOf())
 
+    private companion object {
+        var isLastFavoriteCallWasError = false
+        val favoriteProductsSet =
+            MutableStateFlow<HashSet<String>>(hashSetOf())
     }
 
 }

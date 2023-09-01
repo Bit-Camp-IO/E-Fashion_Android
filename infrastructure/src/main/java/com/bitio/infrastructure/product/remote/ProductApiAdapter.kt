@@ -8,7 +8,7 @@ import com.bitio.productscomponent.data.remote.request.IdBody
 import com.bitio.productscomponent.data.remote.response.BrandResponse
 import com.bitio.productscomponent.data.remote.response.CategoryResponse
 import com.bitio.productscomponent.data.remote.response.FavoriteProductResponse
-import com.bitio.productscomponent.data.remote.response.ProductResponse
+import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
 import com.bitio.productscomponent.data.remote.response.ProductsPage
 import com.bitio.productscomponent.domain.entities.categories.GenderType
 import com.bitio.sharedcomponent.data.ResponseWrapper
@@ -39,7 +39,7 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
         }
     }
 
-    override suspend fun getProductById(id: String): ResponseWrapper<ProductResponse> {
+    override suspend fun getProductDetailsById(id: String): ResponseWrapper<ProductDetailsResponse> {
         try {
             return retrofitApi.getProductById(id)
         } catch (e: HttpException) {

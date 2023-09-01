@@ -15,6 +15,7 @@ import com.bitio.productscomponent.domain.useCase.GetBrandsUseCase
 import com.bitio.productscomponent.domain.useCase.GetCategoryByGenderUseCase
 import com.bitio.productscomponent.domain.useCase.GetFavoriteIdsUseCase
 import com.bitio.productscomponent.domain.useCase.GetProductByIdUseCase
+import com.bitio.productscomponent.domain.useCase.GetProductDetailsUseCase
 import com.bitio.productscomponent.domain.useCase.GetProductsByBrandAndCategoryUseCase
 import org.koin.dsl.module
 
@@ -35,6 +36,7 @@ val productKoinModule = module {
     factory { GetBrandsUseCase(get()) }
     factory { AddOrRemoveProductFromFavorite(get()) }
     factory { GetFavoriteIdsUseCase(get()) }
+    factory { GetProductDetailsUseCase(get()) }
 
 
 }

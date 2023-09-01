@@ -14,18 +14,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.bitio.productscomponent.domain.entities.selectable.ColorOption
 import com.bitio.productscomponent.domain.entities.selectable.SelectableProperty
 import com.bitio.ui.shared.HorizontalSpacer8Dp
 
 @Composable
 fun SelectableRowStrategy(selectable: SelectableProperty) {
-    if (!SpecialOptions.isSpecialSelectable(selectable.id))
-        SelectableRow(selectable)
-    else
-        when (SpecialOptions.getCorrespondingSpecialSelectable(selectable.id)) {
-            SpecialOptions.COLOR -> ColorRow(selectable = selectable)
-            SpecialOptions.IMAGE -> ImageRow(selectable = selectable)
-        }
+//    if (!SpecialOptions.isSpecialSelectable(selectable.id))
+//        SelectableRow(selectable)
+//    else
+//        when (SpecialOptions.getCorrespondingSpecialSelectable(selectable.id)) {
+//            SpecialOptions.COLOR -> ColorRow(selectable = selectable)
+//            SpecialOptions.IMAGE -> ImageRow(selectable = selectable)
+//        }
 
 
 }
@@ -47,13 +48,13 @@ fun SelectableRow(selectable: SelectableProperty) {
 }
 
 @Composable
-fun ColorRow(selectable: SelectableProperty) {
+fun ColorRow(colors: List<ColorOption>) {
     Row {
-        Text(text = selectable.name + ": ")
+        Text(text = "Colors: ")
         HorizontalSpacer8Dp()
         LazyRow(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
-            items(2) {
-                val color = remember { selectable.options[it].name.toColor() }
+            items(colors.size) {
+                val color = remember { colors[it].hex.toColor() }
                 Box(
                     modifier = Modifier
                         .size(24.dp)
@@ -75,6 +76,7 @@ fun ImageRow(selectable: SelectableProperty) {
 }
 
 fun String.toColor(): Color {
-    return Color(this.toLong(16))
+    val argbColor = "FF" + this.removePrefix("#")
+    return Color(argbColor.toLong(16))
 
 }

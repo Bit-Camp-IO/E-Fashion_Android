@@ -21,9 +21,7 @@ class AuthDaoImpl(private val context: Context) : AuthDao {
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private val tokenFlow = MutableStateFlow("Initial Value")
 
-    init {
-        observeTokenFromDataStore()
-    }
+    init { observeTokenFromDataStore() }
 
     override suspend fun getRefreshToken(): String {
         var token: String? = null

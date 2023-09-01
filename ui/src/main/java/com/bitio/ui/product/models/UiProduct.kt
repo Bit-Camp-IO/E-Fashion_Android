@@ -12,6 +12,7 @@ data class UiProduct(
     override val id: String,
     override val title: String,
     override val image: String,
+
     override val price: Float,
     override val oldPrice: Float,
     override val discount: Float,

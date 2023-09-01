@@ -3,7 +3,7 @@ package com.bitio.ui.profile.location
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.bitio.ui.profile.ProfileRouteScreens
+import com.bitio.ui.profile.user.ProfileRouteScreens
 
 internal fun NavController.navigateToLocationScreen() {
     navigate(ProfileRouteScreens.Location.route)

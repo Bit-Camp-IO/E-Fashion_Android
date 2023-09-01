@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
+import com.bitio.ui.profile.user.ProfileUi
 import com.bitio.ui.shared.CustomButtonForm
 import com.bitio.ui.shared.CustomTextField
 import com.bitio.ui.shared.VerticalSpacer32Dp
@@ -31,14 +32,14 @@ import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 
 @Composable
 fun UserProfile(
+    profileUi: ProfileUi,
     modifier: Modifier = Modifier,
     onClickBack: () -> Unit,
     onClickSaveButton: (String, String, String) -> Unit
 ) {
-    var username by remember { mutableStateOf("") }
-    var phoneNumber by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-
+    var fullName by remember { mutableStateOf(profileUi.fullName) }
+    var phoneNumber by remember { mutableStateOf(profileUi.phoneNumber) }
+    var email by remember { mutableStateOf(profileUi.email) }
 
     Column(
         modifier = modifier
@@ -71,11 +72,11 @@ fun UserProfile(
         VerticalSpacer32Dp()
 
         CustomTextField(
-            value = username,
+            value = fullName,
             placeholder = "Username",
             leadingIcon = painterResource(id = R.drawable.profile),
             onValueChange = {
-                username = it
+                fullName = it
             },
         )
 
@@ -105,7 +106,7 @@ fun UserProfile(
                 .padding(top = 22.dp, bottom = 32.dp, start = 24.dp, end = 24.dp),
             title = "Save"
         ) {
-            onClickSaveButton(username, phoneNumber, email)
+            onClickSaveButton(fullName, phoneNumber, email)
         }
 
     }

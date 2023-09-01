@@ -56,7 +56,7 @@ class FashionActivity : ComponentActivity() {
 
         setContent {
             val isDarkTheme by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
             EFashionTheme(
                 darkTheme = isDarkTheme
@@ -64,9 +64,9 @@ class FashionActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                  //  HomeScreen(navController = rememberNavController())
-                   // AuthenticationScreen(navController = rememberNavController())
-                    BottomNavigationBar(navController = rememberNavController(), checkIfLogin =true)
+                    //  HomeScreen(navController = rememberNavController())
+                    // AuthenticationScreen(navController = rememberNavController())
+                    BottomNavigationBar(checkIfLogin = true)
                 }
             }
         }

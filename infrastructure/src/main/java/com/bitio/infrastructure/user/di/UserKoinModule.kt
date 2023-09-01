@@ -10,6 +10,7 @@ import com.bitio.usercomponent.domain.usecase.GetAddressesOfUseCase
 import com.bitio.usercomponent.domain.usecase.GetUserInfoUseCase
 import com.bitio.usercomponent.domain.usecase.AddAddressOfUserUseCase
 import com.bitio.usercomponent.domain.usecase.AddUserImageUseCase
+import com.bitio.usercomponent.domain.usecase.UpdateUserInfoUseCase
 import org.koin.dsl.module
 
 val userKoinModule = module {
@@ -18,6 +19,7 @@ val userKoinModule = module {
     single<UserRepository> { UserRepositoryImpl(get()) }
 
     factory { GetUserInfoUseCase(get()) }
+    factory { UpdateUserInfoUseCase(get()) }
     factory { GetAddressesOfUseCase(get()) }
     factory { AddUserImageUseCase(get()) }
     factory { AddAddressOfUserUseCase(get()) }

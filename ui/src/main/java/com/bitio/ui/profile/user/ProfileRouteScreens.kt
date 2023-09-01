@@ -1,4 +1,4 @@
-package com.bitio.ui.profile
+package com.bitio.ui.profile.user
 
 sealed class ProfileRouteScreens(val route: String) {
     object Location : ProfileRouteScreens(route = "location_route")

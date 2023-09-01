@@ -28,7 +28,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.bitio.ui.profile.ProfileRouteScreens
+import com.bitio.ui.profile.user.ProfileRouteScreens
 import com.bitio.ui.route.RootRouteScreens
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

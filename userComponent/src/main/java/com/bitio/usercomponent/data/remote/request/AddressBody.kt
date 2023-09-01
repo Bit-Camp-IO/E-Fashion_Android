@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AddressBody(
-    override val id: String = "",
-    override val city: String,
-    override val state: String,
-    override val postalCode: Long,
-    override val isPrimary: Boolean
+    override val id: String? = null,
+    override val city: String? = null,
+    override val state: String? = null,
+    override val postalCode: Long? = null,
+    override val isPrimary: Boolean? = null
 ) : Address

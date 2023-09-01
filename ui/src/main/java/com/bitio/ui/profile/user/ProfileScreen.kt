@@ -1,4 +1,4 @@
-package com.bitio.ui.profile
+package com.bitio.ui.profile.user
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
@@ -10,12 +10,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +40,6 @@ import com.bitio.ui.profile.order_status.navigateToOrderStatusScreen
 import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
 import com.bitio.ui.theme.Porcelain
-import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 import com.bitio.utils.profileShape
 import org.koin.androidx.compose.getViewModel
 
@@ -51,7 +50,7 @@ fun ProfileScreen(
     navController: NavController,
 ) {
     val viewModel = getViewModel<ProfileViewModel>()
-    val state by viewModel.profileUiState.collectAsState()
+    val state by viewModel.profileUiState
     ProfileContent(
         state,
         isDarkTheme,
@@ -60,6 +59,7 @@ fun ProfileScreen(
         onClickOrderStatusScreen = navController::navigateToOrderStatusScreen,
         onClickChatSupportScreen = navController::navigateToChatSupportScreen,
         onClickNotificationsScreen = navController::navigateToNotificationsScreen,
+        onClickSaveButton = viewModel::updateUserInfo
     )
 }
 
@@ -73,6 +73,7 @@ private fun ProfileContent(
     onClickOrderStatusScreen: () -> Unit,
     onClickChatSupportScreen: () -> Unit,
     onClickNotificationsScreen: () -> Unit,
+    onClickSaveButton:(UserUiState) -> Unit
 ) {
 
     val configuration = LocalConfiguration.current
@@ -92,81 +93,89 @@ private fun ProfileContent(
     Box(
         modifier = Modifier
             .fillMaxSize(),
-        contentAlignment = Alignment.TopCenter
+        contentAlignment = Alignment.Center
     ) {
-        CustomBlurProfileImage(
-            image = "",
-            contentDescription = "state.profile.username"
-        )
 
-        Column(
-            modifier = Modifier
-                .padding(top = 64.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box {
-                CustomCircleProfileImage(
-                    state.profile.image,
-                    state.profile.username,
-                )
 
-                if (isUserProfileVisible) {
-                    IconButton(
-                        onClick = { },
-                        modifier = Modifier
-                            .offset(y = (-40).dp)
-                            .clip(RoundedCornerShape(100.dp))
-                            .size(24.dp)
-                            .background(MaterialTheme.colorScheme.secondary)
-                            .align(Alignment.CenterEnd)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.edit),
-                            contentDescription = "back",
-                            tint = Porcelain
-                        )
-                    }
-                }
-
-            }
-
-            VerticalSpacer8Dp()
-
-            Text(
-                text = state.profile.username,
-                style = AppThemeTextStyles(Porcelain).titleMedium
+        if (state.loading) {
+            CircularProgressIndicator()
+        } else if (state.errorMessage.isNotBlank()) {
+            Text(text = state.errorMessage)
+        } else {
+            CustomBlurProfileImage(
+                image = "",
+                contentDescription = "state.profile.username"
             )
 
-            VerticalSpacer16Dp()
-
-            Box(
+            Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .clip(profileShape)
-                    .background(MaterialTheme.colorScheme.background)
+                    .padding(top = 64.dp)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                SettingApp(
-                    isDarkTheme = isDarkTheme,
-                    onSwitchTheme = onSwitchTheme,
-                    modifier = Modifier.offset(x = offsetXOfProfileSettings),
-                    onClickMyProfile = { isUserProfileVisible = true },
-                    onClickLocationScreen = onClickLocationScreen,
-                    onClickOrderStatusScreen = onClickOrderStatusScreen,
-                    onClickChatSupportScreen = onClickChatSupportScreen,
-                    onClickNotificationsScreen = onClickNotificationsScreen,
+                Box {
+                    CustomCircleProfileImage(
+                        state.profileUi.profileImage,
+                        state.profileUi.fullName,
+                    )
+
+                    if (isUserProfileVisible) {
+                        IconButton(
+                            onClick = { },
+                            modifier = Modifier
+                                .offset(y = (-40).dp)
+                                .clip(RoundedCornerShape(100.dp))
+                                .size(24.dp)
+                                .background(MaterialTheme.colorScheme.secondary)
+                                .align(Alignment.CenterEnd)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.edit),
+                                contentDescription = "back",
+                                tint = Porcelain
+                            )
+                        }
+                    }
+
+                }
+
+                VerticalSpacer8Dp()
+
+                Text(
+                    text = state.profileUi.fullName,
+                    style = MaterialTheme.typography.titleMedium
                 )
 
-                UserProfile(
-                    onClickBack = {
-                        isUserProfileVisible = false
-                    },
+                VerticalSpacer16Dp()
+
+                Box(
                     modifier = Modifier
-                        .offset(x = offsetXOfUserProfile),
-                    onClickSaveButton = { username, phone, email ->
-                        println("User info: $username $phone $email")
-                    }
-                )
+                        .fillMaxSize()
+                        .clip(profileShape)
+                        .background(MaterialTheme.colorScheme.background)
+                ) {
+                    SettingApp(
+                        isDarkTheme = isDarkTheme,
+                        onSwitchTheme = onSwitchTheme,
+                        modifier = Modifier.offset(x = offsetXOfProfileSettings),
+                        onClickMyProfile = { isUserProfileVisible = true },
+                        onClickLocationScreen = onClickLocationScreen,
+                        onClickOrderStatusScreen = onClickOrderStatusScreen,
+                        onClickChatSupportScreen = onClickChatSupportScreen,
+                        onClickNotificationsScreen = onClickNotificationsScreen,
+                    )
+
+                    UserProfile(
+                        state.profileUi,
+                        onClickBack = {
+                            isUserProfileVisible = false
+                        },
+                        modifier = Modifier.offset(x = offsetXOfUserProfile),
+                        onClickSaveButton = { fullName, phoneNumber, email ->
+                            onClickSaveButton(UserUiState(email,fullName,phoneNumber))
+                        }
+                    )
+                }
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.bitio.infrastructure.retrofitConfiguration
 
-import android.util.Log
 import com.bitio.authcomponent.domain.useCases.GetAccessTokenUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +21,7 @@ class AuthInterceptor : Interceptor, KoinComponent {
 
     init {
         observeToken()
+
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -30,23 +30,18 @@ class AuthInterceptor : Interceptor, KoinComponent {
         var response = chain.proceed(newRequest)
 
         if (!response.isSuccessful && response.code == 401) {
-            Log.d("xxxxx", "zzzzzzzzzzzz")
             response.close()
-            runBlocking {
+            runBlocking(Dispatchers.IO) {
                 try {
                     accessToken = getAccessTokenUseCase.invoke()
-                    Log.d("xxxx", accessToken)
+
                     response = chain.proceed(createNewRequest(request, accessToken))
-                }catch (e:Throwable){
+                } catch (e: Throwable) {
 
                 }
-
             }
         }
 
-
-
-        Log.d("xxxx", response.toString())
         return response
     }
 
@@ -60,8 +55,10 @@ class AuthInterceptor : Interceptor, KoinComponent {
         currentJob = coroutineScope.launch {
             try {
                 getAccessTokenUseCase.getAsStream().collect {
-                    accessToken = it }
-            }catch (e:Throwable){}
+                    accessToken = it
+                }
+            } catch (e: Throwable) {
+            }
 
         }
     }

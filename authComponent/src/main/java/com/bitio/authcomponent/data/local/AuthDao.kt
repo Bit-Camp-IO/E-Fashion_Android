@@ -6,6 +6,5 @@ interface AuthDao {
 
     suspend fun getRefreshToken(): String
     suspend fun updateRefreshToken(token: String)
-
-     fun getAccessTokenStream(): Flow<String>
+    fun getAccessTokenStream(): Flow<String>
 }

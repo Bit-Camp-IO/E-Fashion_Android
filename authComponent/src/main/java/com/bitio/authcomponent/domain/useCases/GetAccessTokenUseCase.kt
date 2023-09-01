@@ -5,10 +5,10 @@ import kotlinx.coroutines.flow.Flow
 
 class GetAccessTokenUseCase(private val repository: AuthRepository) {
     suspend operator fun invoke(): String {
+
         try {
             return repository.getAccessToken()
-        }
-        catch (e:Throwable){
+        } catch (e: Throwable) {
             return "abc"
         }
 
@@ -17,5 +17,6 @@ class GetAccessTokenUseCase(private val repository: AuthRepository) {
     fun getAsStream(): Flow<String> {
         return repository.getAccessTokenStream()
     }
-    fun getQuickAccessToken()=repository.quickRetriveAccessToken()?:""
+
+    fun getQuickAccessToken() = repository.quickRetriveAccessToken() ?: ""
 }

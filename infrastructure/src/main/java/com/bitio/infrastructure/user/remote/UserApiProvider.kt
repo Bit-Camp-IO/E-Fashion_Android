@@ -7,6 +7,7 @@ import com.bitio.usercomponent.data.remote.request.AddressBody
 import com.bitio.usercomponent.data.remote.request.UserBody
 import com.bitio.usercomponent.data.remote.response.ProfileResponse
 import com.bitio.usercomponent.domain.entities.Address
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -31,7 +32,9 @@ interface UserApiProvider : UserApi {
 
     @Multipart
     @POST("user/profile-image")
-    override suspend fun addUserImage(@Part image: String)
+    override suspend fun addUserImage(
+        @Part profileImage: MultipartBody.Part?
+    ): ResponseWrapper<String>
 
     @POST("user/address")
     override suspend fun addAddressOfUser(@Body addressBody: AddressBody)

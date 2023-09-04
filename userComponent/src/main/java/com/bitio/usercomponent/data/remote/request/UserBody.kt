@@ -7,5 +7,7 @@ import kotlinx.serialization.Serializable
 data class UserBody(
     override val email: String?,
     override val fullName: String?,
-    override val phoneNumber: String?
+    override val phoneNumber: String?,
+    @Transient
+    override val profileImage: String? = null
 ) : User

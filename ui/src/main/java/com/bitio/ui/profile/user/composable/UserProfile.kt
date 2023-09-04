@@ -1,4 +1,4 @@
-package com.bitio.ui.profile.composable
+package com.bitio.ui.profile.user.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -35,7 +35,7 @@ fun UserProfile(
     profileUi: ProfileUi,
     modifier: Modifier = Modifier,
     onClickBack: () -> Unit,
-    onClickSaveButton: (String, String, String) -> Unit
+    onClickSaveButton: (String, String, String) -> Unit,
 ) {
     var fullName by remember { mutableStateOf(profileUi.fullName) }
     var phoneNumber by remember { mutableStateOf(profileUi.phoneNumber) }

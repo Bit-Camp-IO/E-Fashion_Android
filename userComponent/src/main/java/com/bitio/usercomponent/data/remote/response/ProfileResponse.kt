@@ -1,7 +1,5 @@
 package com.bitio.usercomponent.data.remote.response
 
-import com.bitio.usercomponent.domain.entities.Address
-import com.bitio.usercomponent.domain.entities.Settings
 import com.bitio.usercomponent.domain.entities.Profile
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -19,8 +17,3 @@ data class ProfileResponse(
     override val phoneNumber: String? = null
 ) : Profile
 
-@Serializable
-data class SettingsResponse(
-    override val language: String? = null,
-    override val addresses: List<Address>? = null
-) : Settings

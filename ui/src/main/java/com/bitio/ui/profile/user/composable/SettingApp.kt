@@ -1,4 +1,4 @@
-package com.bitio.ui.profile.composable
+package com.bitio.ui.profile.user.composable
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.AnimationSpec

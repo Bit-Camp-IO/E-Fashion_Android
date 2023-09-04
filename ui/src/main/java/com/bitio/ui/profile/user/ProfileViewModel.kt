@@ -1,5 +1,6 @@
 package com.bitio.ui.profile.user
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,15 +8,18 @@ import com.bitio.usercomponent.domain.entities.Address
 import com.bitio.usercomponent.domain.utils.ResponseStatus
 import com.bitio.usercomponent.domain.usecase.DeleteAddressOfUserUseCase
 import com.bitio.usercomponent.domain.usecase.GetAddressesOfUseCase
-import com.bitio.usercomponent.domain.usecase.GetUserInfoUseCase
 import com.bitio.usercomponent.domain.usecase.AddAddressOfUserUseCase
 import com.bitio.usercomponent.domain.usecase.AddUserImageUseCase
+import com.bitio.usercomponent.domain.usecase.GetSavedUserInformationUseCase
+import com.bitio.usercomponent.domain.usecase.RefreshUserInfoUseCase
 import com.bitio.usercomponent.domain.usecase.UpdateUserInfoUseCase
 import kotlinx.coroutines.launch
+import java.io.File
 
 
 class ProfileViewModel(
-    private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val refreshUserInfoUseCase: RefreshUserInfoUseCase,
+    private val getSavedUserInformationUseCase: GetSavedUserInformationUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
     private val getAddressesOfUseCase: GetAddressesOfUseCase,
     private val addAddressOfUserUseCase: AddAddressOfUserUseCase,
@@ -26,47 +30,41 @@ class ProfileViewModel(
     private val _profileUiState = mutableStateOf(ProfileUiState())
     val profileUiState = _profileUiState
 
-
     init {
-        getUserInfo()
+        refreshUserInfo()
+    }
+
+    private fun refreshUserInfo() {
+        viewModelScope.launch {
+            refreshUserInfoUseCase()
+            getUserInfo()
+        }
     }
 
     private fun getUserInfo() {
         viewModelScope.launch {
-            _profileUiState.value = ProfileUiState(loading = true)
-            when (val response = getUserInfoUseCase()) {
-                is ResponseStatus.Success -> {
-                    response.data?.let {
-                        _profileUiState.value = ProfileUiState(
-                            loading = false,
-                            profileUi = ProfileUi(
-                                fullName = it.fullName ?: "",
-                                email = it.email ?: "",
-                                phoneNumber = it.phoneNumber ?: "",
-                                profileImage = it.profileImage ?: "",
-                                settingsUi = SettingsUi(
-                                    language = it.settings?.language ?: "",
-                                    addresses = it.settings?.addresses.mapToAddressUi() ?: emptyList()
-                                )
-                            )
+            getSavedUserInformationUseCase().collect { user ->
+                _profileUiState.value = ProfileUiState(
+                    loading = false,
+                    profileUi = ProfileUi(
+                        fullName = user.fullName ?: "",
+                        email = user.email ?: "",
+                        phoneNumber = user.phoneNumber ?: "",
+                        profileImage = user.profileImage ?: "",
+                        settingsUi = SettingsUi(
+                            language = "",
+                            addresses = emptyList()
                         )
-                    }
-                }
-
-                is ResponseStatus.Error -> {
-                    _profileUiState.value = ProfileUiState(
-                        loading = false,
-                        errorMessage = response.errorMessage
                     )
-                }
+                )
             }
         }
     }
 
-    fun updateUserInfo(userUiState: UserUiState){
+    fun updateUserInfo(userUiState: UserUiState) {
         viewModelScope.launch {
             _profileUiState.value = ProfileUiState(loading = true)
-            when (val response =  updateUserInfoUseCase(userUiState)) {
+            when (val response = updateUserInfoUseCase(userUiState)) {
                 is ResponseStatus.Success -> {
                     response.data?.let {
                         _profileUiState.value = ProfileUiState(
@@ -105,6 +103,20 @@ class ProfileViewModel(
                 isPrimary = it.isPrimary ?: false,
                 city = it.city ?: ""
             )
+        }
+    }
+
+    fun addUserImage(file: File) {
+        viewModelScope.launch {
+            when (val response = addUserImageUseCase(file)) {
+                is ResponseStatus.Success -> {
+                    Log.d(this::class.simpleName, "Success addUserImage: ${response.data}")
+                }
+
+                is ResponseStatus.Error -> {
+                    Log.d(this::class.simpleName, "Error addUserImage: ${response.errorMessage}")
+                }
+            }
         }
     }
 }

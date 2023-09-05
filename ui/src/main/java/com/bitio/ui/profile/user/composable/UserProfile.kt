@@ -5,27 +5,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
-import com.bitio.ui.profile.user.ProfileUi
 import com.bitio.ui.shared.CustomButtonForm
 import com.bitio.ui.shared.CustomTextField
 import com.bitio.ui.shared.VerticalSpacer32Dp
@@ -38,9 +31,9 @@ fun UserProfile(
     onClickBack: () -> Unit,
     onClickSaveButton: (String, String, String) -> Unit,
     onFullNameChange: (String) -> Unit,
-    fullName: String ,
+    fullName: String,
     onPhoneNumberChange: (String) -> Unit,
-    phoneNumber: String ,
+    phoneNumber: String,
     onEmailChange: (String) -> Unit,
     email: String
 ) {
@@ -66,7 +59,7 @@ fun UserProfile(
         VerticalSpacer32Dp()
 
         Text(
-            text = "Edit Profile",
+            text = stringResource(id = R.string.edit_profile),
             style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).titleMedium,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -76,14 +69,14 @@ fun UserProfile(
 
         CustomTextField(
             value = fullName,
-            placeholder = "Username",
+            placeholder = stringResource(id = R.string.fullName),
             leadingIcon = painterResource(id = R.drawable.profile),
             onValueChange = onFullNameChange,
         )
 
         CustomTextField(
             value = phoneNumber,
-            placeholder = "+964",
+            placeholder = stringResource(id = R.string.phoneNumber),
             leadingIcon = painterResource(id = R.drawable.call),
             keyboardType = KeyboardType.Phone,
             onValueChange = onPhoneNumberChange,
@@ -91,7 +84,7 @@ fun UserProfile(
 
         CustomTextField(
             value = email,
-            placeholder = "example@gmail.com",
+            placeholder = stringResource(id = R.string.email),
             leadingIcon = painterResource(id = R.drawable.email),
             keyboardType = KeyboardType.Email,
             onValueChange = onEmailChange,
@@ -101,9 +94,9 @@ fun UserProfile(
             modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 22.dp, bottom = 32.dp, start = 24.dp, end = 24.dp),
-            title = "Save",
+            title = stringResource(id = R.string.save),
             onClickButton = {
-                onClickSaveButton(fullName,phoneNumber,email)
+                onClickSaveButton(fullName, phoneNumber, email)
             }
         )
 

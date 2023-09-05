@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">E Fashion</string>
+    <string name="edit_profile">strings.xml</string>
+    <string name="fullName">FullName</string>
+    <string name="phoneNumber">Phone number</string>
+    <string name="email">example@gmail.com</string>
+    <string name="save">Save</string>
+</resources>

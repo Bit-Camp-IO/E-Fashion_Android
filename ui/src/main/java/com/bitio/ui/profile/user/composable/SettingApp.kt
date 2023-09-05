@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -52,8 +53,7 @@ fun SettingApp(
     onClickNotificationsScreen: () -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .verticalScroll(state = rememberScrollState())
+        modifier = modifier.fillMaxSize()
     ) {
         IconButton(
             onClick = { /*TODO*/ },

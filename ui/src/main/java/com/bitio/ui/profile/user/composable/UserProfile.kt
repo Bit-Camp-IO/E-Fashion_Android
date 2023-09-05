@@ -2,6 +2,7 @@ package com.bitio.ui.profile.user.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,18 +34,19 @@ import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 
 @Composable
 fun UserProfile(
-    profileUi: ProfileUi,
     modifier: Modifier = Modifier,
     onClickBack: () -> Unit,
     onClickSaveButton: (String, String, String) -> Unit,
+    onFullNameChange: (String) -> Unit,
+    fullName: String ,
+    onPhoneNumberChange: (String) -> Unit,
+    phoneNumber: String ,
+    onEmailChange: (String) -> Unit,
+    email: String
 ) {
-    var fullName by remember { mutableStateOf(profileUi.fullName) }
-    var phoneNumber by remember { mutableStateOf(profileUi.phoneNumber) }
-    var email by remember { mutableStateOf(profileUi.email) }
 
     Column(
-        modifier = modifier
-            .verticalScroll(state = rememberScrollState())
+        modifier = modifier.fillMaxSize()
     ) {
         IconButton(
             onClick = onClickBack,
@@ -75,9 +78,7 @@ fun UserProfile(
             value = fullName,
             placeholder = "Username",
             leadingIcon = painterResource(id = R.drawable.profile),
-            onValueChange = {
-                fullName = it
-            },
+            onValueChange = onFullNameChange,
         )
 
         CustomTextField(
@@ -85,29 +86,26 @@ fun UserProfile(
             placeholder = "+964",
             leadingIcon = painterResource(id = R.drawable.call),
             keyboardType = KeyboardType.Phone,
-            onValueChange = {
-                phoneNumber = it
-            },
+            onValueChange = onPhoneNumberChange,
         )
 
-          CustomTextField(
+        CustomTextField(
             value = email,
             placeholder = "example@gmail.com",
             leadingIcon = painterResource(id = R.drawable.email),
             keyboardType = KeyboardType.Email,
-            onValueChange = {
-                email = it
-            },
+            onValueChange = onEmailChange,
         )
 
         CustomButtonForm(
             modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 22.dp, bottom = 32.dp, start = 24.dp, end = 24.dp),
-            title = "Save"
-        ) {
-            onClickSaveButton(fullName, phoneNumber, email)
-        }
+            title = "Save",
+            onClickButton = {
+                onClickSaveButton(fullName,phoneNumber,email)
+            }
+        )
 
     }
 }

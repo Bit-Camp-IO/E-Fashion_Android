@@ -8,18 +8,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 
 @Composable
 fun CustomButtonForm(
     modifier: Modifier = Modifier,
     title: String,
-    onClickLoginButton: () -> Unit,
+    onClickButton: () -> Unit,
 ) {
     Button(
-        onClick = onClickLoginButton,
+        onClick = onClickButton,
         modifier = modifier
             .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),

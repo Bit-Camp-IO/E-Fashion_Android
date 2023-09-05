@@ -30,6 +30,12 @@ class ProfileViewModel(
     private val _profileUiState = mutableStateOf(ProfileUiState())
     val profileUiState = _profileUiState
 
+    val fullName = mutableStateOf("")
+
+    val email = mutableStateOf("")
+
+    val phoneNumber = mutableStateOf("")
+
     init {
         refreshUserInfo()
     }
@@ -50,7 +56,8 @@ class ProfileViewModel(
                         fullName = user.fullName ?: "",
                         email = user.email ?: "",
                         phoneNumber = user.phoneNumber ?: "",
-                        profileImage = user.profileImage ?: "",
+                        profileImage = user.profileImage
+                            ?: "https://th.bing.com/th/id/OIP.SzixlF6Io24jCN67HHZulAHaLH?w=130&h=195&c=7&r=0&o=5&dpr=1.3&pid=1.7",
                         settingsUi = SettingsUi(
                             language = "",
                             addresses = emptyList()

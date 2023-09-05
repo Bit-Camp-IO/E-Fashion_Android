@@ -9,10 +9,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -42,28 +40,20 @@ import com.bitio.ui.profile.order_status.navigateToOrderStatusScreen
 import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
 import com.bitio.ui.theme.Porcelain
-import com.bitio.utils.profileShape
 import org.koin.androidx.compose.getViewModel
 import android.Manifest
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
-import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.MutableState
-import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
-import com.bitio.ui.shared.ImagePermissionTextProvider
-import com.bitio.ui.shared.PermissionDialog
-import android.provider.Settings
 import android.util.Log
-import androidx.activity.ComponentActivity
+import android.widget.Toast
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
-import com.bitio.utils.APP_TAG
+import com.bitio.ui.shared.shapeOfProfile
 import com.bitio.utils.RealPathUtil
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -76,39 +66,6 @@ fun ProfileScreen(
     val viewModel = getViewModel<ProfileViewModel>()
     val state by viewModel.profileUiState
     val permissionViewModel = getViewModel<PermissionViewModel>()
-    val dialogQueue = permissionViewModel.visiblePermissionDialogQueue
-
-    val context = LocalContext.current
-    val activity = context as ComponentActivity
-
-
-    val galleryLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        uri?.let {
-            try {
-                val path = RealPathUtil.getRealPath(context, uri)
-                val file = File(path)
-                viewModel.addUserImage(file)
-            } catch (e: IOException) {
-                Log.d(APP_TAG, "ProfileScreen: $e")
-            }
-        }
-    }
-
-    val imagePermissionResultLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission(),
-        onResult = { isGranted ->
-            permissionViewModel.onPermissionResult(
-                permission = Manifest.permission.READ_EXTERNAL_STORAGE,
-                isGranted = isGranted
-            )
-            if (isGranted) {
-                galleryLauncher.launch("image/*")
-            }
-        }
-    )
-
 
     ProfileContent(
         state,
@@ -118,11 +75,17 @@ fun ProfileScreen(
         onClickOrderStatusScreen = navController::navigateToOrderStatusScreen,
         onClickChatSupportScreen = navController::navigateToChatSupportScreen,
         onClickNotificationsScreen = navController::navigateToNotificationsScreen,
-        onClickSaveButton = viewModel::updateUserInfo,
-        imagePermissionResultLauncher,
-        dialogQueue,
-        permissionViewModel,
-        activity
+        permissionViewModel::onPermissionResult,
+        viewModel::addUserImage,
+        onClickSaveButton = { email, fullName, phoneNumber ->
+            viewModel.updateUserInfo(UserUiState(email, fullName, phoneNumber))
+        },
+        onFullNameChange = { viewModel.fullName.value = it },
+        fullName = viewModel.fullName.value,
+        onPhoneNumberChange = { viewModel.phoneNumber.value = it },
+        phoneNumber = viewModel.phoneNumber.value,
+        onEmailChange = { viewModel.email.value = it },
+        email = viewModel.email.value,
     )
 }
 
@@ -137,15 +100,22 @@ private fun ProfileContent(
     onClickOrderStatusScreen: () -> Unit,
     onClickChatSupportScreen: () -> Unit,
     onClickNotificationsScreen: () -> Unit,
-    onClickSaveButton: (UserUiState) -> Unit,
-    imagePermissionResultLauncher: ManagedActivityResultLauncher<String, Boolean>,
-    dialogQueue: MutableState<String>,
-    permissionViewModel: PermissionViewModel,
-    activity: ComponentActivity
+    onPermissionResult: (String, Boolean) -> Unit,
+    onClickEditImage: (File) -> Unit,
+    onClickSaveButton: (String, String, String) -> Unit,
+    onFullNameChange: (String) -> Unit,
+    fullName: String = state.profileUi.fullName,
+    onPhoneNumberChange: (String) -> Unit,
+    phoneNumber: String = state.profileUi.phoneNumber,
+    onEmailChange: (String) -> Unit,
+    email: String = state.profileUi.email
 ) {
 
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
+    val screenHeight = configuration.screenHeightDp.dp
+    val scrollState = rememberScrollState()
+    LaunchedEffect(Unit) { scrollState.animateScrollTo(100) }
 
     var isUserProfileVisible by remember {
         mutableStateOf(false)
@@ -159,53 +129,29 @@ private fun ProfileContent(
     )
 
     Box(
+        contentAlignment = Alignment.TopCenter,
         modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+            .size(screenWidth, screenHeight)
     ) {
 
         CustomBlurProfileImage(
-            image = "",
-            contentDescription = "state.profile.username"
+            image = state.profileUi.profileImage,
+            contentDescription = "state.profile.username",
         )
 
         Column(
             modifier = Modifier
-                .padding(top = 64.dp)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box {
-                CustomCircleProfileImage(
-                    state.profileUi.profileImage,
-                    state.profileUi.fullName,
-                )
-
-                if (isUserProfileVisible) {
-                    IconButton(
-                        onClick = { },
-                        modifier = Modifier
-                            .offset(y = (-40).dp)
-                            .clip(RoundedCornerShape(100.dp))
-                            .size(24.dp)
-                            .background(MaterialTheme.colorScheme.secondary)
-                            .align(Alignment.CenterEnd)
-                    ) {
-                        IconButton(onClick = {
-                            imagePermissionResultLauncher.launch(
-                                Manifest.permission.READ_EXTERNAL_STORAGE
-                            )
-                        }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.edit),
-                                contentDescription = "edit",
-                                tint = Porcelain
-                            )
-                        }
-                    }
-                }
-
-            }
+            CustomCircleProfileImage(
+                state.profileUi.profileImage,
+                state.profileUi.fullName,
+                isUserProfileVisible = isUserProfileVisible,
+                onPermissionResult = onPermissionResult,
+                onClickEditImage = onClickEditImage
+            )
 
             VerticalSpacer8Dp()
 
@@ -218,9 +164,9 @@ private fun ProfileContent(
 
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .clip(profileShape)
+                    .clip(shapeOfProfile)
                     .background(MaterialTheme.colorScheme.background)
+                    .fillMaxSize()
             ) {
                 SettingApp(
                     isDarkTheme = isDarkTheme,
@@ -233,51 +179,22 @@ private fun ProfileContent(
                     onClickNotificationsScreen = onClickNotificationsScreen,
                 )
 
-
-
                 UserProfile(
-                    state.profileUi,
                     onClickBack = {
                         isUserProfileVisible = false
                     },
                     modifier = Modifier.offset(x = offsetXOfUserProfile),
-                    onClickSaveButton = { fullName, phoneNumber, email ->
-                        onClickSaveButton(
-                            UserUiState(
-                                email, fullName, phoneNumber
-                            )
-                        )
-                    },
+                    onClickSaveButton = onClickSaveButton,
+                    onFullNameChange = onFullNameChange,
+                    fullName = fullName.ifEmpty { state.profileUi.fullName },
+                    onPhoneNumberChange = onPhoneNumberChange,
+                    phoneNumber = phoneNumber.ifEmpty { state.profileUi.phoneNumber },
+                    onEmailChange = onEmailChange,
+                    email = email.ifEmpty { state.profileUi.email }
                 )
             }
 
-            if (dialogQueue.value.isNotEmpty()) {
-                dialogQueue.value.let { permission ->
-                    PermissionDialog(
-                        permissionTextProvider = ImagePermissionTextProvider(),
-                        isPermanentlyDeclined = !shouldShowRequestPermissionRationale(
-                            activity,
-                            permission
-                        ),
-                        onDismiss = permissionViewModel::dismissDialog,
-                        onOkClick = {
-                            permissionViewModel.dismissDialog()
-                            imagePermissionResultLauncher.launch(permission)
-                        },
-                        onGoToAppSettingsClick = { openAppSettings(activity) },
-                    )
-                }
-            }
         }
-    }
-}
-
-private fun openAppSettings(activity: ComponentActivity) {
-    with(activity) {
-        Intent(
-            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-            Uri.fromParts("package", packageName, null)
-        ).also(::startActivity)
     }
 }
 
@@ -291,9 +208,9 @@ private fun CustomBlurProfileImage(
         painter = rememberAsyncImagePainter(model = image),
         contentDescription = contentDescription,
         modifier = modifier
-            .fillMaxSize()
-            .blur(radius = 30.dp),
-        contentScale = ContentScale.FillBounds
+            .blur(radius = 30.dp)
+            .fillMaxSize(),
+        contentScale = ContentScale.Fit
     )
 }
 
@@ -301,39 +218,84 @@ private fun CustomBlurProfileImage(
 private fun CustomCircleProfileImage(
     image: String,
     contentDescription: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isUserProfileVisible: Boolean,
+    onPermissionResult: (String, Boolean) -> Unit,
+    onClickEditImage: (File) -> Unit
 ) {
 
-    Image(
-        painter = rememberAsyncImagePainter(model = image),
-        contentDescription = contentDescription,
-        modifier = modifier
-            .size(120.dp)
-            .clip(RoundedCornerShape(100.dp)),
-        contentScale = ContentScale.FillBounds,
-    )
+    Box(modifier = modifier) {
+        Image(
+            painter = rememberAsyncImagePainter(model = image),
+            contentDescription = contentDescription,
+            modifier = modifier
+                .size(120.dp)
+                .clip(RoundedCornerShape(100.dp)),
+            contentScale = ContentScale.FillBounds,
+        )
+        if (isUserProfileVisible) {
+            CustomEditIcon(
+                modifier = Modifier.align(Alignment.CenterEnd),
+                onPermissionResult = onPermissionResult,
+                onClickEditImage = onClickEditImage
+            )
+        }
+    }
 }
 
-fun convertJpgToPng(file: File): File? {
-    try {
-        if (!file.exists()) {
-            return null
+@Composable
+private fun CustomEditIcon(
+    modifier: Modifier = Modifier,
+    onPermissionResult: (String, Boolean) -> Unit,
+    onClickEditImage: (File) -> Unit,
+) {
+    val context = LocalContext.current
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            try {
+                RealPathUtil.getRealPath(context, uri)?.let { path ->
+                    val file = File(path)
+                    onClickEditImage(file)
+                }
+            } catch (e: IOException) {
+                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+            }
         }
-
-        val options = BitmapFactory.Options()
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888
-        val bitmap = BitmapFactory.decodeFile(file.absolutePath, options)
-
-        val pngFilePath = file.absolutePath.replace(".jpg", ".png")
-        val pngFile = File(pngFilePath)
-        val outputStream = FileOutputStream(pngFile)
-
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-        outputStream.close()
-        file.delete()
-        return pngFile
-    } catch (e: IOException) {
-        e.printStackTrace()
     }
-    return null
+
+    val imagePermissionResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            onPermissionResult(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                isGranted
+            )
+            if (isGranted) {
+                galleryLauncher.launch("image/*")
+            }
+        }
+    )
+
+    IconButton(
+        onClick = {
+            imagePermissionResultLauncher.launch(
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        },
+        modifier = modifier
+            .offset(y = (-40).dp)
+            .clip(RoundedCornerShape(100.dp))
+            .size(24.dp)
+            .background(MaterialTheme.colorScheme.secondary)
+
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.edit),
+            contentDescription = "edit",
+            tint = Porcelain
+        )
+    }
 }

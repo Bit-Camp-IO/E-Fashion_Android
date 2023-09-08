@@ -17,4 +17,4 @@ fun resizeShape(pathData: String, scaleX: Float, scaleY: Float): String {
     return stringBuffer.toString()
 }
 
-const val APP_TAG = "Debugging app"
+const val APP_TAG = "Debugging_App"

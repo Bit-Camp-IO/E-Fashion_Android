@@ -1,4 +1,4 @@
-package com.bitio.ui.profile.user.composable
+package com.bitio.ui.profile.user
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -59,7 +59,7 @@ fun UserProfile(
         VerticalSpacer32Dp()
 
         Text(
-            text = stringResource(id = R.string.edit_profile),
+            text = stringResource(id = R.string.profile_edit),
             style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).titleMedium,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)

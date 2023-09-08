@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bitio.usercomponent.domain.entities.Address
+import com.bitio.usercomponent.domain.entities.User
 import com.bitio.usercomponent.domain.utils.ResponseStatus
 import com.bitio.usercomponent.domain.usecase.DeleteAddressOfUserUseCase
 import com.bitio.usercomponent.domain.usecase.GetAddressesOfUseCase
@@ -31,9 +32,7 @@ class ProfileViewModel(
     val profileUiState = _profileUiState
 
     val fullName = mutableStateOf("")
-
     val email = mutableStateOf("")
-
     val phoneNumber = mutableStateOf("")
 
     init {
@@ -50,6 +49,7 @@ class ProfileViewModel(
     private fun getUserInfo() {
         viewModelScope.launch {
             getSavedUserInformationUseCase().collect { user ->
+                initialFiled(user)
                 _profileUiState.value = ProfileUiState(
                     loading = false,
                     profileUi = ProfileUi(
@@ -66,6 +66,12 @@ class ProfileViewModel(
                 )
             }
         }
+    }
+
+    private fun initialFiled(user: User) {
+        email.value = user.email.toString()
+        phoneNumber.value = user.phoneNumber.toString()
+        fullName.value = user.fullName.toString()
     }
 
     fun updateUserInfo(userUiState: UserUiState) {

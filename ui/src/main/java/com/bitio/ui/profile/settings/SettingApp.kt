@@ -1,4 +1,4 @@
-package com.bitio.ui.profile.user.composable
+package com.bitio.ui.profile.settings
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.AnimationSpec
@@ -17,10 +17,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -38,6 +36,7 @@ import com.bitio.ui.theme.Porcelain
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.stringResource
 import com.bitio.ui.shared.VerticalSpacer32Dp
 
 
@@ -73,7 +72,7 @@ fun SettingApp(
         VerticalSpacer32Dp()
 
         Text(
-            text = "Profile Settings",
+            text = stringResource(id = R.string.profile_settings),
             style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).titleMedium,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
@@ -83,29 +82,29 @@ fun SettingApp(
 
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.profile),
-            text = "My Profile",
+            text = stringResource(id = R.string.my_profile),
             modifier = Modifier.clickable(onClick = onClickMyProfile)
         )
 
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.location),
-            text = "Location",
+            text = stringResource(id = R.string.location),
             modifier = Modifier.clickable(onClick = onClickLocationScreen)
 
         )
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.bag),
-            text = "Order status",
+            text = stringResource(id = R.string.order_status),
             modifier = Modifier.clickable(onClick = onClickOrderStatusScreen)
         )
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.messages),
-            text = "Chat Support",
+            text = stringResource(id = R.string.chat_support),
             modifier = Modifier.clickable(onClick = onClickChatSupportScreen)
         )
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.notification),
-            text = "Notifications",
+            text = stringResource(id = R.string.notifications),
             modifier = Modifier.clickable(onClick = onClickNotificationsScreen)
         )
 
@@ -118,7 +117,7 @@ fun SettingApp(
             Icon(painter = painterResource(id = R.drawable.sun), contentDescription = "")
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = if (isDarkTheme) "Dark Theme" else "Light Theme",
+                text = stringResource(id = if (isDarkTheme) R.string.dark_mode else R.string.light_mode),
                 style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).bodySmall,
                 modifier = Modifier.weight(1f)
             )
@@ -126,6 +125,7 @@ fun SettingApp(
         }
     }
 }
+
 
 @Composable
 private fun SettingItem(

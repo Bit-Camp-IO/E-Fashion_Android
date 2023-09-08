@@ -16,6 +16,5 @@ class FashionApp : Application() {
             modules(infrastructureKoinModule, presentationDiModule, defaultModule)
         }
         AuthWorkManager.enqueueWork()
-
     }
 }

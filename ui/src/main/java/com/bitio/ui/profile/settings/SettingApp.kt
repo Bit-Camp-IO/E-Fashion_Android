@@ -25,6 +25,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,9 +45,9 @@ import com.bitio.ui.shared.VerticalSpacer32Dp
 
 @Composable
 fun SettingApp(
-    isDarkTheme: Boolean,
+    darkModeEnabled: Boolean,
     modifier: Modifier = Modifier,
-    onSwitchTheme: () -> Unit,
+    onSwitchTheme: (Boolean) -> Unit,
     onClickMyProfile: () -> Unit,
     onClickLocationScreen: () -> Unit,
     onClickOrderStatusScreen: () -> Unit,
@@ -117,11 +120,11 @@ fun SettingApp(
             Icon(painter = painterResource(id = R.drawable.sun), contentDescription = "")
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = stringResource(id = if (isDarkTheme) R.string.dark_mode else R.string.light_mode),
+                text = stringResource(id = if (darkModeEnabled) R.string.dark_mode else R.string.light_mode),
                 style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).bodySmall,
                 modifier = Modifier.weight(1f)
             )
-            ThemeSwitcher(isDarkTheme = isDarkTheme, onSwitchTheme = onSwitchTheme)
+            ThemeSwitcher(darkModeEnabled = darkModeEnabled, onSwitchTheme = onSwitchTheme)
         }
     }
 }
@@ -154,21 +157,24 @@ private fun SettingItem(
 
 @Composable
 private fun ThemeSwitcher(
-    isDarkTheme: Boolean,
+    darkModeEnabled: Boolean,
     size: Dp = 32.dp,
     padding: Dp = 2.dp,
     parentShape: Shape = CircleShape,
     toggleShape: Shape = CircleShape,
     animationSpec: AnimationSpec<Dp> = tween(durationMillis = 100),
-    onSwitchTheme: () -> Unit
+    onSwitchTheme: (Boolean) -> Unit
 ) {
+    var isDarkThemeEnable by remember {
+        mutableStateOf(darkModeEnabled)
+    }
     val offsetThumb by animateDpAsState(
-        targetValue = if (isDarkTheme) 0.dp else size,
+        targetValue = if (isDarkThemeEnable) 0.dp else size,
         animationSpec = animationSpec, label = ""
     )
 
     val offsetIcon by animateDpAsState(
-        targetValue = if (isDarkTheme) (-120).dp else 0.dp,
+        targetValue = if (isDarkThemeEnable) (-120).dp else 0.dp,
         animationSpec = animationSpec, label = ""
     )
 
@@ -176,7 +182,9 @@ private fun ThemeSwitcher(
         .width(size * 2)
         .height(size)
         .clip(shape = parentShape)
-        .clickable { onSwitchTheme() }
+        .clickable {
+            isDarkThemeEnable = !isDarkThemeEnable
+            onSwitchTheme(isDarkThemeEnable) }
         .background(MaterialTheme.colorScheme.onBackground)
     ) {
         Box(
@@ -186,7 +194,7 @@ private fun ThemeSwitcher(
                 .padding(all = padding)
                 .clip(shape = toggleShape)
                 .background(MaterialTheme.colorScheme.background)
-        ) {}
+        )
         Row {
             Box(
                 modifier = Modifier.size(size),

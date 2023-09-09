@@ -4,21 +4,22 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bitio.usercomponent.domain.entities.Address
-import com.bitio.usercomponent.domain.entities.User
+import com.bitio.usercomponent.domain.model.Address
+import com.bitio.usercomponent.domain.model.User
+import com.bitio.usercomponent.domain.usecase.user.AddAddressOfUserUseCase
+import com.bitio.usercomponent.domain.usecase.user.AddUserImageUseCase
+import com.bitio.usercomponent.domain.usecase.user.DeleteAddressOfUserUseCase
+import com.bitio.usercomponent.domain.usecase.user.GetAddressesOfUseCase
+import com.bitio.usercomponent.domain.usecase.user.GetSavedUserInformationUseCase
+import com.bitio.usercomponent.domain.usecase.user.RefreshUserInfoUseCase
+import com.bitio.usercomponent.domain.usecase.user.UpdateUserInfoUseCase
 import com.bitio.usercomponent.domain.utils.ResponseStatus
-import com.bitio.usercomponent.domain.usecase.DeleteAddressOfUserUseCase
-import com.bitio.usercomponent.domain.usecase.GetAddressesOfUseCase
-import com.bitio.usercomponent.domain.usecase.AddAddressOfUserUseCase
-import com.bitio.usercomponent.domain.usecase.AddUserImageUseCase
-import com.bitio.usercomponent.domain.usecase.GetSavedUserInformationUseCase
-import com.bitio.usercomponent.domain.usecase.RefreshUserInfoUseCase
-import com.bitio.usercomponent.domain.usecase.UpdateUserInfoUseCase
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 import java.io.File
 
-
-class ProfileViewModel(
+@KoinViewModel
+class UserViewModel(
     private val refreshUserInfoUseCase: RefreshUserInfoUseCase,
     private val getSavedUserInformationUseCase: GetSavedUserInformationUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,

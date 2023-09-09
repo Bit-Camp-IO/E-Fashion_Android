@@ -1,4 +1,4 @@
-package com.bitio.usercomponent.domain.entities
+package com.bitio.usercomponent.domain.model
 
 interface User {
     val email: String?

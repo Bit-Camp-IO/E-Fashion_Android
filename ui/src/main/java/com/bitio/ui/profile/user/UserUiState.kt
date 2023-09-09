@@ -1,6 +1,6 @@
 package com.bitio.ui.profile.user
 
-import com.bitio.usercomponent.domain.entities.User
+import com.bitio.usercomponent.domain.model.User
 
 data class UserUiState(
     override val email: String? = null,

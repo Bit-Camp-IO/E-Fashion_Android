@@ -1,12 +1,12 @@
-package com.bitio.infrastructure.user.local
+package com.bitio.infrastructure.user.local.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.bitio.usercomponent.domain.entities.User
+import com.bitio.usercomponent.domain.model.User
 import kotlin.random.Random
 
 @Entity(tableName = "user")
-data class UserDto(
+data class UserEntity(
     @PrimaryKey
     val id: Int = Random.nextInt(),
     override val email: String?,

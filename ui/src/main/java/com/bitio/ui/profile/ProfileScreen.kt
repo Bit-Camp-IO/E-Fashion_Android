@@ -43,7 +43,6 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -52,6 +51,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
@@ -59,9 +59,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import com.bitio.ui.profile.user.PermissionViewModel
 import com.bitio.ui.profile.user.ProfileUi
-import com.bitio.ui.profile.user.ProfileViewModel
 import com.bitio.ui.profile.user.UserProfile
 import com.bitio.ui.profile.user.UserUiState
+import com.bitio.ui.profile.user.UserViewModel
 import com.bitio.ui.shared.shapeOfImageProfile
 import com.bitio.ui.shared.shapeOfProfile
 import com.bitio.utils.APP_TAG
@@ -72,26 +72,26 @@ import java.io.IOException
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun ProfileScreen(
-    isDarkTheme: Boolean = false,
-    onSwitchTheme: () -> Unit = {},
     navController: NavController,
 ) {
-    val viewModel = getViewModel<ProfileViewModel>()
-    val state by viewModel.profileUiState
+    val userViewModel = getViewModel<UserViewModel>()
+    val state by userViewModel.profileUiState
+    val profileSettingsViewModel = getViewModel<ProfileSettingsViewModel>()
+    val profileSettingsState by profileSettingsViewModel.profileSettingsUiState.collectAsState()
     val permissionViewModel = getViewModel<PermissionViewModel>()
 
     ProfileContent(
         profileUiState = state.profileUi,
-        isDarkTheme,
-        onSwitchTheme,
+        darkModeEnabled = profileSettingsState.darkModeEnabled,
+        onSwitchTheme = profileSettingsViewModel::onSwitchTheme,
         onClickLocationScreen = navController::navigateToLocationScreen,
         onClickOrderStatusScreen = navController::navigateToOrderStatusScreen,
         onClickChatSupportScreen = navController::navigateToChatSupportScreen,
         onClickNotificationsScreen = navController::navigateToNotificationsScreen,
         permissionViewModel::onPermissionResult,
-        viewModel::addUserImage,
+        userViewModel::addUserImage,
         onClickSaveButton = { fullName, phoneNumber, email ->
-            viewModel.updateUserInfo(
+            userViewModel.updateUserInfo(
                 UserUiState(
                     email = email,
                     fullName = fullName,
@@ -99,12 +99,12 @@ fun ProfileScreen(
                 )
             )
         },
-        onFullNameChange = { viewModel.fullName.value = it },
-        fullName = viewModel.fullName.value,
-        onPhoneNumberChange = { viewModel.phoneNumber.value = it },
-        phoneNumber = viewModel.phoneNumber.value,
-        onEmailChange = { viewModel.email.value = it },
-        email = viewModel.email.value,
+        onFullNameChange = { userViewModel.fullName.value = it },
+        fullName = userViewModel.fullName.value,
+        onPhoneNumberChange = { userViewModel.phoneNumber.value = it },
+        phoneNumber = userViewModel.phoneNumber.value,
+        onEmailChange = { userViewModel.email.value = it },
+        email = userViewModel.email.value,
     )
 }
 
@@ -113,8 +113,8 @@ fun ProfileScreen(
 @Composable
 private fun ProfileContent(
     profileUiState: ProfileUi,
-    isDarkTheme: Boolean,
-    onSwitchTheme: () -> Unit,
+    darkModeEnabled: Boolean,
+    onSwitchTheme: (Boolean) -> Unit,
     onClickLocationScreen: () -> Unit,
     onClickOrderStatusScreen: () -> Unit,
     onClickChatSupportScreen: () -> Unit,
@@ -137,7 +137,6 @@ private fun ProfileContent(
         mutableStateOf(false)
     }
     val scrollState = rememberScrollState()
-    LaunchedEffect(Unit) { scrollState.animateScrollTo(100) }
 
     Box(
         contentAlignment = Alignment.TopCenter,
@@ -169,14 +168,6 @@ private fun ProfileContent(
             },
             isFullNameAndEditIconVisible = scrollState.value.toFloat() == 0f
         )
-        Log.d(
-            APP_TAG,
-            "ProfileContent:scrollState.value =" +
-                    " ${scrollState.value} " +
-                    "scrollState.maxValue = ${scrollState.maxValue} " +
-                    "dived by ${0.5 * (scrollState.value.toFloat() / scrollState.maxValue)} " +
-                    "dived by screen height ${100 * (scrollState.value.toFloat() / screenHeight.value)}"
-        )
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -186,7 +177,7 @@ private fun ProfileContent(
                 .padding(top = screenHeight / 3.5f)
         ) {
             Footer(
-                isDarkTheme = isDarkTheme,
+                darkModeEnabled = darkModeEnabled,
                 onSwitchTheme = onSwitchTheme,
                 onClickLocationScreen = onClickLocationScreen,
                 onClickOrderStatusScreen = onClickOrderStatusScreen,
@@ -258,7 +249,7 @@ private fun Body(
                 )
             }
         }
-        AnimatedVisibility(visible = isFullNameAndEditIconVisible) {
+        if (isFullNameAndEditIconVisible) {
             Text(
                 text = fullName,
                 style = MaterialTheme.typography.titleMedium
@@ -269,8 +260,8 @@ private fun Body(
 
 @Composable
 private fun Footer(
-    isDarkTheme: Boolean,
-    onSwitchTheme: () -> Unit,
+    darkModeEnabled: Boolean,
+    onSwitchTheme: (Boolean) -> Unit,
     onClickLocationScreen: () -> Unit,
     onClickOrderStatusScreen: () -> Unit,
     onClickChatSupportScreen: () -> Unit,
@@ -308,7 +299,7 @@ private fun Footer(
                 .fillMaxSize()
         ) {
             SettingApp(
-                isDarkTheme = isDarkTheme,
+                darkModeEnabled = darkModeEnabled,
                 onSwitchTheme = onSwitchTheme,
                 modifier = Modifier.offset(x = offsetXOfProfileSettings),
                 onClickMyProfile = { onSwitchBetweenProfile(true) },

@@ -2,13 +2,13 @@ package com.bitio.usercomponent.data.repository
 
 import com.bitio.sharedcomponent.data.ResponseWrapper
 import com.bitio.usercomponent.data.local.UserDao
-import com.bitio.usercomponent.data.local.UserDto
+import com.bitio.usercomponent.data.local.UserEntity
 import com.bitio.usercomponent.data.remote.UserApi
 import com.bitio.usercomponent.data.remote.request.AddressBody
 import com.bitio.usercomponent.data.remote.request.UserBody
 import com.bitio.usercomponent.data.remote.response.ProfileResponse
-import com.bitio.usercomponent.domain.entities.Address
-import com.bitio.usercomponent.domain.entities.User
+import com.bitio.usercomponent.domain.model.Address
+import com.bitio.usercomponent.domain.model.User
 import com.bitio.usercomponent.domain.repository.UserRepository
 import com.bitio.usercomponent.domain.utils.ResponseStatus
 import kotlinx.coroutines.flow.Flow
@@ -21,18 +21,18 @@ class UserRepositoryImpl(
     private val userApi: UserApi,
     private val userDao: UserDao
 ) : UserRepository {
-    override suspend fun refreshUserInfo(): ResponseStatus<UserDto> {
+    override suspend fun refreshUserInfo(): ResponseStatus<UserEntity> {
         return try {
             val response = userApi.getUserInformation()
             if (response.data != null) {
-                val userDto = UserDto(
+                val userEntity = UserEntity(
                     fullName = response.data?.fullName,
                     email = response.data?.email,
                     phoneNumber = response.data?.phoneNumber,
                     profileImage = response.data?.profileImage
                 )
-                userDao.saveUserInformation(userDto)
-                ResponseStatus.Success(userDto)
+                userDao.saveUserInformation(userEntity)
+                ResponseStatus.Success(userEntity)
             } else {
                 ResponseStatus.Error(response.message)
             }

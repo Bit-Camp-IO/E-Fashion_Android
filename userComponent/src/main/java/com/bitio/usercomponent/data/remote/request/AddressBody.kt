@@ -1,6 +1,6 @@
 package com.bitio.usercomponent.data.remote.request
 
-import com.bitio.usercomponent.domain.entities.Address
+import com.bitio.usercomponent.domain.model.Address
 import kotlinx.serialization.Serializable
 
 @Serializable

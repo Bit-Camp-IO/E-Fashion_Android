@@ -1,6 +1,6 @@
-package com.bitio.usercomponent.domain.usecase
+package com.bitio.usercomponent.domain.usecase.user
 
-import com.bitio.usercomponent.domain.entities.User
+import com.bitio.usercomponent.domain.model.User
 import com.bitio.usercomponent.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 

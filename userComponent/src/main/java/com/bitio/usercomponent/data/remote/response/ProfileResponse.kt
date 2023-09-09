@@ -1,6 +1,6 @@
 package com.bitio.usercomponent.data.remote.response
 
-import com.bitio.usercomponent.domain.entities.Profile
+import com.bitio.usercomponent.domain.model.Profile
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

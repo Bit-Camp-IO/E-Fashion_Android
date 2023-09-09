@@ -1,4 +1,4 @@
-package com.bitio.usercomponent.domain.usecase
+package com.bitio.usercomponent.domain.usecase.user
 
 import com.bitio.usercomponent.domain.repository.UserRepository
 import com.bitio.usercomponent.domain.utils.ResponseStatus

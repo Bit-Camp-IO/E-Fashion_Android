@@ -1,6 +1,6 @@
 package com.bitio.usercomponent.data.local
 
-import com.bitio.usercomponent.domain.entities.User
+import com.bitio.usercomponent.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 

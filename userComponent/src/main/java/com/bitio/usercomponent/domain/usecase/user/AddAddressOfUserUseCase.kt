@@ -1,6 +1,6 @@
-package com.bitio.usercomponent.domain.usecase
+package com.bitio.usercomponent.domain.usecase.user
 
-import com.bitio.usercomponent.domain.entities.Address
+import com.bitio.usercomponent.domain.model.Address
 import com.bitio.usercomponent.domain.repository.UserRepository
 
 class AddAddressOfUserUseCase(

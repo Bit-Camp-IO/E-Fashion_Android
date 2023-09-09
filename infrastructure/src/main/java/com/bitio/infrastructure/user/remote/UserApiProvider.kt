@@ -6,7 +6,7 @@ import com.bitio.usercomponent.data.remote.UserApi
 import com.bitio.usercomponent.data.remote.request.AddressBody
 import com.bitio.usercomponent.data.remote.request.UserBody
 import com.bitio.usercomponent.data.remote.response.ProfileResponse
-import com.bitio.usercomponent.domain.entities.Address
+import com.bitio.usercomponent.domain.model.Address
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE

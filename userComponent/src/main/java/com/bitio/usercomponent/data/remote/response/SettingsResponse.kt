@@ -1,7 +1,7 @@
 package com.bitio.usercomponent.data.remote.response
 
-import com.bitio.usercomponent.domain.entities.Address
-import com.bitio.usercomponent.domain.entities.Settings
+import com.bitio.usercomponent.domain.model.Address
+import com.bitio.usercomponent.domain.model.Settings
 import kotlinx.serialization.Serializable
 
 @Serializable

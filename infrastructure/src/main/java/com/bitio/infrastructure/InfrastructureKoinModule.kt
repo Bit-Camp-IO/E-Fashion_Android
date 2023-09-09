@@ -8,7 +8,7 @@ import com.bitio.infrastructure.user.di.userKoinModule
 import org.koin.dsl.module
 
 val infrastructureKoinModule = module {
-    single<AppDatabase> {
+    single {
         Room.databaseBuilder(
             context = get(),
             klass = AppDatabase::class.java,

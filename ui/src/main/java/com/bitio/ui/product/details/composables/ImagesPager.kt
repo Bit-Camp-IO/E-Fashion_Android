@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -14,11 +15,12 @@ import com.bitio.ui.shared.AsyncDescribedImage
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ImagesPager(modifier: Modifier = Modifier, images: List<String>) {
+    val pagerState= rememberPagerState {images.size}
     HorizontalPager(
         modifier = modifier
             .fillMaxWidth()
             .aspectRatio(0.75f),
-        pageCount = images.size,
+        state =pagerState,
         pageSize = PageSize.Fill
     ) {
         AsyncDescribedImage(

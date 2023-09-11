@@ -6,21 +6,20 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.bitio.productscomponent.domain.entities.products.Product
-import com.bitio.productscomponent.domain.entities.products.ProductWithOffer
+import androidx.paging.compose.LazyPagingItems
 import com.bitio.ui.product.models.UiProduct
 
 
 @Composable
-fun ProductParallelogramGrid(products: List<UiProduct>, onCardClicked:(Int)->Unit={}) {
+fun ProductParallelogramGrid(lazyProducts: LazyPagingItems<UiProduct>, onCardClicked:(Int)->Unit={}) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy((-12).dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 24.dp)
     ) {
-        items(products.size, contentType = { UiProduct::class }, key = { it }) {
-             SmallParallelogramCardFactory(products[it], cardIndex = it)
+        items(lazyProducts.itemCount, contentType = { UiProduct::class }, key = { it }) {
+             SmallParallelogramCardFactory(lazyProducts[it]!!, cardIndex = it)
 
         }
     }

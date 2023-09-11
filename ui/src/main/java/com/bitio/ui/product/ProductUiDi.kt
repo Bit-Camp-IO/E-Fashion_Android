@@ -13,8 +13,8 @@ import org.koin.dsl.module
 val productUiDi = module {
   // viewModel { HomeViewModel(get(),get()) }
    // viewModel { DetailsViewModel(get()) }
-    viewModel { CartViewModel() }
-    viewModel { SearchViewModel() }
-    viewModel { ProductListViewModel() }
-    viewModel { OrderStatusViewModel() }
+    //viewModel { CartViewModel() }
+    //viewModel { SearchViewModel() }
+    //viewModel { ProductListViewModel() }
+   // viewModel { OrderStatusViewModel() }
 }

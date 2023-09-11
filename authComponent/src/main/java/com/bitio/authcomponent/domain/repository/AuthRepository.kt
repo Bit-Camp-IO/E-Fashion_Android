@@ -1,6 +1,7 @@
 package com.bitio.authcomponent.domain.repository
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface AuthRepository {
     suspend fun register(fullName: String, email: String, password: String)
@@ -9,5 +10,6 @@ interface AuthRepository {
     suspend fun updateRefreshToken()
     suspend fun getAccessToken(): String
     fun getAccessTokenStream(): Flow<String>
-    fun quickRetriveAccessToken(): String?
+    fun quickRetrieveAccessToken(): String?
+    fun isUserLoggedIn(): StateFlow<Boolean>
 }

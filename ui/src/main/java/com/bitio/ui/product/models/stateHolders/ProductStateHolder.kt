@@ -60,7 +60,7 @@ class ProductStateHolder(
             val result = getProductsByBrandAndCategoryUseCase(
                 brand = brand?.id,
                 hasDiscount = offersOnly,
-                categories = categoriesIds,
+                categoriesIds = categoriesIds,
                 page = 1, limit = 20
             )
 
@@ -75,8 +75,6 @@ class ProductStateHolder(
             addOrRemoveProductFromFavorite(uiProduct, uiProduct.isFavoriteState.value)
             uiProduct.isFavoriteState.value = !uiProduct.isFavoriteState.value
         }
-
-
     }
 
     private fun onAddToCartClicked(uiProduct: UiProduct) {
@@ -84,11 +82,10 @@ class ProductStateHolder(
     }
 
     private fun observeFavIds() {
-        coroutineScope.launch(Dispatchers.Main) {
+        coroutineScope.launch(Dispatchers.Default) {
             favoriteIds.collect { set ->
                 productsFlow.value.forEach {
                     val isFavorite = set.contains(it.id)
-
                     it.updateFavoriteState(isFavorite)
                 }
             }

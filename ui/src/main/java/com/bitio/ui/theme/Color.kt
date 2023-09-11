@@ -23,3 +23,7 @@ val BalticSea = Color(0xFF242629)//dark theme surface
 
 val NiceBlue = Color(0xFF247BA0) //secondary
 val PeacockBlue = Color(0xFF006494)//tertiary
+
+val UnselectedStarColor=Color(0xFFBEAE57)
+val SelectedStarColor=Color(0xFFFAD308)
+val WhiteColorWithOpacity=Color.White.copy(alpha = 40/100F)

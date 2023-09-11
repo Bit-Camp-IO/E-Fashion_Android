@@ -1,24 +1,27 @@
 package com.bitio.ui.product.productsList.largeCards
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -26,6 +29,7 @@ import com.bitio.productscomponent.domain.entities.products.Product
 import com.bitio.ui.R
 import com.bitio.ui.product.CartIconButton
 import com.bitio.ui.product.FavoriteIconButtonCircularBg
+import com.bitio.ui.product.models.UiProduct
 import com.bitio.ui.product.productsList.firstItemLargeShape
 import com.bitio.ui.product.productsList.lastItemLargeShape
 import com.bitio.ui.product.productsList.middleItemsLargeShape
@@ -33,19 +37,23 @@ import com.bitio.ui.shared.AsyncDescribedImage
 import com.bitio.ui.shared.HorizontalSpacer24Dp
 import com.bitio.ui.shared.VerticalSpacer4Dp
 
+@Composable
+fun ProductParallelogramCardStrategy(
+    index: Int, product: UiProduct,
+    onCardClicked: (String) -> Unit = {},
+) {
+    if (index == 0) ProductFirstParallelogramCard(product, onCardClicked)
+    else ProductMiddleParallelogramCard(product, onCardClicked)
+}
 
 @Composable
 fun ProductFirstParallelogramCard(
-    product: Product,
+    product: UiProduct,
     onCardClicked: (String) -> Unit = {},
-    onAddToCartClicked: (String) -> Unit = {},
-    onAddToFavClicked: (String) -> Unit = {}
 ) {
     ProductLargeParallelogramCard(
         product = product,
         onCardClicked = onCardClicked,
-        onAddToCartClicked = onAddToCartClicked,
-        onAddToFavClicked = onAddToFavClicked,
         favoriteIconTopPadding = 16.dp,
         shape = firstItemLargeShape
 
@@ -55,16 +63,12 @@ fun ProductFirstParallelogramCard(
 
 @Composable
 fun ProductMiddleParallelogramCard(
-    product: Product,
+    product: UiProduct,
     onCardClicked: (String) -> Unit = {},
-    onAddToCartClicked: (String) -> Unit = {},
-    onAddToFavClicked: (String) -> Unit = {}
 ) {
     ProductLargeParallelogramCard(
         product = product,
         onCardClicked = onCardClicked,
-        onAddToCartClicked = onAddToCartClicked,
-        onAddToFavClicked = onAddToFavClicked,
         favoriteIconTopPadding = 50.dp,
         shape = middleItemsLargeShape
 
@@ -73,16 +77,14 @@ fun ProductMiddleParallelogramCard(
 
 @Composable
 fun ProductLastParallelogramCard(
-    product: Product,
+    product: UiProduct,
     onCardClicked: (String) -> Unit = {},
-    onAddToCartClicked: (String) -> Unit = {},
-    onAddToFavClicked: (String) -> Unit = {}
 ) {
     ProductLargeParallelogramCard(
         product = product,
         onCardClicked = onCardClicked,
-        onAddToCartClicked = onAddToCartClicked,
-        onAddToFavClicked = onAddToFavClicked,
+
+
         favoriteIconTopPadding = 50.dp,
         shape = lastItemLargeShape
 
@@ -92,18 +94,19 @@ fun ProductLastParallelogramCard(
 
 @Composable
 fun ProductLargeParallelogramCard(
-    product: Product,
+    product: UiProduct,
     onCardClicked: (String) -> Unit = {},
-    onAddToCartClicked: (String) -> Unit = {},
-    onAddToFavClicked: (String) -> Unit = {},
     favoriteIconTopPadding: Dp,
     shape: Shape
 ) {
+
     Box(
         modifier = Modifier
-            .size(312.dp, 300.dp)
-            .clip(shape)
+            .fillMaxWidth()
+            .aspectRatio(LargeCardAspectRatio)
+            .clip(shape).clipToBounds()
             .clickable { onCardClicked(product.id) }
+
     ) {
         AsyncDescribedImage(modifier = Modifier.fillMaxSize(), imageLink = product.image)
         Column(
@@ -111,13 +114,13 @@ fun ProductLargeParallelogramCard(
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.End
         ) {
-            val x = remember { mutableStateOf(true) }
+
             FavoriteIconButtonCircularBg(
-                isFavoriteState = x,
+                isFavoriteState = product.isFavoriteState,
                 modifier = Modifier.padding(top = favoriteIconTopPadding, end = 16.dp),
                 productId = product.id
-            ) { onAddToFavClicked(product.id) }
-            ProductParallelogramDetailsCurve(product,onAddToCartClicked)
+            ) { product.onAddToFavoriteClicked(product) }
+            ProductParallelogramDetailsCurve(product) { product.onAddToCartClicked(product) }
         }
     }
 
@@ -131,8 +134,12 @@ fun ProductParallelogramDetailsCurve(
 ) {
     Box(contentAlignment = Alignment.BottomCenter) {
         Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(2.7f),
             painter = painterResource(id = R.drawable.large_shape_curve),
-            contentDescription = null
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds
         )
         Row(
             modifier = Modifier

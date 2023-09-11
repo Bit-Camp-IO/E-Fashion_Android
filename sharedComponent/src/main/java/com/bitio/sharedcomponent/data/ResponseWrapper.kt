@@ -9,8 +9,8 @@ data class ResponseWrapper<T>(
     val message: String,
     val status: String,
     @SerialName(value = "data")
-    val data: T?=null,
-    val error: ApiErrorData?=null
+    val data: T? = null,
+    val error: ApiErrorData? = null
 )
 
 

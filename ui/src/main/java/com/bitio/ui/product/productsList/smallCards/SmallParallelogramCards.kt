@@ -15,8 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -123,14 +121,13 @@ fun SmallParallelogramCard(
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = if (isLeft) Alignment.Start else Alignment.End
         ) {
-            val x = remember { mutableStateOf(true) }
             FavoriteIconButtonCircularBg(
-                isFavoriteState = x,
+                isFavoriteState = product.isFavoriteState,
                 productId = product.id,
                 modifier = Modifier
                     .padding(top = (if (isFirst) 8 else 24).dp)
                     .padding(horizontal = 16.dp),
-                onClick = onAddToFavClicked
+                onClick = {product.onAddToFavoriteClicked(product)}
             )
             ParallelogramCurve(product, isLeft) { onAddToCartClicked(product.id) }
         }

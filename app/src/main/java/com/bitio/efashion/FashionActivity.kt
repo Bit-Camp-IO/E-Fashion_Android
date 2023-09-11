@@ -15,8 +15,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
-import com.bitio.ui.authentication.AuthenticationScreen
-import com.bitio.ui.product.home.HomeScreen
+import com.bitio.ui.product.home.zara.AllProductsScreen
+import com.bitio.ui.product.productsList.ProductListScreen
+import com.bitio.ui.product.search.SearchScreen
 import com.bitio.ui.theme.EFashionTheme
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -64,9 +65,11 @@ class FashionActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
+                    SearchScreen(navController = rememberNavController())
+                   // ProductListScreen(navController = rememberNavController())
                   //  HomeScreen(navController = rememberNavController())
                    // AuthenticationScreen(navController = rememberNavController())
-                    BottomNavigationBar(navController = rememberNavController(), checkIfLogin =true)
+                  //  BottomNavigationBar(navController = rememberNavController(), checkIfLogin =true)
                 }
             }
         }

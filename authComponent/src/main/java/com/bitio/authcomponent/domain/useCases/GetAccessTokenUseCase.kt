@@ -18,5 +18,5 @@ class GetAccessTokenUseCase(private val repository: AuthRepository) {
         return repository.getAccessTokenStream()
     }
 
-    fun getQuickAccessToken() = repository.quickRetriveAccessToken() ?: ""
+    fun getQuickAccessToken() = repository.quickRetrieveAccessToken() ?: ""
 }

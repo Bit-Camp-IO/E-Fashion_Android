@@ -7,7 +7,7 @@ import com.bitio.productscomponent.domain.repository.ProductRepository
 class GetProductsByBrandAndCategoryUseCase(private val repository: ProductRepository) {
     suspend operator fun invoke(
         brand: String? = null,
-        categories: List<String> = listOf(),
+        categoriesIds: List<String> = listOf(),
         hasDiscount: Boolean = false,
         page: Int = 1,
         limit: Int = 20
@@ -15,7 +15,7 @@ class GetProductsByBrandAndCategoryUseCase(private val repository: ProductReposi
         return try {
             val data = repository.getProductsByCategoryAndBrand(
                 brand,
-                categories,
+                categoriesIds,
                 hasDiscount,
                 page,
                 limit

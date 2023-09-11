@@ -12,7 +12,7 @@ import org.koin.core.annotation.Module
 import org.koin.dsl.module
 
 val presentationDiModule = module {
-    includes(productUiDi)
+  //  includes(productUiDi)
     viewModel { AuthenticationViewModel(get(), get(), get()) }
     viewModel { ChatSupportViewModel() }
     viewModel { FavoriteViewModel() }

@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
+import com.bitio.ui.theme.WhiteColorWithOpacity
 
 @Composable
 fun FavoriteIconButton(
@@ -50,12 +51,12 @@ fun FavoriteIconButtonCircularBg(
         modifier = modifier
             .size(24.dp)
             .clip(CircleShape)
-            .background(Color.White)
+            .background(WhiteColorWithOpacity)
             .clickable { onClick(productId) },
         contentAlignment = Alignment.Center
     ) {
         val iconId = if (isFavoriteState.value) R.drawable.ic_heart_filled else R.drawable.ic_heart
-        Icon(
+        Icon(modifier= Modifier.size(14.dp),
             painter = painterResource(id = iconId),
             contentDescription = "add to cart button",
             tint = Color.Unspecified

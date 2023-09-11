@@ -51,7 +51,7 @@ dependencies {
     api("androidx.core:core-ktx:1.10.1")
     api("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     api("androidx.activity:activity-compose:1.7.2")
-    api(platform("androidx.compose:compose-bom:2023.06.01"))
+    api(platform("androidx.compose:compose-bom:2023.08.00"))
     api("androidx.compose.ui:ui")
     api("androidx.compose.ui:ui-graphics")
     api("androidx.compose.ui:ui-tooling-preview")
@@ -79,7 +79,8 @@ dependencies {
     // coil
     implementation("io.coil-kt:coil-compose:2.4.0")
 
-
+    //paging
+    implementation("androidx.paging:paging-compose:3.2.0")
     //google fonts
     implementation("androidx.compose.ui:ui-text-google-fonts:1.4.3")
 
@@ -87,10 +88,11 @@ dependencies {
     api ("io.insert-koin:koin-androidx-compose:3.4.6")
     ksp ("io.insert-koin:koin-ksp-compiler:1.2.2")
 
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.06.01"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")

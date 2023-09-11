@@ -6,12 +6,14 @@ import com.bitio.authcomponent.data.remote.request.LoginBody
 import com.bitio.authcomponent.data.remote.request.RegisterBody
 import com.bitio.authcomponent.domain.entities.AuthData
 import com.bitio.authcomponent.domain.repository.AuthRepository
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class AuthRepositoryImpl(private val api: AuthApi, private val dao: AuthDao) : AuthRepository {
-    private var cashedAccessToken: String? = null
-    private var cashedRefreshToken: String? = null
-
+    private val isUserSignedInFlow = MutableStateFlow(false)
 
     //Register & Save Auth Data
     override suspend fun register(fullName: String, email: String, password: String) {
@@ -35,10 +37,20 @@ class AuthRepositoryImpl(private val api: AuthApi, private val dao: AuthDao) : A
         return cashedAccessToken!!
     }
 
-    override fun quickRetriveAccessToken():String?{
+    override fun quickRetrieveAccessToken(): String? {
 
         return cashedAccessToken
     }
+
+    override fun isUserLoggedIn(): StateFlow<Boolean> {
+
+        GlobalScope.launch {
+            val token = dao.getRefreshToken()
+            isUserSignedInFlow.value = token.isNotBlank()
+        }
+        return isUserSignedInFlow
+    }
+
 
     override fun getAccessTokenStream(): Flow<String> {
         return dao.getAccessTokenStream()
@@ -60,11 +72,15 @@ class AuthRepositoryImpl(private val api: AuthApi, private val dao: AuthDao) : A
     private suspend fun saveAuthDataHelper(authData: AuthData) {
         cashedAccessToken = authData.accessToken
         cashedRefreshToken = authData.refreshToken
-        println("cc"+ cashedRefreshToken.toString())
+        println("cc" + cashedRefreshToken.toString())
         dao.updateRefreshToken(cashedRefreshToken!!)
 
     }
 
+    companion object {
+        private var cashedAccessToken: String? = null
+        private var cashedRefreshToken: String? = null
+    }
 
 }
 

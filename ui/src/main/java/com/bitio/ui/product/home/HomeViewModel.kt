@@ -62,11 +62,7 @@ class HomeViewModel(
         get() = _collections
 
 
-    init {
-
-        updateCategories()
-        getHomePayload()
-    }
+    init { getHomePayload() }
 
     private fun getHomePayload() {
         viewModelScope.launch {
@@ -96,12 +92,7 @@ class HomeViewModel(
         )
     }
 
-    private fun updateCategories() {
-        viewModelScope.launch {
-            val x = getBrandsUseCase()
-        }
 
-    }
 
     private fun updateCollections() {}
 
@@ -123,6 +114,5 @@ class HomeViewModel(
     }
 
     fun changeGenderState(index: Int) {
-
         categoryStateHolder.changeGenderState(index)}
 }

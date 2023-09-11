@@ -19,20 +19,14 @@ data class UiProduct(
     val onAddToFavoriteClicked: (UiProduct) -> Unit,
     val onAddToCartClicked: (UiProduct) -> Unit
 ) : Product {
-    private suspend fun isProductInFavorites(ids: HashSet<String>): Boolean {
-        return withContext(Dispatchers.Default) { return@withContext ids.contains(id) }
+    //thread safe update update for isFavorite
+    suspend fun updateFavoriteState(isFavorite: Boolean) {
+        withContext(Dispatchers.Main) {
+            isFavoriteState.value = isFavorite
+        }
 
     }
 
-    fun updateFavoriteState(isFavorite: Boolean) {
-        isFavoriteState.value = isFavorite
-    }
-
-    suspend fun updateIsFavoriteState(ids: HashSet<String>) {
-        val isFavorite = isProductInFavorites(ids)
-        withContext(Dispatchers.Main) { isFavoriteState.value = isFavorite }
-
-    }
 }
 
 fun Product.toUiProduct(

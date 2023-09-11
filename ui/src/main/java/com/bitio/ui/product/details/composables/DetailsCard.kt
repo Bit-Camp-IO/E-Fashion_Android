@@ -1,6 +1,7 @@
 package com.bitio.ui.product.details.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,69 +23,115 @@ import com.bitio.ui.shared.CustomButtonForm
 import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer64Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
-import com.bitio.utils.makeShapeFromSvgPath
 
 @Composable
 fun DetailsCard(productDetails: ProductDetails) {
-    Box(Modifier.clickable(enabled = false) {  }) {
+
+    Box {
+
         Image(
             modifier = Modifier
                 .height(300.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .clickable(enabled = false) { },
             painter = painterResource(id = R.drawable.details_bg),
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
             colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.background)
         )
-        Column(Modifier.padding(horizontal = 24.dp)) {
-            VerticalSpacer64Dp()
-            Text(
-                text = productDetails.name,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            VerticalSpacer8Dp()
-            Text(
-                text = "$" + productDetails.price.toString(),
-                style = MaterialTheme.typography.bodyLarge
-            )
-            VerticalSpacer8Dp()
-            Text(
-                modifier = Modifier.width(200.dp),
-                text = productDetails.description,
-                style = MaterialTheme.typography.bodySmall
-            )
-            VerticalSpacer16Dp()
 
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 64.dp)
+                .background(MaterialTheme.colorScheme.background)
+        ) {
 
-            for (selectable in productDetails.selectableProperties) {
-                SelectableRowStrategy(selectable = selectable)
+            Column(Modifier.padding(horizontal = 24.dp)) {
+
+                Text(
+                    text = productDetails.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                VerticalSpacer8Dp()
+                Text(
+                    text = "$" + productDetails.price.toString(),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                VerticalSpacer8Dp()
+                Text(
+                    modifier = Modifier.width(200.dp),
+                    text = productDetails.description,
+                    style = MaterialTheme.typography.bodySmall
+                )
                 VerticalSpacer16Dp()
+
+
+                ColorRow(colors = productDetails.colors)
+
+
+                VerticalSpacer16Dp()
+                CustomButtonForm(title = "Add To Cart") {}
+                VerticalSpacer64Dp()
+                PostRatingAndReview(onAddRating = {}, onAddReview = {})
+                VerticalSpacer64Dp()
+                VerticalSpacer64Dp()
+                VerticalSpacer64Dp()
+                VerticalSpacer64Dp()
+
             }
-            VerticalSpacer16Dp()
-            CustomButtonForm(title = "Add To Cart") {
-
-
-            }
-            VerticalSpacer64Dp()
-            VerticalSpacer64Dp()
-            VerticalSpacer64Dp()
-            VerticalSpacer64Dp()
-            VerticalSpacer64Dp()
-
         }
+
     }
 
 }
 
 
-const val cardSvgPath =
-    "M0 50.0161C0 18.5728 28.6783 -5.06615 59.5435 0.93542L319.543 51.491C343.038 56.0594 360 76.6371 360 100.572V455.358L0 451.967V50.0161Z"
+@Composable
+fun PostRatingAndReview(onAddRating: (Float) -> Unit, onAddReview: (String) -> Unit) {
+    Text(
+        text = "Rate this product",
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+    Text(
+        text = "Tell others what you think",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+    DynamicRatingBar(onAddRating)
+    VerticalSpacer16Dp()
+    AddReviewExpandable(onAddReview = onAddReview)
 
-fun cardShape() = makeShapeFromSvgPath(cardSvgPath)
+}
 
+@Composable
+fun RatingAndReviews() {
+    Column {
+        Column {
+            Text(text = "Rating and Reviews")
+            Text(text = "See what others think about this product")
+        }
+        Column {
+            Text(text = "4.9")
 
+        }
+    }
+}
 
+interface ReviewAndRatingDetails {
+    //val totalRating: Float
+    val ratingsCount: Int
+    val totalReviewsCount: Int
+    val ratingList: List<Float>
+    val topReviewsList: List<Review>
+}
 
-
-
+interface Review {
+    val id: String
+    val reviewWriterName: String
+    val userRating: Float
+    val reviewDate: String
+    val reviewBody: String
+}

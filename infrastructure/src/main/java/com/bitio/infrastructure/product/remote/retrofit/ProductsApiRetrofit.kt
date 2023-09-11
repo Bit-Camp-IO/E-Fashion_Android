@@ -4,13 +4,11 @@ import com.bitio.productscomponent.data.remote.request.IdBody
 import com.bitio.productscomponent.data.remote.response.BrandResponse
 import com.bitio.productscomponent.data.remote.response.CategoryResponse
 import com.bitio.productscomponent.data.remote.response.FavoriteProductResponse
-import com.bitio.productscomponent.data.remote.response.ProductResponse
+import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
 import com.bitio.productscomponent.data.remote.response.ProductsPage
 import com.bitio.sharedcomponent.data.ResponseWrapper
-import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.POST
@@ -31,7 +29,7 @@ interface ProductsApiRetrofit {
     @GET("product/{id}")
     suspend fun getProductById(
         @Path("id") id: String
-    ): ResponseWrapper<ProductResponse>
+    ): ResponseWrapper<ProductDetailsResponse>
 
     @GET("category/list")
     suspend fun getAllCategories(@Query("gender") genderId: Int?): ResponseWrapper<List<CategoryResponse>>

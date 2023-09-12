@@ -5,7 +5,7 @@ import com.bitio.authcomponent.data.remote.AuthApi
 import com.bitio.authcomponent.data.repository.AuthRepositoryImpl
 import com.bitio.authcomponent.domain.repository.AuthRepository
 import com.bitio.authcomponent.domain.useCases.GetAccessTokenUseCase
-import com.bitio.authcomponent.domain.useCases.GetUserLoginState
+import com.bitio.authcomponent.domain.useCases.CheckIfUserLoggedInUseCase
 import com.bitio.authcomponent.domain.useCases.LoginUseCase
 import com.bitio.authcomponent.domain.useCases.RefreshAccessTokenUseCase
 import com.bitio.authcomponent.domain.useCases.RegisterUseCase
@@ -23,6 +23,6 @@ val authKoinModule = module {
     factory { RefreshAccessTokenUseCase(get()) }
     factory { RegisterUseCase(get()) }
     factory { LoginUseCase(get()) }
-    factory { GetUserLoginState(get()) }
+    factory { CheckIfUserLoggedInUseCase(get()) }
 
 }

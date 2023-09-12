@@ -11,19 +11,16 @@ import com.bitio.usercomponent.domain.model.ProfileSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class ProfileSettingsDaoImpl(context: Context) : ProfileSettingsDao {
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "profile_settings")
-    private val dataStore = context.dataStore
-
+class ProfileSettingsDaoImpl(private val context: Context) : ProfileSettingsDao {
     override suspend fun saveProfileSettings(profileSettings: ProfileSettings) {
-        dataStore.edit { settings ->
+        context.dataStore.edit { settings ->
             settings[DARK_MODE_ENABLED] = profileSettings.darkModeEnabled.toString()
             settings[LANGUAGE] = profileSettings.language
         }
     }
 
     override fun getProfileSettings(): Flow<ProfileSettings> {
-        return dataStore.data.map { preferences ->
+        return context.dataStore.data.map { preferences ->
             ProfileSettingsEntity(
                 darkModeEnabled = preferences[DARK_MODE_ENABLED]?.toBoolean() ?: false,
                 language = preferences[LANGUAGE] ?: ""
@@ -31,7 +28,8 @@ class ProfileSettingsDaoImpl(context: Context) : ProfileSettingsDao {
         }
     }
 
-    private companion object SettingsKeys {
+    companion object SettingsKeys {
+        val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "profile_settings")
         val DARK_MODE_ENABLED = stringPreferencesKey("dark_mode_enabled")
         val LANGUAGE = stringPreferencesKey("language")
     }

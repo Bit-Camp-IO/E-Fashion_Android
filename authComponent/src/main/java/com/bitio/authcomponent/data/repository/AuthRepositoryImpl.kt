@@ -10,10 +10,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class AuthRepositoryImpl(private val api: AuthApi, private val dao: AuthDao) : AuthRepository {
-    private val isUserSignedInFlow = MutableStateFlow(false)
 
     //Register & Save Auth Data
     override suspend fun register(fullName: String, email: String, password: String) {
@@ -42,13 +42,8 @@ class AuthRepositoryImpl(private val api: AuthApi, private val dao: AuthDao) : A
         return cashedAccessToken
     }
 
-    override fun isUserLoggedIn(): StateFlow<Boolean> {
-
-        GlobalScope.launch {
-            val token = dao.getRefreshToken()
-            isUserSignedInFlow.value = token.isNotBlank()
-        }
-        return isUserSignedInFlow
+    override fun checkIfUserLoggedIn(): Flow<String?> {
+        return dao.getRefreshToken()
     }
 
 
@@ -60,9 +55,14 @@ class AuthRepositoryImpl(private val api: AuthApi, private val dao: AuthDao) : A
      that the access token itself expires every 10 min*/
 
     override suspend fun refreshAccessToken() {
-        if (cashedRefreshToken == null)
-            cashedRefreshToken = dao.getRefreshToken()
-        cashedAccessToken = api.refreshAccessToken(cashedRefreshToken!!).data!!.token
+        if (cashedRefreshToken == null) {
+            dao.getRefreshToken().collect {
+                cashedRefreshToken = it
+            }
+        }
+        cashedRefreshToken?.let {
+            cashedAccessToken = api.refreshAccessToken(it).data?.token
+        }
     }
 
     override suspend fun updateRefreshToken() {

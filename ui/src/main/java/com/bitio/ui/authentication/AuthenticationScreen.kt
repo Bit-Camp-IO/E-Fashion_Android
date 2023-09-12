@@ -1,12 +1,12 @@
 package com.bitio.ui.authentication
 
-import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -17,7 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -28,7 +30,7 @@ import com.bitio.ui.R
 import com.bitio.ui.authentication.composable.CustomLogin
 import com.bitio.ui.authentication.composable.CustomSignUp
 import com.bitio.ui.authentication.route.navigateToForgotPasswordScreen
-import com.bitio.ui.route.RootRouteScreens
+import com.bitio.ui.shared.shapeOfImageProfile
 import com.bitio.utils.profileShape
 import org.koin.androidx.compose.getViewModel
 
@@ -36,7 +38,6 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun AuthenticationScreen(navController: NavController) {
     val viewModel = getViewModel<AuthenticationViewModel>()
-    Log.d("TAG", "HashCodeOfAuthViewModel AuthenticationScreen: ${viewModel.hashCode()}")
 
     Box(
         modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter
@@ -44,11 +45,7 @@ fun AuthenticationScreen(navController: NavController) {
         AuthenticationContent(
             viewModel = viewModel,
             onClickForgetPassword = navController::navigateToForgotPasswordScreen,
-            onClickLoginButton = {
-                viewModel.checkIfLogin.value = true
-                viewModel.loginUser()
-                navController.navigate(route = RootRouteScreens.Home.route)
-            }
+            onClickLoginButton = viewModel::loginUser
         )
     }
 }
@@ -136,4 +133,22 @@ private fun AuthenticationContent(
         }
     }
 }
+
+@Composable
+private fun Background(
+    painter: Painter,
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        painter = painter,
+        contentDescription = null,
+        modifier = modifier
+            .clip(shapeOfImageProfile)
+            .fillMaxWidth()
+            .blur(radius = 20.dp),
+        contentScale = ContentScale.FillBounds
+    )
+}
+
+
 

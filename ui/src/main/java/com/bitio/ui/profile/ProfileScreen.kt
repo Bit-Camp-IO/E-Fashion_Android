@@ -40,7 +40,6 @@ import org.koin.androidx.compose.getViewModel
 import android.Manifest
 import android.net.Uri
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -50,7 +49,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.graphicsLayer
@@ -64,7 +62,6 @@ import com.bitio.ui.profile.user.UserUiState
 import com.bitio.ui.profile.user.UserViewModel
 import com.bitio.ui.shared.shapeOfImageProfile
 import com.bitio.ui.shared.shapeOfProfile
-import com.bitio.utils.APP_TAG
 import com.bitio.utils.RealPathUtil
 import java.io.File
 import java.io.IOException
@@ -145,7 +142,7 @@ private fun ProfileContent(
             .background(MaterialTheme.colorScheme.background)
     ) {
 
-        Header(
+        Background(
             painter = rememberAsyncImagePainter(model = profileUiState.profileImage),
             modifier = Modifier
                 .height(screenHeight / 1.5f)
@@ -201,7 +198,7 @@ private fun ProfileContent(
 }
 
 @Composable
-private fun Header(
+private fun Background(
     painter: Painter,
     modifier: Modifier = Modifier,
 ) {

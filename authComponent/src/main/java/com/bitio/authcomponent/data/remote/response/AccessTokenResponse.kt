@@ -6,5 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AccessTokenResponse(@SerialName(value = "accessToken") override val token: String) :
-    AccessToken
+data class AccessTokenResponse(
+    @SerialName(value = "accessToken")
+    override val token: String
+) : AccessToken

@@ -2,6 +2,7 @@
 
 package com.bitio.ui.product.search.filtersBottomSheet
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -40,8 +41,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
+
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -60,7 +60,7 @@ import com.bitio.ui.shared.HorizontalSpacer8Dp
 import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer2Dp
 import com.bitio.ui.shared.VerticalSpacer4Dp
-import com.bitio.ui.shared.VerticalSpacer64Dp
+import com.bitio.ui.shared.VerticalSpacer40Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
@@ -93,14 +93,15 @@ fun FiltersBottomSheet(
             VerticalSpacer16Dp()
             AvailableSizes(sizes = sizes)
             PriceRange(currentRangeState = priceRange)
-            VerticalSpacer64Dp()
-            VerticalSpacer64Dp()
-            VerticalSpacer64Dp()
+            VerticalSpacer40Dp()
+            VerticalSpacer40Dp()
+            VerticalSpacer40Dp()
         }
     }
 }
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AvailableCategoriesShips(categories: MutableState<List<UiCategory>>) {
     Column {
@@ -212,19 +213,20 @@ fun <T : Any> AvailableItemsChipsFlow(
     }
 }
 
+@SuppressLint("RememberReturnType")
 @Composable
 fun PriceRange(currentRangeState: MutableState<ClosedFloatingPointRange<Float>>) {
     val startInteractionSource = remember { MutableInteractionSource() }
     val endInteractionSource = remember { MutableInteractionSource() }
-    var composableWidth by remember { mutableIntStateOf(0) }
-    var composableOffset by remember { mutableFloatStateOf(0f) }
+//    var composableWidth by remember { mutableIntStateOf(0) }
+//    var composableOffset by remember { mutableFloatStateOf(0f) }
 
     Text(text = "Price Ranger")
     VerticalSpacer4Dp()
     Divider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp)
     RangeSlider(modifier = Modifier.onGloballyPositioned {
-        composableWidth = it.size.width
-        composableOffset = it.positionInWindow().x
+//        composableWidth = it.size.width
+//        composableOffset = it.positionInWindow().x
 
     },
         value = currentRangeState.value,

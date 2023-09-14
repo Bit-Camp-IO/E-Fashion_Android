@@ -49,7 +49,10 @@ fun AddReviewExpandable(onAddReview: (String) -> Unit) {
                     Text(text = "${review.length}/500")
                 }
                 VerticalSpacer8Dp()
-                CustomButtonForm(title = "Post Review") { onAddReview(review) }
+                CustomButtonForm(
+                    title = "Post Review",
+                    onClickButton = { onAddReview(review) },
+                )
 
             }
 

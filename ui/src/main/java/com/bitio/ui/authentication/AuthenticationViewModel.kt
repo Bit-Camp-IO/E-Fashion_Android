@@ -8,6 +8,7 @@ import com.bitio.authcomponent.domain.useCases.GetAccessTokenUseCase
 import com.bitio.authcomponent.domain.useCases.CheckIfUserLoggedInUseCase
 import com.bitio.authcomponent.domain.useCases.LoginUseCase
 import com.bitio.authcomponent.domain.useCases.RegisterUseCase
+import com.bitio.authcomponent.domain.utils.ResponseStatus
 import com.bitio.utils.APP_TAG
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,12 +29,16 @@ class AuthenticationViewModel(
     val password = mutableStateOf("")
     val passwordConfirmation = mutableStateOf("")
 
+    private val _authUiState = mutableStateOf(AuthUiState())
+    val authUiState = _authUiState
+
+
     private val _isUserLoggedIn = MutableStateFlow(false)
     val isUserLoggedIn = _isUserLoggedIn.asStateFlow()
 
     init {
         viewModelScope.launch {
-            checkIfUserLoggedInUseCase().collect{
+            checkIfUserLoggedInUseCase().collect {
                 _isUserLoggedIn.value = it
             }
         }
@@ -41,9 +46,49 @@ class AuthenticationViewModel(
 
     fun loginUser() {
         viewModelScope.launch {
-            loginUseCase(email.value, password.value)
-            val token = getAccessTokenUseCase()
-            Log.d(APP_TAG, "loginUser: $token")
+            _authUiState.value = AuthUiState(loading = true)
+            when (val response = loginUseCase(email.value, password.value)) {
+                is ResponseStatus.Error -> {
+                    _authUiState.value =
+                        AuthUiState(
+                            loading = false,
+                            errorMessage = response.errorMessage
+                        )
+                }
+
+                is ResponseStatus.Success -> {
+                    _authUiState.value =
+                        AuthUiState(
+                            loading = false,
+                            state = response.data
+                        )
+                }
+            }
+        }
+    }
+
+    fun signUpUser() {
+        viewModelScope.launch {
+            viewModelScope.launch {
+                _authUiState.value = AuthUiState(loading = true)
+                when (val response = registerUseCase(fullName.value, email.value, password.value)) {
+                    is ResponseStatus.Error -> {
+                        _authUiState.value =
+                            AuthUiState(
+                                loading = false,
+                                errorMessage = response.errorMessage
+                            )
+                    }
+
+                    is ResponseStatus.Success -> {
+                        _authUiState.value =
+                            AuthUiState(
+                                loading = false,
+                                state = response.data
+                            )
+                    }
+                }
+            }
         }
     }
 }

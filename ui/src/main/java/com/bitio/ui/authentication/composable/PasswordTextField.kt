@@ -1,46 +1,66 @@
-package com.bitio.ui.shared
+package com.bitio.ui.authentication.composable
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 
 @Composable
-fun CustomTextField(
+fun PasswordTextField(
     value: String,
-    placeholder: String,
-    leadingIcon: Painter,
-    keyboardType: KeyboardType = KeyboardType.Text,
     onValueChange: (String) -> Unit,
-    onClickClearText: () -> Unit = {}
+    imeAction: ImeAction = ImeAction.Next,
+    placeholder:String = stringResource(id = R.string.password)
 ) {
+
+    var isShowPassword by remember { mutableStateOf(false) }
+    val trailingIcon = if (isShowPassword)
+        painterResource(id = R.drawable.hide_eye)
+    else
+        painterResource(id = R.drawable.eye)
 
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 4.dp),
+            .padding(horizontal = 24.dp),
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
-        maxLines = 1,
         shape = RoundedCornerShape(12.dp),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            focusedContainerColor = MaterialTheme.colorScheme.background,
+            cursorColor = MaterialTheme.colorScheme.primary
+        ),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = imeAction
+        ),
         placeholder = {
             Text(
                 text = placeholder,
@@ -50,33 +70,25 @@ fun CustomTextField(
         },
         leadingIcon = {
             Icon(
-                painter = leadingIcon,
+                painter = painterResource(id = R.drawable.password),
                 contentDescription = null,
                 tint = Color.Gray
             )
         },
         trailingIcon = {
             IconButton(
-                onClick = onClickClearText,
+                { isShowPassword = !isShowPassword },
                 enabled = value.isNotEmpty()
             ) {
                 if (value.isNotEmpty()) {
                     Icon(
-                        painter = painterResource(id = R.drawable.close),
+                        painter = trailingIcon,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }
         },
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            focusedContainerColor = MaterialTheme.colorScheme.background,
-            cursorColor = MaterialTheme.colorScheme.primary
-        ),
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType,
-            imeAction = ImeAction.Next
-        ),
+        visualTransformation = if (isShowPassword) VisualTransformation.None else PasswordVisualTransformation()
     )
 }

@@ -1,6 +1,6 @@
 package com.bitio.infrastructure.user.di
 
-import com.bitio.infrastructure.AuthInterceptor
+import com.bitio.infrastructure.retrofitConfiguration.AuthInterceptor
 import com.bitio.infrastructure.roomConfiguration.AppDatabase
 import com.bitio.infrastructure.user.local.UserDaoAdapter
 import com.bitio.infrastructure.user.local.data_store.ProfileSettingsDaoImpl
@@ -21,7 +21,6 @@ import com.bitio.usercomponent.domain.usecase.user.AddUserImageUseCase
 import com.bitio.usercomponent.domain.usecase.user.GetSavedUserInformationUseCase
 import com.bitio.usercomponent.domain.usecase.user.RefreshUserInfoUseCase
 import com.bitio.usercomponent.domain.usecase.user.UpdateUserInfoUseCase
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val userKoinModule = module {

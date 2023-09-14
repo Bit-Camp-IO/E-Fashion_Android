@@ -151,7 +151,7 @@ private fun ProfileContent(
                 }
         )
 
-        Body(
+        Header(
             painter = rememberAsyncImagePainter(model = profileUiState.profileImage),
             isUserProfileVisible = isUserProfileVisible,
             onPermissionResult = onPermissionResult,
@@ -173,7 +173,7 @@ private fun ProfileContent(
                 .verticalScroll(scrollState)
                 .padding(top = screenHeight / 3.5f)
         ) {
-            Footer(
+            Body(
                 darkModeEnabled = darkModeEnabled,
                 onSwitchTheme = onSwitchTheme,
                 onClickLocationScreen = onClickLocationScreen,
@@ -214,7 +214,7 @@ private fun Background(
 }
 
 @Composable
-private fun Body(
+private fun Header(
     painter: Painter,
     isUserProfileVisible: Boolean,
     onPermissionResult: (String, Boolean) -> Unit,
@@ -256,7 +256,7 @@ private fun Body(
 }
 
 @Composable
-private fun Footer(
+private fun Body(
     darkModeEnabled: Boolean,
     onSwitchTheme: (Boolean) -> Unit,
     onClickLocationScreen: () -> Unit,

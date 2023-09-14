@@ -23,7 +23,6 @@ import com.bitio.ui.shared.CustomButtonForm
 import com.bitio.ui.shared.CustomTextField
 import com.bitio.ui.shared.VerticalSpacer32Dp
 import com.bitio.ui.theme.Porcelain
-import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 
 @Composable
 fun UserProfile(
@@ -60,7 +59,8 @@ fun UserProfile(
 
         Text(
             text = stringResource(id = R.string.profile_edit),
-            style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).titleMedium,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
         )
@@ -69,7 +69,7 @@ fun UserProfile(
 
         CustomTextField(
             value = fullName,
-            placeholder = stringResource(id = R.string.fullName),
+            placeholder = stringResource(id = R.string.full_name),
             leadingIcon = painterResource(id = R.drawable.profile),
             onValueChange = onFullNameChange,
         )
@@ -97,7 +97,7 @@ fun UserProfile(
             title = stringResource(id = R.string.save),
             onClickButton = {
                 onClickSaveButton(fullName, phoneNumber, email)
-            }
+            },
         )
 
     }

@@ -21,7 +21,7 @@ import com.bitio.productscomponent.domain.entities.products.ProductDetails
 import com.bitio.ui.R
 import com.bitio.ui.shared.CustomButtonForm
 import com.bitio.ui.shared.VerticalSpacer16Dp
-import com.bitio.ui.shared.VerticalSpacer64Dp
+import com.bitio.ui.shared.VerticalSpacer40Dp
 import com.bitio.ui.shared.VerticalSpacer8Dp
 
 @Composable
@@ -72,13 +72,13 @@ fun DetailsCard(productDetails: ProductDetails) {
 
 
                 VerticalSpacer16Dp()
-                CustomButtonForm(title = "Add To Cart") {}
-                VerticalSpacer64Dp()
+                CustomButtonForm(title = "Add To Cart", onClickButton = {})
+                VerticalSpacer40Dp()
                 PostRatingAndReview(onAddRating = {}, onAddReview = {})
-                VerticalSpacer64Dp()
-                VerticalSpacer64Dp()
-                VerticalSpacer64Dp()
-                VerticalSpacer64Dp()
+                VerticalSpacer40Dp()
+                VerticalSpacer40Dp()
+                VerticalSpacer40Dp()
+                VerticalSpacer40Dp()
 
             }
         }

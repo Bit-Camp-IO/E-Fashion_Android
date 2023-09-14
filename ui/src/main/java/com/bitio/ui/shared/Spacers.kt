@@ -26,6 +26,7 @@ fun HorizontalSpacer8Dp() {
 fun HorizontalSpacer16Dp() {
     Spacer(modifier = Modifier.width(16.dp))
 }
+
 @Composable
 fun HorizontalSpacer24Dp() {
     Spacer(modifier = Modifier.width(24.dp))
@@ -35,6 +36,22 @@ fun HorizontalSpacer24Dp() {
 fun HorizontalSpacer32Dp() {
     Spacer(modifier = Modifier.width(32.dp))
 }
+
+@Composable
+fun HorizontalSpacer40Dp() {
+    Spacer(modifier = Modifier.width(40.dp))
+}
+
+@Composable
+fun HorizontalSpacer42Dp() {
+    Spacer(modifier = Modifier.width(42.dp))
+}
+
+@Composable
+fun HorizontalSpacer50Dp() {
+    Spacer(modifier = Modifier.width(50.dp))
+}
+
 
 @Composable
 fun VerticalSpacer2Dp() {
@@ -67,8 +84,26 @@ fun VerticalSpacer32Dp() {
     Spacer(modifier = Modifier.height(32.dp))
 }
 
+
 @Composable
-fun VerticalSpacer64Dp() {
-    Spacer(modifier = Modifier.height(64.dp))
+fun VerticalSpacer40Dp() {
+    Spacer(modifier = Modifier.height(40.dp))
 }
+
+@Composable
+fun VerticalSpacer42Dp() {
+    Spacer(modifier = Modifier.height(42.dp))
+}
+
+@Composable
+fun VerticalSpacer50Dp() {
+    Spacer(modifier = Modifier.height(50.dp))
+}
+
+@Composable
+fun VerticalSpacer62Dp() {
+    Spacer(modifier = Modifier.height(62.dp))
+}
+
+
 

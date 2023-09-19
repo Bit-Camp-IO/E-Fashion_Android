@@ -8,7 +8,7 @@ import com.bitio.authcomponent.domain.useCases.auth.GetAccessTokenUseCase
 import com.bitio.authcomponent.domain.useCases.auth.CheckIfUserLoggedInUseCase
 import com.bitio.authcomponent.domain.useCases.auth.LoginUseCase
 import com.bitio.authcomponent.domain.useCases.auth.RefreshAccessTokenUseCase
-import com.bitio.authcomponent.domain.useCases.auth.RegisterUseCase
+import com.bitio.authcomponent.domain.useCases.auth.SignUpUseCase
 import com.bitio.authcomponent.domain.useCases.validate.ValidateConfirmPasswordUseCase
 import com.bitio.authcomponent.domain.useCases.validate.ValidateEmailUseCase
 import com.bitio.authcomponent.domain.useCases.validate.ValidateFullNameUseCase
@@ -26,7 +26,7 @@ val authKoinModule = module {
 
     factory { GetAccessTokenUseCase(get()) }
     factory { RefreshAccessTokenUseCase(get()) }
-    factory { RegisterUseCase(get()) }
+    factory { SignUpUseCase(get()) }
     factory { ValidateConfirmPasswordUseCase() }
     factory { ValidateFullNameUseCase() }
     factory { ValidateTermsUseCase() }

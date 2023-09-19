@@ -3,7 +3,7 @@ package com.bitio.authcomponent.domain.useCases.auth
 import com.bitio.authcomponent.domain.repository.AuthRepository
 import com.bitio.authcomponent.domain.utils.ResponseStatus
 
-class RegisterUseCase(private val repository: AuthRepository) {
+class SignUpUseCase(private val repository: AuthRepository) {
     suspend operator fun invoke(
         fullName: String,
         email: String,
@@ -16,7 +16,7 @@ class RegisterUseCase(private val repository: AuthRepository) {
                 repository.updateRefreshToken(refreshToken)
                 ResponseStatus.Success(response.status)
             } else {
-                ResponseStatus.Error(response.message)
+                ResponseStatus.Error(response.error?.message.toString())
             }
         } catch (e: Throwable) {
             ResponseStatus.Error(e.message ?: "An error occurred")

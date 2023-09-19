@@ -17,7 +17,7 @@ class LoginUseCase(
                     repository.updateRefreshToken(refreshToken)
                     ResponseStatus.Success(response.status)
                 } else {
-                    ResponseStatus.Error(response.message)
+                    ResponseStatus.Error(response.error?.message.toString())
                 }
         } catch (e: Throwable) {
             ResponseStatus.Error(e.message ?: "An error occurred")

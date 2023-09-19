@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.bitio.authcomponent.domain.useCases.auth.GetAccessTokenUseCase
 import com.bitio.authcomponent.domain.useCases.auth.CheckIfUserLoggedInUseCase
 import com.bitio.authcomponent.domain.useCases.auth.LoginUseCase
-import com.bitio.authcomponent.domain.useCases.auth.RegisterUseCase
+import com.bitio.authcomponent.domain.useCases.auth.SignUpUseCase
 import com.bitio.authcomponent.domain.utils.ResponseStatus
 import com.bitio.authcomponent.domain.useCases.validate.ValidateConfirmPasswordUseCase
 import com.bitio.authcomponent.domain.useCases.validate.ValidateEmailUseCase
@@ -23,7 +23,7 @@ import org.koin.android.annotation.KoinViewModel
 @KoinViewModel
 class AuthenticationViewModel(
     private val loginUseCase: LoginUseCase,
-    private val registerUseCase: RegisterUseCase,
+    private val signUpUseCase: SignUpUseCase,
     private val getAccessTokenUseCase: GetAccessTokenUseCase,
     private val checkIfUserLoggedInUseCase: CheckIfUserLoggedInUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
@@ -241,7 +241,7 @@ class AuthenticationViewModel(
         viewModelScope.launch {
             viewModelScope.launch {
                 _authUiState.value = AuthUiState(loading = true)
-                when (val response = registerUseCase(
+                when (val response = signUpUseCase(
                     _validationAuthenticationEventsUiState.value.fullName,
                     _validationAuthenticationEventsUiState.value.email,
                     _validationAuthenticationEventsUiState.value.password

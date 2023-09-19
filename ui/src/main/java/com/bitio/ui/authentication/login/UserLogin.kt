@@ -1,11 +1,13 @@
-package com.bitio.ui.authentication.composable
+package com.bitio.ui.authentication.login
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
@@ -18,43 +20,47 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
+import com.bitio.ui.authentication.composable.AuthButtonForm
+import com.bitio.ui.authentication.composable.AuthTextField
+import com.bitio.ui.authentication.composable.AuthPasswordTextField
 import com.bitio.ui.shared.CustomButtonForm
-import com.bitio.ui.shared.CustomTextField
 import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer32Dp
 import com.bitio.ui.shared.VerticalSpacer40Dp
 
 @Composable
-fun UserSignUp(
+fun UserLogin(
     modifier: Modifier = Modifier,
-    fullName: String,
     email: String,
     password: String,
-    passwordConfirmation: String,
-    onFullNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    onPasswordConfirmationChange: (String) -> Unit,
-    onClickSignUpButton: () -> Unit,
-    onClickLogIn: () -> Unit,
-    onClickAgreeCheckedBox: (Boolean) -> Unit,
-    onClickClearFullName: () -> Unit,
+    onClickLoginButton: () -> Unit,
+    onClickForgetPassword: () -> Unit,
+    onClickSignUp: () -> Unit,
+    onClickCheckedBox: (Boolean) -> Unit,
     onClickClearEmail: () -> Unit,
-    isLoading: Boolean,
+    isClickedLogin: Boolean,
+    isEnabled: Boolean,
+    isPasswordValid: Boolean,
+    isEmailValid: Boolean,
+    passwordError: String,
+    emailError: String
 ) {
 
     Column(
         modifier = modifier
             .fillMaxSize()
     ) {
-        VerticalSpacer32Dp()
         Text(
-            text = stringResource(id = R.string.sign_up),
+            text = stringResource(id = R.string.login),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.primary,
             modifier = modifier.padding(horizontal = 24.dp, vertical = 40.dp)
@@ -62,40 +68,34 @@ fun UserSignUp(
 
         VerticalSpacer40Dp()
 
-        CustomTextField(
-            value = fullName,
-            placeholder = stringResource(id = R.string.full_name),
-            leadingIcon = painterResource(id = R.drawable.profile),
-            onValueChange = onFullNameChange,
-            onClickClearText = onClickClearFullName
-        )
-        VerticalSpacer16Dp()
-        CustomTextField(
+        AuthTextField(
             value = email,
             placeholder = stringResource(id = R.string.email),
             leadingIcon = painterResource(id = R.drawable.email),
+            keyboardType = KeyboardType.Email,
             onValueChange = onEmailChange,
-            onClickClearText = onClickClearEmail
+            onClickClearText = onClickClearEmail,
+            isEmailValid = isEmailValid,
+            emailError = emailError
         )
-        VerticalSpacer16Dp()
-        PasswordTextField(
+        AuthPasswordTextField(
             value = password,
             onValueChange = onPasswordChange,
-            imeAction = ImeAction.Done
-        )
-        PasswordTextField(
-            value = passwordConfirmation,
-            onValueChange = onPasswordConfirmationChange,
             imeAction = ImeAction.Done,
-            placeholder = stringResource(id = R.string.password_confirm),
+            isPasswordValid = isPasswordValid,
+            passwordError = passwordError
         )
         VerticalSpacer16Dp()
-        CheckBoxContainer(onClickCheckedBox = onClickAgreeCheckedBox)
+        CheckBoxContainer(
+            onClickCheckedBox = onClickCheckedBox,
+            onClickForgetPassword = onClickForgetPassword
+        )
         VerticalSpacer32Dp()
-        CustomButtonForm(
-            title = stringResource(id = R.string.sign_up),
-            onClickButton = onClickSignUpButton,
-            isLoading = isLoading
+        AuthButtonForm(
+            title = stringResource(id = R.string.login),
+            onClickButton = onClickLoginButton,
+            isLoading = isClickedLogin,
+            isEnabled = isEnabled
         )
         VerticalSpacer32Dp()
         Row(
@@ -105,13 +105,13 @@ fun UserSignUp(
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = stringResource(id = R.string.already_have_an_account),
+                text = stringResource(id = R.string.do_you_have_account),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.tertiary
             )
-            TextButton(onClick = onClickLogIn) {
+            TextButton(onClick = onClickSignUp) {
                 Text(
-                    text = stringResource(id = R.string.login),
+                    text = stringResource(id = R.string.sign_up),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -123,11 +123,14 @@ fun UserSignUp(
 @Composable
 private fun CheckBoxContainer(
     onClickCheckedBox: (Boolean) -> Unit,
+    onClickForgetPassword: () -> Unit
 ) {
     var isChecked by remember { mutableStateOf(false) }
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(horizontal = 24.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp)
     ) {
 
         Checkbox(
@@ -143,10 +146,20 @@ private fun CheckBoxContainer(
             )
         )
         Text(
-            text = stringResource(id = R.string.i_agree),
+            text = stringResource(id = R.string.remember_me),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.weight(1f)
+        )
+
+        Text(
+            text = stringResource(id = R.string.forgot_password),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .clip(RoundedCornerShape(4.dp))
+                .clickable { onClickForgetPassword() }
+                .padding(4.dp)
         )
     }
 }

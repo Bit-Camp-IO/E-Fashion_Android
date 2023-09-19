@@ -3,7 +3,7 @@ package com.bitio.infrastructure.workManager
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.bitio.authcomponent.domain.useCases.RefreshAccessTokenUseCase
+import com.bitio.authcomponent.domain.useCases.auth.RefreshAccessTokenUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -21,11 +21,8 @@ class AuthWorker(
     private val refreshAccessTokenUseCase: RefreshAccessTokenUseCase by inject()
     override suspend fun doWork(): Result =
         withContext(Dispatchers.IO) {
-
             val result = refreshAccessTokenUseCase()
             return@withContext if (result.isSuccess) Result.success() else Result.retry()
         }
-
-
 }
 

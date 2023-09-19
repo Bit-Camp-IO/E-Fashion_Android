@@ -3,14 +3,14 @@ package com.bitio.ui.authentication.route
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.bitio.ui.authentication.AuthenticationScreen
+import com.bitio.ui.authentication.login.LoginScreen
 
-internal fun NavController.navigateToAuthScreen() {
+internal fun NavController.navigateToLoginScreen() {
     navigate(AuthRouterScreens.Login.route)
 }
 
-internal fun NavGraphBuilder.authRoute(navController: NavController) {
+internal fun NavGraphBuilder.loginRoute(navController: NavController) {
     composable(AuthRouterScreens.Login.route) {
-        AuthenticationScreen(navController)
+        LoginScreen(navController)
     }
 }

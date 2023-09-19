@@ -1,7 +1,6 @@
-package com.bitio.ui.shared
+package com.bitio.ui.authentication.composable
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -20,19 +19,21 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
-import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 
 @Composable
-fun CustomTextField(
+internal fun AuthTextField(
     value: String,
     placeholder: String,
     leadingIcon: Painter,
     keyboardType: KeyboardType = KeyboardType.Text,
     onValueChange: (String) -> Unit,
-    onClickClearText: () -> Unit = {}
+    onClickClearText: () -> Unit = {},
+    isEmailValid: Boolean,
+    emailError: String,
 ) {
 
     OutlinedTextField(
+        isError = isEmailValid,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp, vertical = 4.dp),
@@ -78,5 +79,14 @@ fun CustomTextField(
             keyboardType = keyboardType,
             imeAction = ImeAction.Next
         ),
+        supportingText = {
+            if (value.isNotEmpty() && isEmailValid) {
+                Text(
+                    text = emailError,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.Red
+                )
+            }
+        }
     )
 }

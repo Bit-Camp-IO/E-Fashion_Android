@@ -20,7 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
 import com.bitio.ui.shared.CustomButtonForm
-import com.bitio.ui.shared.CustomTextField
+import com.bitio.ui.shared.ProfileCustomTextField
 import com.bitio.ui.shared.VerticalSpacer32Dp
 import com.bitio.ui.theme.Porcelain
 
@@ -67,27 +67,30 @@ fun UserProfile(
 
         VerticalSpacer32Dp()
 
-        CustomTextField(
+        ProfileCustomTextField(
             value = fullName,
             placeholder = stringResource(id = R.string.full_name),
             leadingIcon = painterResource(id = R.drawable.profile),
             onValueChange = onFullNameChange,
+            emailError = "",
         )
 
-        CustomTextField(
+        ProfileCustomTextField(
             value = phoneNumber,
             placeholder = stringResource(id = R.string.phoneNumber),
             leadingIcon = painterResource(id = R.drawable.call),
             keyboardType = KeyboardType.Phone,
             onValueChange = onPhoneNumberChange,
+            emailError = "",
         )
 
-        CustomTextField(
+        ProfileCustomTextField(
             value = email,
             placeholder = stringResource(id = R.string.email),
             leadingIcon = painterResource(id = R.drawable.email),
             keyboardType = KeyboardType.Email,
             onValueChange = onEmailChange,
+            emailError = "",
         )
 
         CustomButtonForm(

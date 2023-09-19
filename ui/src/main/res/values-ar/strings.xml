@@ -23,4 +23,6 @@
     <string name="i_agree">I Agree with Privacy and policy</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="password_confirm">Password confirmation</string>
+    <string name="unvalid_email">Unvalid email, please enter correct email</string>
+    <string name="unvalid_password">Password: 8 characters, 1 uppercase, 1 lowercase, numbers</string>
 </resources>

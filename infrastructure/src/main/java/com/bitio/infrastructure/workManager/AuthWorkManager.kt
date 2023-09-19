@@ -13,8 +13,7 @@ import java.time.Duration
 import java.util.concurrent.TimeUnit
 
 object AuthWorkManager : KoinComponent {
-    private val constraints =
-        Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+    private val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
     private val policy = BackoffPolicy.LINEAR
     private val authWorkRequest =
         PeriodicWorkRequestBuilder<AuthWorker>(

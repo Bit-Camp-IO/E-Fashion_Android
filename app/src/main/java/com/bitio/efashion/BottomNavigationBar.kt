@@ -48,7 +48,7 @@ fun BottomNavigationBar(checkIfLogin: Boolean) {
                 ProfileRouteScreens.Location.route,
                 ProfileRouteScreens.ChatSupport.route,
             )
-            BottomBar(navController, visibility)
+            BottomBar(navController, !visibility)
         },
         containerColor = Color.Transparent
     ) { innerPadding ->

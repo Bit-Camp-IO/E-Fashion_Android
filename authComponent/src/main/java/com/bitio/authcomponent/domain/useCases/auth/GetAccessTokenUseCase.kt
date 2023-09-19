@@ -1,4 +1,4 @@
-package com.bitio.authcomponent.domain.useCases
+package com.bitio.authcomponent.domain.useCases.auth
 
 import com.bitio.authcomponent.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow

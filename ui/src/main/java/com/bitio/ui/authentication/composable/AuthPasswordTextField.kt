@@ -4,14 +4,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -28,14 +25,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
-import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 
 @Composable
-fun PasswordTextField(
+fun AuthPasswordTextField(
     value: String,
     onValueChange: (String) -> Unit,
     imeAction: ImeAction = ImeAction.Next,
-    placeholder:String = stringResource(id = R.string.password)
+    placeholder: String = stringResource(id = R.string.password),
+    isPasswordValid: Boolean,
+    passwordError: String
 ) {
 
     var isShowPassword by remember { mutableStateOf(false) }
@@ -45,6 +43,7 @@ fun PasswordTextField(
         painterResource(id = R.drawable.eye)
 
     OutlinedTextField(
+        isError = isPasswordValid,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp),
@@ -89,6 +88,15 @@ fun PasswordTextField(
                 }
             }
         },
-        visualTransformation = if (isShowPassword) VisualTransformation.None else PasswordVisualTransformation()
+        visualTransformation = if (isShowPassword) VisualTransformation.None else PasswordVisualTransformation(),
+        supportingText = {
+            if (value.isNotEmpty() && isPasswordValid) {
+                Text(
+                    text = passwordError,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.Red
+                )
+            }
+        }
     )
 }

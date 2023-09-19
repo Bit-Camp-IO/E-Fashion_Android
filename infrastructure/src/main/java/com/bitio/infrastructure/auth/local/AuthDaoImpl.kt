@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.map
 
 class AuthDaoImpl(private val context: Context) : AuthDao {
 
+
     override fun getRefreshToken(): Flow<String?> {
         return context.dataStore.data.map { preferences ->
             preferences[tokenKey]

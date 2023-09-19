@@ -27,16 +27,16 @@ class AuthRepositoryImpl(
         password: String
     ): ResponseWrapper<AuthDataResponse> {
         val body = RegisterBody(email = email, fullName = fullName, password, password)
-//        val authData = api.register(body).data!!
-//        saveAuthDataHelper(authData)
+        val authData = api.register(body).data!!
+        saveAuthDataHelper(authData)
         return api.register(body)
     }
 
     //Login & Save Auth Data
     override suspend fun login(email: String, password: String): ResponseWrapper<AuthDataResponse> {
         val body = LoginBody(email, password)
-//        val authData = api.login(body).data!!
-//        saveAuthDataHelper(authData)
+        val authData = api.login(body).data!!
+        saveAuthDataHelper(authData)
         return api.login(body)
     }
 
@@ -81,7 +81,6 @@ class AuthRepositoryImpl(
     private suspend fun saveAuthDataHelper(authData: AuthData) {
         cashedAccessToken = authData.accessToken
         cashedRefreshToken = authData.refreshToken
-        println("cc" + cashedRefreshToken.toString())
         dao.updateRefreshToken(cashedRefreshToken!!)
     }
 

@@ -1,4 +1,4 @@
-package com.bitio.ui.shared
+package com.bitio.ui.authentication.composable
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,18 +10,18 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CustomButtonForm(
+internal fun AuthButtonForm(
     modifier: Modifier = Modifier,
     title: String,
     onClickButton: () -> Unit,
-    isLoading: Boolean = false,
+    isLoading: Boolean,
+    isEnabled: Boolean
 ) {
     Button(
         onClick = onClickButton,
@@ -33,7 +33,7 @@ fun CustomButtonForm(
             disabledContainerColor = Color.Gray
         ),
         shape = RoundedCornerShape(8.dp),
-        enabled = !isLoading
+        enabled = isEnabled
     ) {
         if (isLoading) {
             CircularProgressIndicator(

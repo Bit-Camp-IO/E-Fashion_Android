@@ -38,7 +38,6 @@ class FashionActivity : ComponentActivity() {
         setContent {
             val state by profileSettingsViewModel.profileSettingsUiState.collectAsState()
             val isUserLoggedIn by authenticationViewModel.isUserLoggedIn.collectAsState()
-            Log.d(APP_TAG, "onCreate: $isUserLoggedIn")
 
             Crossfade(
                 targetState = state.darkModeEnabled,

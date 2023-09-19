@@ -70,7 +70,7 @@ fun LoginScreen(
         onClickForgetPassword = navController::navigateToForgotPasswordScreen,
         onClickSignUp = navController::navigateToSignUpScreen,
         onClickRememberMeBox = { viewModel.onLoginEvent(LoginFormEvent.CheckRememberMe(it)) },
-        onClickClearEmail = { authEventState.email = "" },
+        onClickClearEmail = { viewModel.onLoginEvent(LoginFormEvent.EmailChanged("")) },
         isPasswordValid = authEventState.passwordError != ValidForm.ValidPassword,
         passwordError = passwordError,
         isEmailValid = authEventState.emailError != ValidForm.ValidEmail,
@@ -103,6 +103,8 @@ private fun LoginContent(
 
     val scrollState = rememberScrollState()
     val context = LocalContext.current
+
+    val isEnabled = emailError.isEmpty() && passwordError.isEmpty()
 
     LaunchedEffect(key1 = authState.errorMessage) {
         authState.errorMessage.takeIf { it.isNotEmpty() }?.let {
@@ -158,12 +160,12 @@ private fun LoginContent(
                     onClickSignUp = onClickSignUp,
                     onClickCheckedBox = onClickRememberMeBox,
                     onClickClearEmail = onClickClearEmail,
-                    isClickedLogin = authState.loading,
+                    isSubmit = authState.loading,
                     isPasswordValid = isPasswordValid,
                     passwordError = passwordError,
                     isEmailValid = isEmailValid,
                     emailError = emailError,
-                    isEnabled = emailError.isEmpty() && passwordError.isEmpty()
+                    isEnabled = isEnabled
                 )
             }
         }

@@ -124,23 +124,44 @@ class AuthenticationViewModel(
                         email = event.email
                     )
                 }
-                val fullNameResult =
-                    validateFullNameUseCase(_validationAuthenticationEventsUiState.value.fullName)
+                val emailResult =
+                    validateEmailUseCase(_validationAuthenticationEventsUiState.value.email)
                 _validationAuthenticationEventsUiState.update {
                     it.copy(
-                        fullNameError = fullNameResult.error,
+                        emailError = emailResult.error,
                     )
                 }
             }
 
             is SignupFormEvent.PasswordChanged -> {
-
+                _validationAuthenticationEventsUiState.update {
+                    it.copy(
+                        password = event.password
+                    )
+                }
+                val passwordResult =
+                    validatePasswordUseCase(_validationAuthenticationEventsUiState.value.password)
+                _validationAuthenticationEventsUiState.update {
+                    it.copy(
+                        passwordError = passwordResult.error,
+                    )
+                }
             }
 
             is SignupFormEvent.ConfirmPasswordChanged -> {
                 _validationAuthenticationEventsUiState.update {
                     it.copy(
                         confirmPassword = event.confirmPassword
+                    )
+                }
+                val confirmPasswordResult =
+                    validateConfirmPasswordUseCase(
+                        _validationAuthenticationEventsUiState.value.password,
+                        _validationAuthenticationEventsUiState.value.confirmPassword,
+                    )
+                _validationAuthenticationEventsUiState.update {
+                    it.copy(
+                        confirmPasswordError = confirmPasswordResult.error,
                     )
                 }
             }
@@ -151,36 +172,43 @@ class AuthenticationViewModel(
                         acceptedTerms = event.isAccepted
                     )
                 }
+                val termResult =
+                    validateTermsUseCase(_validationAuthenticationEventsUiState.value.acceptedTerms)
+                _validationAuthenticationEventsUiState.update {
+                    it.copy(
+                        termsError = termResult.error,
+                    )
+                }
             }
 
             is SignupFormEvent.SignUp -> {
-
+                signUpUser()
             }
         }
     }
 
-    private fun checkLoginData() {
-        val emailResult = validateEmailUseCase(_validationAuthenticationEventsUiState.value.email)
-        val passwordResult =
-            validatePasswordUseCase(_validationAuthenticationEventsUiState.value.password)
-
-        val hasError = listOf(
-            emailResult,
-            passwordResult,
-        ).any {
-            !it.successful
-        }
-
-        if (hasError) {
-            _validationAuthenticationEventsUiState.update {
-                it.copy(
-                    emailError = emailResult.error,
-                    passwordError = passwordResult.error,
-                )
-            }
-            return
-        }
-    }
+//    private fun checkLoginData() {
+//        val emailResult = validateEmailUseCase(_validationAuthenticationEventsUiState.value.email)
+//        val passwordResult =
+//            validatePasswordUseCase(_validationAuthenticationEventsUiState.value.password)
+//
+//        val hasError = listOf(
+//            emailResult,
+//            passwordResult,
+//        ).any {
+//            !it.successful
+//        }
+//
+//        if (hasError) {
+//            _validationAuthenticationEventsUiState.update {
+//                it.copy(
+//                    emailError = emailResult.error,
+//                    passwordError = passwordResult.error,
+//                )
+//            }
+//            return
+//        }
+//    }
 
     private fun loginUser() {
         viewModelScope.launch {
@@ -209,64 +237,32 @@ class AuthenticationViewModel(
     }
 
 
-//    private fun checkRegisterData() {
-//        val emailResult = validateEmail(validationAuthenticationEventsUiState.value.email)
-//        val passwordResult = validatePassword(_validationAuthenticationEventsUiState.value.password)
-//        val confirmPasswordResult = validateConfirmPassword(
-//            _validationAuthenticationEventsUiState.value.password, _validationAuthenticationEventsUiState.value.confirmPassword
-//        )
-//        val termsResult = validateTerms(_validationAuthenticationEventsUiState.value.acceptedTerms)
-//
-//        val hasError = listOf(
-//            emailResult,
-//            passwordResult,
-//            confirmPasswordResult,
-//            termsResult
-//        ).any { !it.successful }
-//
-//        if (hasError) {
-//            _validationAuthenticationEventsUiState.update {
-//                it.copy(
-//                    emailError = emailResult.error,
-//                    passwordError = passwordResult.error,
-//                    confirmPasswordError = confirmPasswordResult.error,
-//                    termsError = termsResult.error
-//                )
-//            }
-//            return
-//        } else {
-//            signUpUser()
-//        }
-//
-//    }
+    private fun signUpUser() {
+        viewModelScope.launch {
+            viewModelScope.launch {
+                _authUiState.value = AuthUiState(loading = true)
+                when (val response = registerUseCase(
+                    _validationAuthenticationEventsUiState.value.fullName,
+                    _validationAuthenticationEventsUiState.value.email,
+                    _validationAuthenticationEventsUiState.value.password
+                )) {
+                    is ResponseStatus.Error -> {
+                        _authUiState.value =
+                            AuthUiState(
+                                loading = false,
+                                errorMessage = response.errorMessage
+                            )
+                    }
 
-
-//    private fun signUpUser() {
-//        viewModelScope.launch {
-//            viewModelScope.launch {
-//                _authUiState.value = AuthUiState(loading = true)
-//                when (val response = registerUseCase(
-//                    _validationAuthenticationEventsUiState.value.fullName,
-//                    _validationAuthenticationEventsUiState.value.email,
-//                    _validationAuthenticationEventsUiState.value.password
-//                )) {
-//                    is ResponseStatus.Error -> {
-//                        _authUiState.value =
-//                            AuthUiState(
-//                                loading = false,
-//                                errorMessage = response.errorMessage
-//                            )
-//                    }
-//
-//                    is ResponseStatus.Success -> {
-//                        _authUiState.value =
-//                            AuthUiState(
-//                                loading = false,
-//                                state = response.data
-//                            )
-//                    }
-//                }
-//            }
-//        }
-//    }
+                    is ResponseStatus.Success -> {
+                        _authUiState.value =
+                            AuthUiState(
+                                loading = false,
+                                state = response.data
+                            )
+                    }
+                }
+            }
+        }
+    }
 }

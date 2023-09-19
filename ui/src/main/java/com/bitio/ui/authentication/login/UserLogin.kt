@@ -30,7 +30,6 @@ import com.bitio.ui.R
 import com.bitio.ui.authentication.composable.AuthButtonForm
 import com.bitio.ui.authentication.composable.AuthTextField
 import com.bitio.ui.authentication.composable.AuthPasswordTextField
-import com.bitio.ui.shared.CustomButtonForm
 import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer32Dp
 import com.bitio.ui.shared.VerticalSpacer40Dp
@@ -47,12 +46,12 @@ fun UserLogin(
     onClickSignUp: () -> Unit,
     onClickCheckedBox: (Boolean) -> Unit,
     onClickClearEmail: () -> Unit,
-    isClickedLogin: Boolean,
     isEnabled: Boolean,
     isPasswordValid: Boolean,
     isEmailValid: Boolean,
     passwordError: String,
-    emailError: String
+    emailError: String,
+    isSubmit: Boolean
 ) {
 
     Column(
@@ -75,8 +74,8 @@ fun UserLogin(
             keyboardType = KeyboardType.Email,
             onValueChange = onEmailChange,
             onClickClearText = onClickClearEmail,
-            isEmailValid = isEmailValid,
-            emailError = emailError
+            isInputValid = isEmailValid,
+            messageError = emailError
         )
         AuthPasswordTextField(
             value = password,
@@ -94,8 +93,8 @@ fun UserLogin(
         AuthButtonForm(
             title = stringResource(id = R.string.login),
             onClickButton = onClickLoginButton,
-            isLoading = isClickedLogin,
-            isEnabled = isEnabled
+            isEnabled = isEnabled,
+            isSubmit = isSubmit
         )
         VerticalSpacer32Dp()
         Row(

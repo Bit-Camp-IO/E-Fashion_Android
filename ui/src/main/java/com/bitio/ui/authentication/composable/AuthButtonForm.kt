@@ -20,8 +20,8 @@ internal fun AuthButtonForm(
     modifier: Modifier = Modifier,
     title: String,
     onClickButton: () -> Unit,
-    isLoading: Boolean,
-    isEnabled: Boolean
+    isEnabled: Boolean,
+    isSubmit:Boolean
 ) {
     Button(
         onClick = onClickButton,
@@ -35,7 +35,7 @@ internal fun AuthButtonForm(
         shape = RoundedCornerShape(8.dp),
         enabled = isEnabled
     ) {
-        if (isLoading) {
+        if (isSubmit) {
             CircularProgressIndicator(
                 modifier = Modifier
                     .size(24.dp),

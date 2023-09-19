@@ -21,12 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
+import com.bitio.ui.authentication.composable.AuthButtonForm
 import com.bitio.ui.authentication.composable.AuthPasswordTextField
-import com.bitio.ui.shared.CustomButtonForm
-import com.bitio.ui.shared.ProfileCustomTextField
-import com.bitio.ui.shared.VerticalSpacer16Dp
+import com.bitio.ui.authentication.composable.AuthTextField
 import com.bitio.ui.shared.VerticalSpacer32Dp
 import com.bitio.ui.shared.VerticalSpacer40Dp
 
@@ -44,17 +44,24 @@ fun UserSignUp(
     onClickSignUpButton: () -> Unit,
     onClickLogIn: () -> Unit,
     onClickAcceptTermsBox: (Boolean) -> Unit,
-    onClickClearFullName: () -> Unit,
     onClickClearEmail: () -> Unit,
-    isClickedSignUp: Boolean,
-    isError: Boolean,
+    onClickClearFullName: () -> Unit,
+    isEnabled: Boolean,
+    isFullNameValid: Boolean,
+    isEmailValid: Boolean,
+    isPasswordValid: Boolean,
+    isSubmit: Boolean,
+    isConfirmPasswordValid: Boolean,
+    passwordError: String,
+    confirmPasswordError: String,
+    emailError: String,
+    fullNameError: String
 ) {
 
     Column(
         modifier = modifier
             .fillMaxSize()
     ) {
-        VerticalSpacer32Dp()
         Text(
             text = stringResource(id = R.string.sign_up),
             style = MaterialTheme.typography.titleLarge,
@@ -63,48 +70,47 @@ fun UserSignUp(
         )
 
         VerticalSpacer40Dp()
-
-        ProfileCustomTextField(
+        AuthTextField(
             value = fullName,
             placeholder = stringResource(id = R.string.full_name),
             leadingIcon = painterResource(id = R.drawable.profile),
             onValueChange = onFullNameChange,
             onClickClearText = onClickClearFullName,
-            emailError = ""
+            isInputValid = isFullNameValid,
+            messageError = fullNameError
         )
-        VerticalSpacer16Dp()
-        ProfileCustomTextField(
+        AuthTextField(
             value = email,
             placeholder = stringResource(id = R.string.email),
             leadingIcon = painterResource(id = R.drawable.email),
+            keyboardType = KeyboardType.Email,
             onValueChange = onEmailChange,
             onClickClearText = onClickClearEmail,
-            emailError = ""
+            isInputValid = isEmailValid,
+            messageError = emailError
         )
-        VerticalSpacer16Dp()
         AuthPasswordTextField(
             value = password,
             onValueChange = onPasswordChange,
-            imeAction = ImeAction.Done,
-            isPasswordValid = isError,
-            passwordError = ""
+            imeAction = ImeAction.Next,
+            isPasswordValid = isPasswordValid,
+            passwordError = passwordError
         )
-        VerticalSpacer16Dp()
         AuthPasswordTextField(
             value = passwordConfirmation,
             onValueChange = onPasswordConfirmationChange,
             imeAction = ImeAction.Done,
-            placeholder = stringResource(id = R.string.password_confirm),
-            isPasswordValid = isError,
-            passwordError = ""
+            isPasswordValid = isConfirmPasswordValid,
+            passwordError = confirmPasswordError,
+            placeholder = stringResource(id = R.string.password_confirm)
         )
-        VerticalSpacer16Dp()
-        CheckBoxContainer(onClickCheckedBox = onClickAcceptTermsBox)
+        CheckBoxContainer(onClickAcceptTermsBox)
         VerticalSpacer32Dp()
-        CustomButtonForm(
+        AuthButtonForm(
             title = stringResource(id = R.string.sign_up),
             onClickButton = onClickSignUpButton,
-            isLoading = isClickedSignUp
+            isEnabled = isEnabled,
+            isSubmit = isSubmit
         )
         VerticalSpacer32Dp()
         Row(
@@ -131,7 +137,7 @@ fun UserSignUp(
 
 @Composable
 private fun CheckBoxContainer(
-    onClickCheckedBox: (Boolean) -> Unit,
+    onClickAcceptTermsBox: (Boolean) -> Unit,
 ) {
     var isChecked by remember { mutableStateOf(false) }
     Row(
@@ -142,7 +148,7 @@ private fun CheckBoxContainer(
         Checkbox(
             checked = isChecked,
             onCheckedChange = {
-                onClickCheckedBox(it)
+                onClickAcceptTermsBox(it)
                 isChecked = it
             },
             colors = CheckboxDefaults.colors(

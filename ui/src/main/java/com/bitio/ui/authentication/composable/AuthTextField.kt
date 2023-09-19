@@ -28,12 +28,12 @@ internal fun AuthTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     onValueChange: (String) -> Unit,
     onClickClearText: () -> Unit = {},
-    isEmailValid: Boolean,
-    emailError: String,
+    isInputValid: Boolean,
+    messageError: String,
 ) {
 
     OutlinedTextField(
-        isError = isEmailValid,
+        isError = isInputValid,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp, vertical = 4.dp),
@@ -80,9 +80,9 @@ internal fun AuthTextField(
             imeAction = ImeAction.Next
         ),
         supportingText = {
-            if (value.isNotEmpty() && isEmailValid) {
+            if (value.isNotEmpty() && isInputValid) {
                 Text(
-                    text = emailError,
+                    text = messageError,
                     style = MaterialTheme.typography.labelSmall,
                     color = Color.Red
                 )

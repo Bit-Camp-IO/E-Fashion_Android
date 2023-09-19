@@ -25,4 +25,6 @@
     <string name="password_confirm">Password confirmation</string>
     <string name="unvalid_email">Unvalid email, please enter correct email</string>
     <string name="unvalid_password">Password: 8 characters, 1 uppercase, 1 lowercase, numbers</string>
+    <string name="unvalid_full_name">Full name should be greater than 8 characters</string>
+    <string name="unvalid_confirm_password">Password mismatch</string>
 </resources>

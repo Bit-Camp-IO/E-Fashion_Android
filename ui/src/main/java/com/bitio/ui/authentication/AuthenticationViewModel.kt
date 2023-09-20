@@ -54,9 +54,9 @@ class AuthenticationViewModel(
         }
     }
 
-    fun onLoginEvent(event: LoginFormEvent) {
+    fun onAuthEvent(event: AuthFormEvent) {
         when (event) {
-            is LoginFormEvent.EmailChanged -> {
+            is AuthFormEvent.EmailChanged -> {
                 _validationAuthenticationEventsUiState.update {
                     it.copy(
                         email = event.email
@@ -71,7 +71,7 @@ class AuthenticationViewModel(
                 }
             }
 
-            is LoginFormEvent.PasswordChanged -> {
+            is AuthFormEvent.PasswordChanged -> {
                 _validationAuthenticationEventsUiState.update {
                     it.copy(
                         password = event.password
@@ -86,7 +86,7 @@ class AuthenticationViewModel(
                 }
             }
 
-            is LoginFormEvent.CheckRememberMe -> {
+            is AuthFormEvent.CheckRememberMe -> {
                 _validationAuthenticationEventsUiState.update {
                     it.copy(
                         checkRememberMe = event.isChecked
@@ -94,16 +94,11 @@ class AuthenticationViewModel(
                 }
             }
 
-            LoginFormEvent.LogIn -> {
+            AuthFormEvent.LogIn -> {
                 loginUser()
             }
-        }
-    }
 
-    fun onSignUpEvent(event: SignupFormEvent) {
-        when (event) {
-
-            is SignupFormEvent.FulNameChanged -> {
+            is AuthFormEvent.FulNameChanged -> {
                 _validationAuthenticationEventsUiState.update {
                     it.copy(
                         fullName = event.fullName
@@ -118,37 +113,8 @@ class AuthenticationViewModel(
                 }
             }
 
-            is SignupFormEvent.EmailChanged -> {
-                _validationAuthenticationEventsUiState.update {
-                    it.copy(
-                        email = event.email
-                    )
-                }
-                val emailResult =
-                    validateEmailUseCase(_validationAuthenticationEventsUiState.value.email)
-                _validationAuthenticationEventsUiState.update {
-                    it.copy(
-                        emailError = emailResult.error,
-                    )
-                }
-            }
 
-            is SignupFormEvent.PasswordChanged -> {
-                _validationAuthenticationEventsUiState.update {
-                    it.copy(
-                        password = event.password
-                    )
-                }
-                val passwordResult =
-                    validatePasswordUseCase(_validationAuthenticationEventsUiState.value.password)
-                _validationAuthenticationEventsUiState.update {
-                    it.copy(
-                        passwordError = passwordResult.error,
-                    )
-                }
-            }
-
-            is SignupFormEvent.ConfirmPasswordChanged -> {
+            is AuthFormEvent.ConfirmPasswordChanged -> {
                 _validationAuthenticationEventsUiState.update {
                     it.copy(
                         confirmPassword = event.confirmPassword
@@ -166,7 +132,7 @@ class AuthenticationViewModel(
                 }
             }
 
-            is SignupFormEvent.AcceptTerms -> {
+            is AuthFormEvent.AcceptTerms -> {
                 _validationAuthenticationEventsUiState.update {
                     it.copy(
                         acceptedTerms = event.isAccepted
@@ -181,34 +147,12 @@ class AuthenticationViewModel(
                 }
             }
 
-            is SignupFormEvent.SignUp -> {
+            is AuthFormEvent.SignUp -> {
                 signUpUser()
             }
         }
     }
 
-//    private fun checkLoginData() {
-//        val emailResult = validateEmailUseCase(_validationAuthenticationEventsUiState.value.email)
-//        val passwordResult =
-//            validatePasswordUseCase(_validationAuthenticationEventsUiState.value.password)
-//
-//        val hasError = listOf(
-//            emailResult,
-//            passwordResult,
-//        ).any {
-//            !it.successful
-//        }
-//
-//        if (hasError) {
-//            _validationAuthenticationEventsUiState.update {
-//                it.copy(
-//                    emailError = emailResult.error,
-//                    passwordError = passwordResult.error,
-//                )
-//            }
-//            return
-//        }
-//    }
 
     private fun loginUser() {
         viewModelScope.launch {

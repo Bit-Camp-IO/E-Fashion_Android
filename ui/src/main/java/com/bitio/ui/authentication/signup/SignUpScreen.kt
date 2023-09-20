@@ -34,9 +34,9 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.authcomponent.domain.useCases.validate.ValidForm
 import com.bitio.ui.R
+import com.bitio.ui.authentication.AuthFormEvent
 import com.bitio.ui.authentication.AuthUiState
 import com.bitio.ui.authentication.AuthenticationViewModel
-import com.bitio.ui.authentication.SignupFormEvent
 import com.bitio.ui.shared.shapeOfAuthForm
 import com.bitio.ui.shared.shapeOfImageProfile
 import org.koin.androidx.compose.getViewModel
@@ -81,21 +81,21 @@ fun SignUpScreen(navController: NavController) {
         isEmailValid = authEventState.emailError != ValidForm.ValidEmail,
         isPasswordValid = authEventState.passwordError != ValidForm.ValidPassword,
         isConfirmPasswordValid = authEventState.confirmPasswordError != ValidForm.ValidConfirmPassword,
-        onFullNameChange = { viewModel.onSignUpEvent(SignupFormEvent.FulNameChanged(it)) },
-        onEmailChange = { viewModel.onSignUpEvent(SignupFormEvent.EmailChanged(it)) },
-        onPasswordChange = { viewModel.onSignUpEvent(SignupFormEvent.PasswordChanged(it)) },
+        onFullNameChange = { viewModel.onAuthEvent(AuthFormEvent.FulNameChanged(it)) },
+        onEmailChange = { viewModel.onAuthEvent(AuthFormEvent.EmailChanged(it)) },
+        onPasswordChange = { viewModel.onAuthEvent(AuthFormEvent.PasswordChanged(it)) },
         onPasswordConfirmationChange = {
-            viewModel.onSignUpEvent(
-                SignupFormEvent.ConfirmPasswordChanged(
+            viewModel.onAuthEvent(
+                AuthFormEvent.ConfirmPasswordChanged(
                     it
                 )
             )
         },
-        onClickSignUpButton = { viewModel.onSignUpEvent(SignupFormEvent.SignUp) },
+        onClickSignUpButton = { viewModel.onAuthEvent(AuthFormEvent.SignUp) },
         onClickLogin = navController::popBackStack,
-        onClickAcceptTermsBox = { viewModel.onSignUpEvent(SignupFormEvent.AcceptTerms(it)) },
-        onClickClearEmail = { viewModel.onSignUpEvent(SignupFormEvent.EmailChanged("")) },
-        onClickClearFullName = { viewModel.onSignUpEvent(SignupFormEvent.FulNameChanged("")) }
+        onClickAcceptTermsBox = { viewModel.onAuthEvent(AuthFormEvent.AcceptTerms(it)) },
+        onClickClearEmail = { viewModel.onAuthEvent(AuthFormEvent.EmailChanged("")) },
+        onClickClearFullName = { viewModel.onAuthEvent(AuthFormEvent.FulNameChanged("")) }
     )
 }
 

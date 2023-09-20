@@ -34,8 +34,8 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.authcomponent.domain.useCases.validate.ValidForm
 import com.bitio.ui.R
+import com.bitio.ui.authentication.AuthFormEvent
 import com.bitio.ui.authentication.AuthUiState
-import com.bitio.ui.authentication.LoginFormEvent
 import com.bitio.ui.authentication.AuthenticationViewModel
 import com.bitio.ui.authentication.route.navigateToForgotPasswordScreen
 import com.bitio.ui.authentication.route.navigateToSignUpScreen
@@ -64,13 +64,13 @@ fun LoginScreen(
     LoginContent(
         email = authEventState.email,
         password = authEventState.password,
-        onEmailChange = { viewModel.onLoginEvent(LoginFormEvent.EmailChanged(it)) },
-        onPasswordChange = { viewModel.onLoginEvent(LoginFormEvent.PasswordChanged(it)) },
-        onClickLoginButton = { viewModel.onLoginEvent(LoginFormEvent.LogIn) },
+        onEmailChange = { viewModel.onAuthEvent(AuthFormEvent.EmailChanged(it)) },
+        onPasswordChange = { viewModel.onAuthEvent(AuthFormEvent.PasswordChanged(it)) },
+        onClickLoginButton = { viewModel.onAuthEvent(AuthFormEvent.LogIn) },
         onClickForgetPassword = navController::navigateToForgotPasswordScreen,
         onClickSignUp = navController::navigateToSignUpScreen,
-        onClickRememberMeBox = { viewModel.onLoginEvent(LoginFormEvent.CheckRememberMe(it)) },
-        onClickClearEmail = { viewModel.onLoginEvent(LoginFormEvent.EmailChanged("")) },
+        onClickRememberMeBox = { viewModel.onAuthEvent(AuthFormEvent.CheckRememberMe(it)) },
+        onClickClearEmail = { viewModel.onAuthEvent(AuthFormEvent.EmailChanged("")) },
         isPasswordValid = authEventState.passwordError != ValidForm.ValidPassword,
         passwordError = passwordError,
         isEmailValid = authEventState.emailError != ValidForm.ValidEmail,

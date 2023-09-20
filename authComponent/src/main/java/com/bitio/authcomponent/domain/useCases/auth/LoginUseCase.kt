@@ -12,13 +12,13 @@ class LoginUseCase(
     ): ResponseStatus<String> {
         return try {
             val response = repository.login(email, password)
-                if (response.data != null) {
-                    val refreshToken = response.data?.refreshToken!!
-                    repository.updateRefreshToken(refreshToken)
-                    ResponseStatus.Success(response.status)
-                } else {
-                    ResponseStatus.Error(response.error?.message.toString())
-                }
+            if (response.data != null) {
+                val refreshToken = response.data?.refreshToken!!
+                repository.updateRefreshToken(refreshToken)
+                ResponseStatus.Success(response.status)
+            } else {
+                ResponseStatus.Error(response.error?.message.toString())
+            }
         } catch (e: Throwable) {
             ResponseStatus.Error(e.message ?: "An error occurred")
         }

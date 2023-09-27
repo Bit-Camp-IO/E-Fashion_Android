@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bitio.authcomponent.domain.useCases.auth.GetAccessTokenUseCase
 import com.bitio.authcomponent.domain.useCases.auth.CheckIfUserLoggedInUseCase
+import com.bitio.authcomponent.domain.useCases.auth.ForgotPasswordUseCase
 import com.bitio.authcomponent.domain.useCases.auth.LoginUseCase
+import com.bitio.authcomponent.domain.useCases.auth.ResetPasswordUseCase
 import com.bitio.authcomponent.domain.useCases.auth.SignUpUseCase
+import com.bitio.authcomponent.domain.useCases.auth.VerifyEmailUseCase
 import com.bitio.authcomponent.domain.utils.ResponseStatus
 import com.bitio.authcomponent.domain.useCases.validate.ValidateConfirmPasswordUseCase
 import com.bitio.authcomponent.domain.useCases.validate.ValidateEmailUseCase
@@ -30,12 +33,12 @@ class AuthenticationViewModel(
     private val validateConfirmPasswordUseCase: ValidateConfirmPasswordUseCase,
     private val validateFullNameUseCase: ValidateFullNameUseCase,
     private val validateEmailUseCase: ValidateEmailUseCase,
-    private val validateTermsUseCase: ValidateTermsUseCase
+    private val validateTermsUseCase: ValidateTermsUseCase,
+    private val resetPasswordUseCase: ResetPasswordUseCase,
+    private val forgotPasswordUseCase: ForgotPasswordUseCase,
+    private val verifyEmailUseCase: VerifyEmailUseCase
 ) : ViewModel() {
 
-
-    private val _checkValidationEmailStream = MutableStateFlow(false)
-    val email = _checkValidationEmailStream.asStateFlow()
 
     private val _authUiState = mutableStateOf(AuthUiState())
     val authUiState = _authUiState
@@ -150,6 +153,26 @@ class AuthenticationViewModel(
             is AuthFormEvent.SignUp -> {
                 signUpUser()
             }
+
+
+            is AuthFormEvent.VerifyEmailChanged -> {
+                _validationAuthenticationEventsUiState.update {
+                    it.copy(
+                        otp = event.otp
+                    )
+                }
+            }
+            AuthFormEvent.Reset -> {
+                resetPassword()
+            }
+
+            AuthFormEvent.Recover -> {
+                forgotPassword()
+            }
+
+            AuthFormEvent.Verify -> {
+                verifyEmail()
+            }
         }
     }
 
@@ -205,6 +228,83 @@ class AuthenticationViewModel(
                                 state = response.data
                             )
                     }
+                }
+            }
+        }
+    }
+
+    private fun resetPassword() {
+        viewModelScope.launch {
+            _authUiState.value = AuthUiState(loading = true)
+            when (val response = resetPasswordUseCase(
+                _validationAuthenticationEventsUiState.value.email,
+                _validationAuthenticationEventsUiState.value.password,
+                _validationAuthenticationEventsUiState.value.otp,
+            )) {
+                is ResponseStatus.Error -> {
+                    _authUiState.value =
+                        AuthUiState(
+                            loading = false,
+                            errorMessage = response.errorMessage
+                        )
+                }
+
+                is ResponseStatus.Success -> {
+                    _authUiState.value =
+                        AuthUiState(
+                            loading = false,
+                            state = response.data
+                        )
+                }
+            }
+        }
+    }
+
+    private fun forgotPassword() {
+        viewModelScope.launch {
+            _authUiState.value = AuthUiState(loading = true)
+            when (val response = forgotPasswordUseCase(
+                _validationAuthenticationEventsUiState.value.email,
+            )) {
+                is ResponseStatus.Error -> {
+                    _authUiState.value =
+                        AuthUiState(
+                            loading = false,
+                            errorMessage = response.errorMessage
+                        )
+                }
+
+                is ResponseStatus.Success -> {
+                    _authUiState.value =
+                        AuthUiState(
+                            loading = false,
+                            state = response.data
+                        )
+                }
+            }
+        }
+    }
+
+    private fun verifyEmail() {
+        viewModelScope.launch {
+            _authUiState.value = AuthUiState(loading = true)
+            when (val response = verifyEmailUseCase(
+                _validationAuthenticationEventsUiState.value.otp,
+            )) {
+                is ResponseStatus.Error -> {
+                    _authUiState.value =
+                        AuthUiState(
+                            loading = false,
+                            errorMessage = response.errorMessage
+                        )
+                }
+
+                is ResponseStatus.Success -> {
+                    _authUiState.value =
+                        AuthUiState(
+                            loading = false,
+                            state = response.data
+                        )
                 }
             }
         }

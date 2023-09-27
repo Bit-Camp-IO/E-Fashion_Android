@@ -80,6 +80,7 @@ fun FavoriteContent(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomTopAppBar(
     selectedLazyColumnColor: Color,

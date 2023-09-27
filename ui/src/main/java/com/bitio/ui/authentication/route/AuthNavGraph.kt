@@ -9,5 +9,7 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
         loginRoute(navController)
         signUpRoute(navController)
         forgotPasswordRoute(navController)
+        resetPasswordRoute(navController)
+        verifyEmailRoute(navController)
     }
 }

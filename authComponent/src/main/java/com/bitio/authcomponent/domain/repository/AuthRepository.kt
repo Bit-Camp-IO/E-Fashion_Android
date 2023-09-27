@@ -12,6 +12,9 @@ interface AuthRepository {
     ): ResponseWrapper<AuthDataResponse>
 
     suspend fun login(email: String, password: String): ResponseWrapper<AuthDataResponse>
+    suspend fun forgotPassword(email: String): ResponseWrapper<AuthDataResponse>
+    suspend fun verifyEmail(otp: String): ResponseWrapper<AuthDataResponse>
+    suspend fun resetPassword(email:String,newPassword:String,otp:String):ResponseWrapper<AuthDataResponse>
     suspend fun refreshAccessToken()
     suspend fun updateRefreshToken(refreshToken: String)
     suspend fun getAccessToken(): String?

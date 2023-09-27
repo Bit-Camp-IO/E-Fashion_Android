@@ -4,6 +4,7 @@ import com.bitio.authcomponent.data.local.AuthDao
 import com.bitio.authcomponent.data.remote.AuthApi
 import com.bitio.authcomponent.data.remote.request.LoginBody
 import com.bitio.authcomponent.data.remote.request.RegisterBody
+import com.bitio.authcomponent.data.remote.request.ResetPasswordBody
 import com.bitio.authcomponent.data.remote.response.AuthDataResponse
 import com.bitio.authcomponent.domain.entities.AuthData
 import com.bitio.authcomponent.domain.repository.AuthRepository
@@ -38,6 +39,27 @@ class AuthRepositoryImpl(
         val authData = api.login(body).data!!
         saveAuthDataHelper(authData)
         return api.login(body)
+    }
+
+    override suspend fun forgotPassword(email: String): ResponseWrapper<AuthDataResponse> {
+        return api.forgotPassword(email)
+    }
+
+    override suspend fun verifyEmail(otp: String): ResponseWrapper<AuthDataResponse> {
+        return api.verifyEmail(otp)
+    }
+
+    override suspend fun resetPassword(
+        email: String,
+        newPassword: String,
+        otp: String
+    ): ResponseWrapper<AuthDataResponse> {
+        val body = ResetPasswordBody(
+            email = email,
+            newPassword = newPassword,
+            otp = otp
+        )
+        return api.resetPassword(body)
     }
 
     override suspend fun getAccessToken(): String? {

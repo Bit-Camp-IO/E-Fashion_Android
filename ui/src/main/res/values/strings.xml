@@ -26,4 +26,12 @@
     <string name="unvalid_password">Password: 8 characters, 1 uppercase, 1 lowercase, numbers</string>
     <string name="unvalid_full_name">Full name should be greater than 8 characters</string>
     <string name="unvalid_confirm_password">Password mismatch</string>
+    <string name="reset_password">Reset password</string>
+    <string name="your_email">Your valid email</string>
+    <string name="reset">Reset</string>
+    <string name="details_of_reset_password">Your new password must be different from previous used password</string>
+    <string name="recover">Recover password</string>
+    <string name="verify_email">Email verification</string>
+    <string name="details_of_verify_email">Enter the 6 digital code the sent to your email address</string>
+    <string name="verify">Verify</string>
 </resources>

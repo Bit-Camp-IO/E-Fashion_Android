@@ -6,7 +6,11 @@ sealed class AuthFormEvent {
     data class CheckRememberMe(val isChecked: Boolean) : AuthFormEvent()
     data class FulNameChanged(val fullName: String) : AuthFormEvent()
     data class ConfirmPasswordChanged(val confirmPassword: String) : AuthFormEvent()
+    data class VerifyEmailChanged(val otp: String) : AuthFormEvent()
     data class AcceptTerms(val isAccepted: Boolean) : AuthFormEvent()
     object LogIn : AuthFormEvent()
     object SignUp : AuthFormEvent()
+    object Reset : AuthFormEvent()
+    object Recover : AuthFormEvent()
+    object Verify : AuthFormEvent()
 }

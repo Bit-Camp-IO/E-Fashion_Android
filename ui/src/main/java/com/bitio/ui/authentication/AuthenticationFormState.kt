@@ -11,6 +11,7 @@ data class AuthenticationFormState(
     val passwordError: ValidForm = ValidForm.UnValidPassword,
     val confirmPassword: String = "",
     val confirmPasswordError: ValidForm = ValidForm.UnValidConfirmPassword,
+    val otp: String = "",
     val checkRememberMe: Boolean = false,
     val acceptedTerms: Boolean = false,
     val termsError: ValidForm = ValidForm.NotAcceptedTerm

@@ -1,16 +1,12 @@
 package com.bitio.ui.profile
 
 
-import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bitio.usercomponent.domain.usecase.profile.GetProfileSettingsUseCase
 import com.bitio.usercomponent.domain.usecase.profile.SaveProfileSettingsUseCase
-import com.bitio.utils.APP_TAG
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -90,13 +91,14 @@ fun LocationScreen(navController: NavController) {
         onSelectedLocation = { latitude, longitude ->
             viewModel.updateLocationInfo(latitude, longitude)
         },
-        onClick = {
-            viewModel.searchLocationAndMoveCamera(cityName, geocoder)
-        },
+        onClick = {},
         cityName = cityName,
         onCityNameChange = { cityName = it },
         isLoading = state.loading,
         newLatLng = state.locationInfo,
+        onSearchClick = {
+            viewModel.searchLocationAndMoveCamera(cityName, geocoder)
+        }
     )
 
 }
@@ -109,6 +111,7 @@ private fun LocationContent(
     cityName: String,
     onSelectedLocation: (Double, Double) -> Unit,
     onClick: () -> Unit,
+    onSearchClick: () -> Unit,
     onCityNameChange: (String) -> Unit,
     isLoading: Boolean,
     newLatLng: LatLng,
@@ -137,11 +140,6 @@ private fun LocationContent(
         .addOnFailureListener { exception ->
             Log.d(TAG_APP, "LocationContent: $exception")
         }
-
-
-
-
-
 
 
     val cameraPositionState = rememberCameraPositionState()
@@ -192,14 +190,9 @@ private fun LocationContent(
                     .padding(top = 64.dp, start = 24.dp, end = 24.dp)
                     .align(Alignment.TopCenter),
                 value = cityName,
-                onValueChane = onCityNameChange
-            )
-            ConfirmButton(
-                modifier = Modifier
-                    .padding(bottom = 64.dp, start = 64.dp, end = 64.dp)
-                    .align(Alignment.BottomCenter),
-                onClick = {
-                    onClick()
+                onValueChane = onCityNameChange,
+                onSearchClick = {
+                    onSearchClick()
                     scope.launch(Dispatchers.Main) {
                         cameraPositionState.animate(
                             CameraUpdateFactory.newLatLngZoom(
@@ -208,7 +201,13 @@ private fun LocationContent(
                             )
                         )
                     }
-                },
+                }
+            )
+            ConfirmButton(
+                modifier = Modifier
+                    .padding(bottom = 64.dp, start = 64.dp, end = 64.dp)
+                    .align(Alignment.BottomCenter),
+                onClick = onClick,
                 isLoading = isLoading,
                 enabled = cityName.isNotEmpty() && !isLoading
             )
@@ -220,7 +219,8 @@ private fun LocationContent(
 private fun SearchLocationTextField(
     modifier: Modifier = Modifier,
     value: String,
-    onValueChane: (String) -> Unit
+    onValueChane: (String) -> Unit,
+    onSearchClick: () -> Unit
 ) {
     OutlinedTextField(
         modifier = modifier
@@ -252,8 +252,13 @@ private fun SearchLocationTextField(
         ),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Done
+            imeAction = ImeAction.Search
         ),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                onSearchClick()
+            }
+        )
     )
 }
 

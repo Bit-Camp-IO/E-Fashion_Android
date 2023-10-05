@@ -28,6 +28,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.bitio.ui.authentication.route.AuthRouterScreens
 import com.bitio.ui.profile.ProfileRouteScreens
 import com.bitio.ui.route.RootRouteScreens
 
@@ -47,8 +48,10 @@ fun BottomNavigationBar(checkIfLogin: Boolean) {
             val visibility = currentRoute(navController = navController) !in listOf(
                 ProfileRouteScreens.Location.route,
                 ProfileRouteScreens.ChatSupport.route,
+                AuthRouterScreens.Login.route,
+                AuthRouterScreens.SignUp.route,
             )
-            BottomBar(navController, !visibility)
+            BottomBar(navController, visibility)
         },
         containerColor = Color.Transparent
     ) { innerPadding ->

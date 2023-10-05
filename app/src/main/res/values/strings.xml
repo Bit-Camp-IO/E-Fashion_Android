@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">E Fashion</string>
+    <string name="map_api_key">${BuildConfig.MAP_API_KEY}</string>
 </resources>

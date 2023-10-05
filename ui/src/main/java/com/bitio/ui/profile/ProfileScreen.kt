@@ -63,6 +63,7 @@ import com.bitio.ui.profile.user.UserViewModel
 import com.bitio.ui.shared.shapeOfImageProfile
 import com.bitio.ui.shared.shapeOfProfile
 import com.bitio.utils.RealPathUtil
+import com.bitio.utils.hasLocationPermission
 import java.io.File
 import java.io.IOException
 
@@ -77,11 +78,30 @@ fun ProfileScreen(
     val profileSettingsState by profileSettingsViewModel.profileSettingsUiState.collectAsState()
     val permissionViewModel = getViewModel<PermissionViewModel>()
 
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            permissionViewModel.onPermissionResult(
+                permission = Manifest.permission.ACCESS_FINE_LOCATION,
+                isGranted = isGranted
+            )
+            if (isGranted) {
+
+            }
+        }
+    )
+    val context = LocalContext.current
     ProfileContent(
         profileUiState = state.profileUi,
         darkModeEnabled = profileSettingsState.darkModeEnabled,
         onSwitchTheme = profileSettingsViewModel::onSwitchTheme,
-        onClickLocationScreen = navController::navigateToLocationScreen,
+        onClickLocationScreen = {
+            if (!context.hasLocationPermission()) {
+                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            } else {
+                navController.navigateToLocationScreen()
+            }
+        },
         onClickOrderStatusScreen = navController::navigateToOrderStatusScreen,
         onClickChatSupportScreen = navController::navigateToChatSupportScreen,
         onClickNotificationsScreen = navController::navigateToNotificationsScreen,

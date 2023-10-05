@@ -1,9 +1,19 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
+}
+
+fun getSecretKeys(): Properties {
+    val keyFile = rootProject.file("local.properties")
+    val properties = Properties()
+    properties.load(FileInputStream(keyFile))
+    return properties
 }
 
 
@@ -15,6 +25,8 @@ android {
         minSdk = 26
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "MAP_API_KEY", getSecretKeys()["MAP_API_KEY"].toString())
     }
 
     buildTypes {
@@ -45,7 +57,7 @@ android {
 dependencies {
 
     //project
-   // api(project(":productsComponent"))
+    // api(project(":productsComponent"))
     api(project(":infrastructure"))
 
     api("androidx.core:core-ktx:1.10.1")
@@ -62,14 +74,18 @@ dependencies {
 
 
     // Navigation
-   // api("androidx.hilt:hilt-navigation-compose:1.0.0")
+    // api("androidx.hilt:hilt-navigation-compose:1.0.0")
     api("androidx.navigation:navigation-compose:2.6.0")
 
 
     // Google maps
-    api("com.google.maps.android:maps-compose:1.0.0")
+    api("com.google.maps.android:maps-compose:2.8.0")
     api("com.google.android.gms:play-services-maps:18.1.0")
     api("com.google.android.gms:play-services-location:21.0.1")
+    api("com.google.maps.android:places-ktx:0.4.0")
+    api("com.google.android.gms:play-services-places:17.0.0")
+    api("com.google.android.libraries.places:places:3.2.0")
+
 
     // Accompanist
     api("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
@@ -85,9 +101,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-text-google-fonts:1.4.3")
 
     // Koin
-    api ("io.insert-koin:koin-androidx-compose:3.4.6")
-    ksp ("io.insert-koin:koin-ksp-compiler:1.2.2")
-
+    api("io.insert-koin:koin-androidx-compose:3.4.6")
+    ksp("io.insert-koin:koin-ksp-compiler:1.2.2")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

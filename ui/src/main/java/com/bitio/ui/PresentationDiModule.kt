@@ -1,12 +1,8 @@
 package com.bitio.ui
 
-import com.bitio.ui.authentication.AuthenticationViewModel
 import com.bitio.ui.product.favorite.FavoriteViewModel
-import com.bitio.ui.product.productUiDi
-import com.bitio.ui.profile.ProfileSettingsViewModel
 import com.bitio.ui.profile.chat.ChatSupportViewModel
-import com.bitio.ui.profile.location.MapViewModel
-import com.bitio.ui.profile.user.PermissionViewModel
+import com.bitio.ui.profile.location.LocationViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
@@ -16,8 +12,7 @@ val presentationDiModule = module {
   //  includes(productUiDi)
     viewModel { ChatSupportViewModel() }
     viewModel { FavoriteViewModel() }
-    viewModel { MapViewModel() }
-    viewModel { PermissionViewModel() }
+    viewModel { LocationViewModel() }
 }
 
 @Module

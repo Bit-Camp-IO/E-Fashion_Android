@@ -1,5 +1,9 @@
 package com.bitio.utils
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
 import java.util.regex.Pattern
 
 fun resizeShape(pathData: String, scaleX: Float, scaleY: Float): String {
@@ -18,3 +22,14 @@ fun resizeShape(pathData: String, scaleX: Float, scaleY: Float): String {
 }
 
 const val TAG_APP = "Debugging_App"
+
+fun Context.hasLocationPermission(): Boolean {
+    return ContextCompat.checkSelfPermission(
+        this,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+}

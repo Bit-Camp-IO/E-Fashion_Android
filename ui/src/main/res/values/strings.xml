@@ -35,4 +35,5 @@
     <string name="details_of_verify_email">Enter the 6 digital code the sent to your email address</string>
     <string name="verify">Verify</string>
     <string name="confirm">Confirm</string>
+    <string name="hint_search_location">Basra,Iraq</string>
 </resources>

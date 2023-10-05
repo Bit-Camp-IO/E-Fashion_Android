@@ -1,22 +1,31 @@
 package com.bitio.ui.profile.location
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.location.Geocoder
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -30,6 +39,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -42,18 +52,11 @@ import androidx.navigation.NavController
 import com.bitio.ui.BuildConfig
 import com.bitio.ui.R
 import com.bitio.utils.TAG_APP
-import com.google.android.gms.common.api.Status
-import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken
-import com.google.android.libraries.places.api.model.PlaceTypes
-import com.google.android.libraries.places.api.model.TypeFilter
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
@@ -63,9 +66,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.getViewModel
-import java.io.IOException
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -73,16 +74,19 @@ fun LocationScreen(navController: NavController) {
     val context = LocalContext.current
     val viewModel = getViewModel<LocationViewModel>()
     val state by viewModel.uiState
-    val geocoder = Geocoder(context)
     var cityName by remember {
         mutableStateOf("")
     }
 
+
+    val geocoder = Geocoder(context)
+
     if (state.error.isNotEmpty()) {
         Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
     }
+
     Places.initialize(context, BuildConfig.MAP_API_KEY)
-    findAutoPlace(context,cityName)
+    val placesClient = Places.createClient(context)
 
     LocationContent(
         lat = viewModel.latitudeAndLongitude.value.latitude,
@@ -94,12 +98,19 @@ fun LocationScreen(navController: NavController) {
         cityName = cityName,
         onCityNameChange = {
             cityName = it
+            viewModel.findAutoPlace(cityName, placesClient)
         },
         isLoading = state.loading,
         newLatLng = state.locationInfo,
         onSearchClick = {
             viewModel.searchLocationAndMoveCamera(cityName, geocoder)
-        }
+        },
+        suggestedCities = viewModel.addresses.value.toList().reversed(),
+        onCitySelected = {
+            cityName = it
+            viewModel.searchLocationAndMoveCamera(cityName, geocoder)
+        },
+        onClearTextSearch = { cityName = "" }
     )
 }
 
@@ -115,14 +126,18 @@ private fun LocationContent(
     onCityNameChange: (String) -> Unit,
     isLoading: Boolean,
     newLatLng: LatLng,
+    suggestedCities: List<String>,
+    onCitySelected: (String) -> Unit,
+    onClearTextSearch: () -> Unit
 ) {
 
+    val scope = rememberCoroutineScope()
     val cameraPositionState = rememberCameraPositionState()
     val uiSettings = remember {
-        MapUiSettings(zoomControlsEnabled = true)
+        MapUiSettings(
+            zoomControlsEnabled = true,
+        )
     }
-
-    val scope = rememberCoroutineScope()
 
     val properties by remember {
         mutableStateOf(
@@ -160,24 +175,31 @@ private fun LocationContent(
                     },
                 )
             }
-            SearchLocationTextField(
+            Column(
                 modifier = Modifier
                     .padding(top = 64.dp, start = 24.dp, end = 24.dp)
-                    .align(Alignment.TopCenter),
-                value = cityName,
-                onValueChane = onCityNameChange,
-                onSearchClick = {
-                    onSearchClick()
-                    scope.launch(Dispatchers.Main) {
-                        cameraPositionState.animate(
-                            CameraUpdateFactory.newLatLngZoom(
-                                newLatLng,
-                                15f
+                    .align(Alignment.TopCenter)
+                    .height(500.dp),
+            ) {
+                SearchLocationTextField(
+                    value = cityName,
+                    onValueChane = onCityNameChange,
+                    onSearchClick = {
+                        onSearchClick()
+                        scope.launch(Dispatchers.Main) {
+                            cameraPositionState.animate(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    newLatLng,
+                                    15f
+                                )
                             )
-                        )
-                    }
-                }
-            )
+                        }
+                    },
+                    onClearTextSearch = onClearTextSearch
+                )
+                SuggestedCitiesList(suggestedCities, onCitySelected)
+            }
+
             ConfirmButton(
                 modifier = Modifier
                     .padding(bottom = 64.dp, start = 64.dp, end = 64.dp)
@@ -195,7 +217,8 @@ private fun SearchLocationTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChane: (String) -> Unit,
-    onSearchClick: () -> Unit
+    onSearchClick: () -> Unit,
+    onClearTextSearch: () -> Unit
 ) {
     OutlinedTextField(
         modifier = modifier
@@ -207,7 +230,7 @@ private fun SearchLocationTextField(
         shape = RoundedCornerShape(12.dp),
         placeholder = {
             Text(
-                text = "Search Location",
+                text = stringResource(id = R.string.hint_search_location),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.tertiary
             )
@@ -218,6 +241,19 @@ private fun SearchLocationTextField(
                 contentDescription = null,
                 tint = Color.Gray
             )
+        },
+        trailingIcon = {
+            value.takeIf { it.isNotEmpty() }?.let {
+                IconButton(
+                    onClick = onClearTextSearch
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.close),
+                        contentDescription = null,
+                        tint = Color.Gray
+                    )
+                }
+            }
         },
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -235,6 +271,56 @@ private fun SearchLocationTextField(
             }
         )
     )
+}
+
+
+@Composable
+fun SuggestedCitiesList(
+    suggestedCities: List<String>,
+    onCitySelected: (String) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier
+            .clip(
+                RoundedCornerShape(
+                    bottomEnd = 24.dp,
+                    bottomStart = 24.dp,
+                    topEnd = 16.dp,
+                    topStart = 16.dp
+                )
+            )
+            .background(MaterialTheme.colorScheme.background)
+            .height(400.dp)
+    ) {
+        items(
+            count = suggestedCities.size,
+            contentType = { suggestedCities },
+            key = { it }) { index ->
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable {
+                        onCitySelected(suggestedCities[index])
+                    }
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.location),
+                    contentDescription = null,
+                    tint = Color.Gray
+                )
+                Text(
+                    text = suggestedCities[index],
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
+            Divider()
+        }
+    }
 }
 
 @Composable
@@ -271,30 +357,4 @@ private fun ConfirmButton(
             )
         }
     }
-}
-
-private fun findAutoPlace(
-    context: Context,
-    query: String
-) {
-    val placesClient = Places.createClient(context)
-    val sessionToken = AutocompleteSessionToken.newInstance()
-
-    val request = FindAutocompletePredictionsRequest.builder()
-        .setTypesFilter(listOf(PlaceTypes.CITIES))
-        .setSessionToken(sessionToken)
-        .setQuery(query)
-        .build()
-
-    placesClient.findAutocompletePredictions(request)
-        .addOnSuccessListener { response ->
-            for (prediction in response.autocompletePredictions) {
-                val placeId = prediction.placeId
-                val fullText = prediction.getFullText(null).toString()
-                Log.d(TAG_APP, "LocationContent:$placeId: $fullText")
-            }
-        }
-        .addOnFailureListener { exception ->
-            Toast.makeText(context,exception.message,Toast.LENGTH_SHORT).show()
-        }
 }

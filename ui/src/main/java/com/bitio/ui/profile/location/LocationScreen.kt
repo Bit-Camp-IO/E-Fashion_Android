@@ -49,6 +49,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
+import com.google.android.libraries.places.api.model.PlaceTypes
 import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
@@ -70,13 +71,9 @@ import java.io.IOException
 @Composable
 fun LocationScreen(navController: NavController) {
     val context = LocalContext.current
-    Places.initialize(context, BuildConfig.MAP_API_KEY)
     val viewModel = getViewModel<LocationViewModel>()
     val state by viewModel.uiState
-
     val geocoder = Geocoder(context)
-
-
     var cityName by remember {
         mutableStateOf("")
     }
@@ -84,6 +81,8 @@ fun LocationScreen(navController: NavController) {
     if (state.error.isNotEmpty()) {
         Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
     }
+    Places.initialize(context, BuildConfig.MAP_API_KEY)
+    findAutoPlace(context,cityName)
 
     LocationContent(
         lat = viewModel.latitudeAndLongitude.value.latitude,
@@ -93,14 +92,15 @@ fun LocationScreen(navController: NavController) {
         },
         onClick = {},
         cityName = cityName,
-        onCityNameChange = { cityName = it },
+        onCityNameChange = {
+            cityName = it
+        },
         isLoading = state.loading,
         newLatLng = state.locationInfo,
         onSearchClick = {
             viewModel.searchLocationAndMoveCamera(cityName, geocoder)
         }
     )
-
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -116,31 +116,6 @@ private fun LocationContent(
     isLoading: Boolean,
     newLatLng: LatLng,
 ) {
-
-    val context = LocalContext.current
-
-    val placesClient = Places.createClient(context)
-
-    val sessionToken = AutocompleteSessionToken.newInstance()
-
-    val request = FindAutocompletePredictionsRequest.builder()
-        .setTypeFilter(TypeFilter.CITIES)
-        .setSessionToken(sessionToken)
-        .setQuery(cityName)
-        .build()
-
-    placesClient.findAutocompletePredictions(request)
-        .addOnSuccessListener { response ->
-            for (prediction in response.autocompletePredictions) {
-                val placeId = prediction.placeId
-                val fullText = prediction.getFullText(null).toString()
-                Log.d(TAG_APP, "LocationContent: $fullText")
-            }
-        }
-        .addOnFailureListener { exception ->
-            Log.d(TAG_APP, "LocationContent: $exception")
-        }
-
 
     val cameraPositionState = rememberCameraPositionState()
     val uiSettings = remember {
@@ -298,29 +273,28 @@ private fun ConfirmButton(
     }
 }
 
-@SuppressLint("NewApi")
-private suspend fun searchLocationAndMoveCamera(
-    cityName: String,
-    geocoder: Geocoder,
-    cameraPositionState: CameraPositionState,
-    context: Context
+private fun findAutoPlace(
+    context: Context,
+    query: String
 ) {
-    try {
-        val addresses = geocoder.getFromLocationName(cityName, 1)
-        if (addresses != null) {
-            if (addresses.isNotEmpty()) {
-                val location = addresses[0]
-                val latitude = location.latitude
-                val longitude = location.longitude
-                val newLatLng = LatLng(latitude, longitude)
-                cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(newLatLng, 20f))
-            } else {
-                Toast.makeText(context, "Location not found for '$cityName'", Toast.LENGTH_SHORT)
-                    .show()
+    val placesClient = Places.createClient(context)
+    val sessionToken = AutocompleteSessionToken.newInstance()
+
+    val request = FindAutocompletePredictionsRequest.builder()
+        .setTypesFilter(listOf(PlaceTypes.CITIES))
+        .setSessionToken(sessionToken)
+        .setQuery(query)
+        .build()
+
+    placesClient.findAutocompletePredictions(request)
+        .addOnSuccessListener { response ->
+            for (prediction in response.autocompletePredictions) {
+                val placeId = prediction.placeId
+                val fullText = prediction.getFullText(null).toString()
+                Log.d(TAG_APP, "LocationContent:$placeId: $fullText")
             }
         }
-    } catch (e: IOException) {
-        Toast.makeText(context, "Error performing geocoding: ${e.message}", Toast.LENGTH_SHORT)
-            .show()
-    }
+        .addOnFailureListener { exception ->
+            Toast.makeText(context,exception.message,Toast.LENGTH_SHORT).show()
+        }
 }

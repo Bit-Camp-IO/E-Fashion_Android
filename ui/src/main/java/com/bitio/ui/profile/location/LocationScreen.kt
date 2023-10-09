@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -161,6 +162,7 @@ private fun LocationContent(
                     onSelectedLocation(it.latitude, it.longitude)
                 },
                 cameraPositionState = cameraPositionState,
+                contentPadding = PaddingValues(vertical = 80.dp)
             ) {
                 Marker(
                     state = rememberMarkerState(position = LatLng(lat, lng)),
@@ -177,7 +179,7 @@ private fun LocationContent(
             }
             Column(
                 modifier = Modifier
-                    .padding(top = 64.dp, start = 24.dp, end = 24.dp)
+                    .padding(24.dp)
                     .align(Alignment.TopCenter)
                     .height(500.dp),
             ) {
@@ -202,7 +204,7 @@ private fun LocationContent(
 
             ConfirmButton(
                 modifier = Modifier
-                    .padding(bottom = 64.dp, start = 64.dp, end = 64.dp)
+                    .padding(24.dp)
                     .align(Alignment.BottomCenter),
                 onClick = onClick,
                 isLoading = isLoading,

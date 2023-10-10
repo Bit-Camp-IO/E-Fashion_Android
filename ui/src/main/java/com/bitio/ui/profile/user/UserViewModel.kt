@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bitio.usercomponent.domain.model.User
 import com.bitio.usercomponent.domain.usecase.user.AddUserImageUseCase
-import com.bitio.usercomponent.domain.usecase.user.DeleteAddressOfUserUseCase
-import com.bitio.usercomponent.domain.usecase.user.GetAddressesOfUseCase
+import com.bitio.usercomponent.domain.usecase.user.DeleteUserLocationUseCase
+import com.bitio.usercomponent.domain.usecase.user.GetUserLocationUseCase
 import com.bitio.usercomponent.domain.usecase.user.GetSavedUserInformationUseCase
 import com.bitio.usercomponent.domain.usecase.user.RefreshUserInfoUseCase
 import com.bitio.usercomponent.domain.usecase.user.UpdateUserInfoUseCase
@@ -21,8 +21,8 @@ class UserViewModel(
     private val refreshUserInfoUseCase: RefreshUserInfoUseCase,
     private val getSavedUserInformationUseCase: GetSavedUserInformationUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
-    private val getAddressesOfUseCase: GetAddressesOfUseCase,
-    private val deleteAddressOfUserUseCase: DeleteAddressOfUserUseCase,
+    private val getUserLocationUseCase: GetUserLocationUseCase,
+    private val deleteUserLocationUseCase: DeleteUserLocationUseCase,
     private val addUserImageUseCase: AddUserImageUseCase,
 ) : ViewModel() {
 

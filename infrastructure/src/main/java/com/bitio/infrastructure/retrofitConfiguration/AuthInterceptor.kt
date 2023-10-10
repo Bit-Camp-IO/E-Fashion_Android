@@ -48,7 +48,7 @@ class AuthInterceptor : Interceptor, KoinComponent {
 
     private fun createNewRequest(request: Request, accessToken: String?): Request {
         return request.newBuilder()
-            .header("Authorization", "Bearer $accessToken")
+            .header("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MGFlOTVjNGMxZDEyYWZiYmRiMGU2YSIsImlhdCI6MTY5NjkyNTUzOCwiZXhwIjoxNjk2OTI2MTM4fQ.e_IBDgO_kRoFmDd7lzM4csb4oE5OVirORMf2srDZZTlmpdcCiPsEtdd6AqsUyZeEnx59MY9aktOOFEksgbQ3zWvgolRVVinCRGByq8nf7EyWSPDDIO_qKq1Bu-j2IqjB2UaCKPK4n6O4xsbFVCRDjCEVJv5ruO25kkwCXF3NCEIZf2ZCP0E5wszF8fwZqdxVKRTayxg55AThJZDluT-cVuFaIPagRyQ6XIz2DLpS-Lb8Wq2JU7ny-kS83agP6AmX5AN1juLoJuDHG6qhdLyOe2lHSLUq7amM51cutZ9KdgDWsOIZK2z4LCXUt9oczbC69tdez7saXg_Z28V1TC1eSw")
             .build()
     }
 

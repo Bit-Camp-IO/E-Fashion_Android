@@ -7,7 +7,6 @@ import com.bitio.usercomponent.data.remote.request.LocationBody
 import com.bitio.usercomponent.data.remote.request.UserBody
 import com.bitio.usercomponent.data.remote.response.AddressResponse
 import com.bitio.usercomponent.data.remote.response.ProfileResponse
-import com.bitio.usercomponent.domain.model.Address
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -41,6 +40,6 @@ interface UserApiProvider : UserApi {
     override suspend fun addUserLocation(@Body locationBody: LocationBody): ResponseWrapper<AddressResponse>
 
     @DELETE("user/address/{address_id}")
-    override suspend fun deleteAddressOfUser(@Path("address_id") addressId: String)
+    override suspend fun deleteUserLocation(@Path("address_id") addressId: String):ResponseWrapper<String>
 
 }

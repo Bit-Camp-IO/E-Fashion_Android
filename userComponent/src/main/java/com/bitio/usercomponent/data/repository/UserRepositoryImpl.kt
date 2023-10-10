@@ -8,7 +8,6 @@ import com.bitio.usercomponent.data.remote.request.LocationBody
 import com.bitio.usercomponent.data.remote.request.UserBody
 import com.bitio.usercomponent.data.remote.response.AddressResponse
 import com.bitio.usercomponent.data.remote.response.ProfileResponse
-import com.bitio.usercomponent.domain.model.Address
 import com.bitio.usercomponent.domain.model.Location
 import com.bitio.usercomponent.domain.model.User
 import com.bitio.usercomponent.domain.repository.UserRepository
@@ -79,8 +78,8 @@ class UserRepositoryImpl(
         return userApi.addUserLocation(locationBody)
     }
 
-    override suspend fun deleteAddressOfUser(addressId: String) {
-        userApi.deleteAddressOfUser(addressId)
+    override suspend fun deleteUserLocation(addressId: String): ResponseWrapper<String> {
+        return userApi.deleteUserLocation(addressId)
     }
 
 }

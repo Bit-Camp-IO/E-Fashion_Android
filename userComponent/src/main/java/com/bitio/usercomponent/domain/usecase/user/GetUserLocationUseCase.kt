@@ -4,7 +4,7 @@ import com.bitio.usercomponent.domain.utils.ResponseStatus
 import com.bitio.usercomponent.domain.model.Address
 import com.bitio.usercomponent.domain.repository.UserRepository
 
-class GetAddressesOfUseCase (
+class GetUserLocationUseCase (
     private val repository: UserRepository
 ){
     suspend operator fun invoke(): ResponseStatus<Address?> {

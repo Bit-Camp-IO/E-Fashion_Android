@@ -80,8 +80,8 @@ fun LocationScreen(navController: NavController) {
 
     val geocoder = Geocoder(context)
 
-    if (state.errorMessage.isNotEmpty()) {
-        Toast.makeText(context, state.errorMessage, Toast.LENGTH_SHORT).show()
+    if (state.message.isNotEmpty()) {
+        Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
     }
 
     Places.initialize(context, BuildConfig.MAP_API_KEY)
@@ -100,7 +100,7 @@ fun LocationScreen(navController: NavController) {
             viewModel.findAutoPlace(cityName, placesClient)
         },
         isLoading = state.loading,
-        newLatLng = LatLng(state.locationInfo.latitude,state.locationInfo.longitude),
+        newLatLng = LatLng(state.locationInfo.latitude, state.locationInfo.longitude),
         onSearchClick = {
             viewModel.searchLocationAndMoveCamera(cityName, geocoder)
         },
@@ -109,7 +109,8 @@ fun LocationScreen(navController: NavController) {
             cityName = it
             viewModel.searchLocationAndMoveCamera(cityName, geocoder)
         },
-        onClearTextSearch = { cityName = "" }
+        onClearTextSearch = { cityName = "" },
+        onDeleteLocationClick = viewModel::deleteUserLocation
     )
 }
 
@@ -127,7 +128,8 @@ private fun LocationContent(
     newLatLng: LatLng,
     suggestedCities: List<String>,
     onCitySelected: (String) -> Unit,
-    onClearTextSearch: () -> Unit
+    onClearTextSearch: () -> Unit,
+    onDeleteLocationClick: () -> Unit
 ) {
 
     val scope = rememberCoroutineScope()
@@ -164,7 +166,6 @@ private fun LocationContent(
                 cameraPositionState = cameraPositionState,
                 contentPadding = PaddingValues(vertical = 80.dp)
             ) {
-                Log.d(TAG_APP, "LocationContent:$lat, $lng ")
                 Marker(
                     state = position,
                     title = "Parking spot ($lat, $lng)",
@@ -176,6 +177,9 @@ private fun LocationContent(
                         it.showInfoWindow()
                         true
                     },
+                    onInfoWindowClick = {
+                        onDeleteLocationClick()
+                    }
                 )
             }
             Column(

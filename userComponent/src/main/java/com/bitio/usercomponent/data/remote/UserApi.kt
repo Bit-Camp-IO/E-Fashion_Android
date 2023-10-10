@@ -15,5 +15,5 @@ interface UserApi {
     suspend fun getAddressesOfUser(): ResponseWrapper<AddressResponse>
     suspend fun addUserImage(profileImage: MultipartBody.Part?): ResponseWrapper<String>
     suspend fun addUserLocation(locationBody: LocationBody):ResponseWrapper<AddressResponse>
-    suspend fun deleteAddressOfUser(addressId: String)
+    suspend fun deleteUserLocation(addressId: String):ResponseWrapper<String>
 }

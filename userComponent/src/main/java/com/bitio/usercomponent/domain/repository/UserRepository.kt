@@ -18,5 +18,5 @@ interface UserRepository {
     suspend fun getAddressesOfUser(): ResponseWrapper<AddressResponse>
     suspend fun addUserImage(file: File): ResponseWrapper<String>
     suspend fun addUserLocation(location: Location): ResponseWrapper<AddressResponse>
-    suspend fun deleteAddressOfUser(addressId: String)
+    suspend fun deleteUserLocation(addressId: String): ResponseWrapper<String>
 }

@@ -7,7 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bitio.usercomponent.domain.usecase.user.AddUserLocationUseCase
-import com.bitio.usercomponent.domain.usecase.user.GetAddressesOfUseCase
+import com.bitio.usercomponent.domain.usecase.user.DeleteUserLocationUseCase
+import com.bitio.usercomponent.domain.usecase.user.GetUserLocationUseCase
 import com.bitio.usercomponent.domain.utils.ResponseStatus
 import com.bitio.utils.TAG_APP
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken
@@ -22,7 +23,8 @@ import java.io.IOException
 
 class LocationViewModel(
     private val addUserLocationUseCase: AddUserLocationUseCase,
-    private val getAddressesOfUseCase: GetAddressesOfUseCase
+    private val getUserLocationUseCase: GetUserLocationUseCase,
+    private val deleteUserLocationUseCase: DeleteUserLocationUseCase,
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(LocationUIState())
@@ -34,12 +36,12 @@ class LocationViewModel(
 
     init {
         viewModelScope.launch {
-            when (val response = getAddressesOfUseCase()) {
+            when (val response = getUserLocationUseCase()) {
                 is ResponseStatus.Error -> {
                     Log.d(TAG_APP, "initial:${response.errorMessage} ")
                     _uiState.value = LocationUIState(
                         loading = false,
-                        errorMessage = response.errorMessage
+                        message = response.errorMessage
                     )
                 }
 
@@ -52,6 +54,8 @@ class LocationViewModel(
                         )
                         _uiState.value = LocationUIState(
                             loading = false,
+                            id = it.id,
+                            isPrimary = it.isPrimary,
                             locationInfo = userLocation
                         )
                     }
@@ -90,7 +94,7 @@ class LocationViewModel(
             .addOnFailureListener { exception ->
                 _uiState.value = LocationUIState(
                     loading = false,
-                    errorMessage = exception.message.toString()
+                    message = exception.message.toString()
                 )
             }
     }
@@ -120,14 +124,14 @@ class LocationViewModel(
                 } else {
                     _uiState.value = LocationUIState(
                         loading = false,
-                        errorMessage = "Location not found for '$cityName'"
+                        message = "Location not found for '$cityName'"
                     )
                 }
 
             } catch (e: IOException) {
                 _uiState.value = LocationUIState(
                     loading = false,
-                    errorMessage = "Error performing geocoding: ${e.message}"
+                    message = "Error performing geocoding: ${e.message}"
                 )
             }
         }
@@ -140,7 +144,7 @@ class LocationViewModel(
                 is ResponseStatus.Error -> {
                     _uiState.value = LocationUIState(
                         loading = false,
-                        errorMessage = response.errorMessage
+                        message = response.errorMessage
                     )
                 }
 
@@ -148,6 +152,27 @@ class LocationViewModel(
                     _uiState.value = LocationUIState(
                         loading = false,
                         locationInfo =  _uiState.value.locationInfo
+                    )
+                }
+            }
+        }
+    }
+
+    fun deleteUserLocation(){
+        Log.d(TAG_APP, "deleteUserLocation: ${_uiState.value.id}")
+        viewModelScope.launch {
+            when (val response = deleteUserLocationUseCase(_uiState.value.id)) {
+                is ResponseStatus.Error -> {
+                    _uiState.value = LocationUIState(
+                        loading = false,
+                        message = response.errorMessage
+                    )
+                }
+
+                is ResponseStatus.Success -> {
+                    _uiState.value = LocationUIState(
+                        loading = false,
+                        message =  response.data
                     )
                 }
             }

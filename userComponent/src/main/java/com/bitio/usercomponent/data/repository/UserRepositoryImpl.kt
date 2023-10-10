@@ -4,10 +4,12 @@ import com.bitio.sharedcomponent.data.ResponseWrapper
 import com.bitio.usercomponent.data.local.UserDao
 import com.bitio.usercomponent.data.local.UserEntity
 import com.bitio.usercomponent.data.remote.UserApi
-import com.bitio.usercomponent.data.remote.request.AddressBody
+import com.bitio.usercomponent.data.remote.request.LocationBody
 import com.bitio.usercomponent.data.remote.request.UserBody
+import com.bitio.usercomponent.data.remote.response.AddressResponse
 import com.bitio.usercomponent.data.remote.response.ProfileResponse
 import com.bitio.usercomponent.domain.model.Address
+import com.bitio.usercomponent.domain.model.Location
 import com.bitio.usercomponent.domain.model.User
 import com.bitio.usercomponent.domain.repository.UserRepository
 import com.bitio.usercomponent.domain.utils.ResponseStatus
@@ -54,7 +56,7 @@ class UserRepositoryImpl(
         return userApi.updateUserInformation(user)
     }
 
-    override suspend fun getAddressesOfUser(): ResponseWrapper<List<Address>> {
+    override suspend fun getAddressesOfUser(): ResponseWrapper<AddressResponse> {
         return userApi.getAddressesOfUser()
     }
 
@@ -69,14 +71,12 @@ class UserRepositoryImpl(
         return userApi.addUserImage(uploadFile)
     }
 
-    override suspend fun addAddressOfUser(address: Address) {
-        val addressBody = AddressBody(
-            city = address.city,
-            state = address.state,
-            postalCode = address.postalCode,
-            isPrimary = false
+    override suspend fun addUserLocation(location: Location): ResponseWrapper<AddressResponse> {
+        val locationBody = LocationBody(
+            latitude = location.latitude,
+            longitude = location.longitude
         )
-        userApi.addAddressOfUser(addressBody)
+        return userApi.addUserLocation(locationBody)
     }
 
     override suspend fun deleteAddressOfUser(addressId: String) {

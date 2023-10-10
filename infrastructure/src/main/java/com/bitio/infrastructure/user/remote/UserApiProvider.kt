@@ -3,8 +3,9 @@ package com.bitio.infrastructure.user.remote
 
 import com.bitio.sharedcomponent.data.ResponseWrapper
 import com.bitio.usercomponent.data.remote.UserApi
-import com.bitio.usercomponent.data.remote.request.AddressBody
+import com.bitio.usercomponent.data.remote.request.LocationBody
 import com.bitio.usercomponent.data.remote.request.UserBody
+import com.bitio.usercomponent.data.remote.response.AddressResponse
 import com.bitio.usercomponent.data.remote.response.ProfileResponse
 import com.bitio.usercomponent.domain.model.Address
 import okhttp3.MultipartBody
@@ -28,7 +29,7 @@ interface UserApiProvider : UserApi {
     ): ResponseWrapper<ProfileResponse>
 
     @GET("user/address")
-    override suspend fun getAddressesOfUser(): ResponseWrapper<List<Address>>
+    override suspend fun getAddressesOfUser(): ResponseWrapper<AddressResponse>
 
     @Multipart
     @POST("user/profile-image")
@@ -37,7 +38,7 @@ interface UserApiProvider : UserApi {
     ): ResponseWrapper<String>
 
     @POST("user/address")
-    override suspend fun addAddressOfUser(@Body addressBody: AddressBody)
+    override suspend fun addUserLocation(@Body locationBody: LocationBody): ResponseWrapper<AddressResponse>
 
     @DELETE("user/address/{address_id}")
     override suspend fun deleteAddressOfUser(@Path("address_id") addressId: String)

@@ -16,7 +16,7 @@ import com.bitio.usercomponent.domain.usecase.profile.GetProfileSettingsUseCase
 import com.bitio.usercomponent.domain.usecase.profile.SaveProfileSettingsUseCase
 import com.bitio.usercomponent.domain.usecase.user.DeleteAddressOfUserUseCase
 import com.bitio.usercomponent.domain.usecase.user.GetAddressesOfUseCase
-import com.bitio.usercomponent.domain.usecase.user.AddAddressOfUserUseCase
+import com.bitio.usercomponent.domain.usecase.user.AddUserLocationUseCase
 import com.bitio.usercomponent.domain.usecase.user.AddUserImageUseCase
 import com.bitio.usercomponent.domain.usecase.user.GetSavedUserInformationUseCase
 import com.bitio.usercomponent.domain.usecase.user.RefreshUserInfoUseCase
@@ -36,7 +36,7 @@ val userKoinModule = module {
     factory { UpdateUserInfoUseCase(get()) }
     factory { GetAddressesOfUseCase(get()) }
     factory { AddUserImageUseCase(get()) }
-    factory { AddAddressOfUserUseCase(get()) }
+    factory { AddUserLocationUseCase(get()) }
     factory { DeleteAddressOfUserUseCase(get()) }
 
     single<ProfileSettingsDao> { ProfileSettingsDaoImpl(get()) }

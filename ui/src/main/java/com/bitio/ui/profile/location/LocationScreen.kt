@@ -2,7 +2,6 @@ package com.bitio.ui.profile.location
 
 import android.annotation.SuppressLint
 import android.location.Geocoder
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -56,7 +55,6 @@ import com.bitio.utils.TAG_APP
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.libraries.places.api.Places
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
@@ -82,27 +80,27 @@ fun LocationScreen(navController: NavController) {
 
     val geocoder = Geocoder(context)
 
-    if (state.error.isNotEmpty()) {
-        Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+    if (state.errorMessage.isNotEmpty()) {
+        Toast.makeText(context, state.errorMessage, Toast.LENGTH_SHORT).show()
     }
 
     Places.initialize(context, BuildConfig.MAP_API_KEY)
     val placesClient = Places.createClient(context)
 
     LocationContent(
-        lat = viewModel.latitudeAndLongitude.value.latitude,
-        lng = viewModel.latitudeAndLongitude.value.longitude,
+        lat = viewModel.uiState.value.locationInfo.latitude,
+        lng = viewModel.uiState.value.locationInfo.longitude,
         onSelectedLocation = { latitude, longitude ->
             viewModel.updateLocationInfo(latitude, longitude)
         },
-        onClick = {},
+        onClick = viewModel::confirmLocation,
         cityName = cityName,
         onCityNameChange = {
             cityName = it
             viewModel.findAutoPlace(cityName, placesClient)
         },
         isLoading = state.loading,
-        newLatLng = state.locationInfo,
+        newLatLng = LatLng(state.locationInfo.latitude,state.locationInfo.longitude),
         onSearchClick = {
             viewModel.searchLocationAndMoveCamera(cityName, geocoder)
         },
@@ -149,6 +147,8 @@ private fun LocationContent(
         )
     }
 
+    var position = rememberMarkerState(position = LatLng(lat, lng))
+
     Scaffold {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -164,8 +164,9 @@ private fun LocationContent(
                 cameraPositionState = cameraPositionState,
                 contentPadding = PaddingValues(vertical = 80.dp)
             ) {
+                Log.d(TAG_APP, "LocationContent:$lat, $lng ")
                 Marker(
-                    state = rememberMarkerState(position = LatLng(lat, lng)),
+                    state = position,
                     title = "Parking spot ($lat, $lng)",
                     snippet = "Long click to delete",
                     icon = BitmapDescriptorFactory.defaultMarker(

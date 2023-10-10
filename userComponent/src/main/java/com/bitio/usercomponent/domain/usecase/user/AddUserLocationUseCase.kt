@@ -1,15 +1,16 @@
 package com.bitio.usercomponent.domain.usecase.user
 
-import com.bitio.usercomponent.domain.utils.ResponseStatus
 import com.bitio.usercomponent.domain.model.Address
+import com.bitio.usercomponent.domain.model.Location
 import com.bitio.usercomponent.domain.repository.UserRepository
+import com.bitio.usercomponent.domain.utils.ResponseStatus
 
-class GetAddressesOfUseCase (
+class AddUserLocationUseCase(
     private val repository: UserRepository
-){
-    suspend operator fun invoke(): ResponseStatus<Address?> {
+) {
+    suspend operator fun invoke(location: Location): ResponseStatus<Address?> {
         return try {
-            val response = repository.getAddressesOfUser()
+            val response = repository.addUserLocation(location)
             if (response.data != null) {
                 ResponseStatus.Success(response.data)
             } else {

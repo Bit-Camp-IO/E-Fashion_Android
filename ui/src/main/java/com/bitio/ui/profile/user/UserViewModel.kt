@@ -4,9 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bitio.usercomponent.domain.model.Address
 import com.bitio.usercomponent.domain.model.User
-import com.bitio.usercomponent.domain.usecase.user.AddAddressOfUserUseCase
 import com.bitio.usercomponent.domain.usecase.user.AddUserImageUseCase
 import com.bitio.usercomponent.domain.usecase.user.DeleteAddressOfUserUseCase
 import com.bitio.usercomponent.domain.usecase.user.GetAddressesOfUseCase
@@ -24,7 +22,6 @@ class UserViewModel(
     private val getSavedUserInformationUseCase: GetSavedUserInformationUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
     private val getAddressesOfUseCase: GetAddressesOfUseCase,
-    private val addAddressOfUserUseCase: AddAddressOfUserUseCase,
     private val deleteAddressOfUserUseCase: DeleteAddressOfUserUseCase,
     private val addUserImageUseCase: AddUserImageUseCase,
 ) : ViewModel() {
@@ -90,8 +87,7 @@ class UserViewModel(
                                 profileImage = it.profileImage ?: "",
                                 settingsUi = SettingsUi(
                                     language = it.settings?.language ?: "",
-                                    addresses = it.settings?.addresses.mapToAddressUi()
-                                        ?: emptyList()
+                                    addresses =  emptyList()
                                 )
                             )
                         )
@@ -108,17 +104,17 @@ class UserViewModel(
         }
     }
 
-    private fun List<Address>?.mapToAddressUi(): List<AddressUi>? {
-        return this?.map {
-            AddressUi(
-                id = it.id ?: "",
-                state = it.state ?: "",
-                postalCode = it.postalCode ?: 0,
-                isPrimary = it.isPrimary ?: false,
-                city = it.city ?: ""
-            )
-        }
-    }
+//    private fun List<Address>?.mapToAddressUi(): List<AddressUi>? {
+//        return this?.map {
+//            AddressUi(
+//                id = it.id ?: "",
+//                state = it.state ?: "",
+//                postalCode = it.postalCode ?: 0,
+//                isPrimary = it.isPrimary ?: false,
+//                city = it.city ?: ""
+//            )
+//        }
+//    }
 
     fun addUserImage(file: File) {
         viewModelScope.launch {

@@ -12,7 +12,7 @@ val presentationDiModule = module {
   //  includes(productUiDi)
     viewModel { ChatSupportViewModel() }
     viewModel { FavoriteViewModel() }
-    viewModel { LocationViewModel() }
+    viewModel { LocationViewModel(get(),get()) }
 }
 
 @Module

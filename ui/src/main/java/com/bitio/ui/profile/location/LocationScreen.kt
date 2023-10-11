@@ -53,6 +53,7 @@ import com.bitio.ui.BuildConfig
 import com.bitio.ui.R
 import com.bitio.utils.TAG_APP
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
@@ -73,34 +74,36 @@ fun LocationScreen(navController: NavController) {
     val context = LocalContext.current
     val viewModel = getViewModel<LocationViewModel>()
     val state by viewModel.uiState
+    MapsInitializer.initialize(context)
+    val geocoder = Geocoder(context)
+    Places.initialize(context, BuildConfig.MAP_API_KEY)
+    val placesClient = Places.createClient(context)
+
     var cityName by remember {
         mutableStateOf("")
     }
 
-
-    val geocoder = Geocoder(context)
-
     if (state.message.isNotEmpty()) {
         Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
     }
-
-    Places.initialize(context, BuildConfig.MAP_API_KEY)
-    val placesClient = Places.createClient(context)
+    if (viewModel.isConfirmSuccess.value){
+        Toast.makeText(context, stringResource(id = R.string.desc_of_confirm_location),Toast.LENGTH_SHORT).show()
+    }
 
     LocationContent(
-        lat = viewModel.uiState.value.locationInfo.latitude,
-        lng = viewModel.uiState.value.locationInfo.longitude,
         onSelectedLocation = { latitude, longitude ->
             viewModel.updateLocationInfo(latitude, longitude)
         },
-        onClick = viewModel::confirmLocation,
+        onConfirmClick = {
+            viewModel.confirmLocation(state.userLocation)
+        },
         cityName = cityName,
         onCityNameChange = {
             cityName = it
             viewModel.findAutoPlace(cityName, placesClient)
         },
         isLoading = state.loading,
-        newLatLng = LatLng(state.locationInfo.latitude, state.locationInfo.longitude),
+        newLatLng = LatLng(state.userLocation.latitude, state.userLocation.longitude),
         onSearchClick = {
             viewModel.searchLocationAndMoveCamera(cityName, geocoder)
         },
@@ -117,11 +120,9 @@ fun LocationScreen(navController: NavController) {
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun LocationContent(
-    lat: Double,
-    lng: Double,
     cityName: String,
     onSelectedLocation: (Double, Double) -> Unit,
-    onClick: () -> Unit,
+    onConfirmClick: () -> Unit,
     onSearchClick: () -> Unit,
     onCityNameChange: (String) -> Unit,
     isLoading: Boolean,
@@ -133,7 +134,19 @@ private fun LocationContent(
 ) {
 
     val scope = rememberCoroutineScope()
-    val cameraPositionState = rememberCameraPositionState()
+    val cameraPositionState = rememberCameraPositionState(
+        init = {
+            scope.launch {
+                animate(
+                    CameraUpdateFactory.newLatLngZoom(
+                        newLatLng,
+                        20f
+                    )
+                )
+            }
+        }
+    )
+
     val uiSettings = remember {
         MapUiSettings(
             zoomControlsEnabled = true,
@@ -149,7 +162,7 @@ private fun LocationContent(
         )
     }
 
-    var position = rememberMarkerState(position = LatLng(lat, lng))
+    var position = rememberMarkerState(position = newLatLng)
 
     Scaffold {
         Box(
@@ -160,15 +173,15 @@ private fun LocationContent(
                 modifier = Modifier.fillMaxSize(),
                 properties = properties,
                 uiSettings = uiSettings,
-                onMapClick = {
+                onMapLongClick = {
                     onSelectedLocation(it.latitude, it.longitude)
                 },
                 cameraPositionState = cameraPositionState,
-                contentPadding = PaddingValues(vertical = 80.dp)
+                contentPadding = PaddingValues(vertical = 80.dp),
             ) {
                 Marker(
                     state = position,
-                    title = "Parking spot ($lat, $lng)",
+                    title = "Parking spot (${newLatLng.latitude}, ${newLatLng.longitude})",
                     snippet = "Long click to delete",
                     icon = BitmapDescriptorFactory.defaultMarker(
                         BitmapDescriptorFactory.HUE_RED
@@ -177,7 +190,7 @@ private fun LocationContent(
                         it.showInfoWindow()
                         true
                     },
-                    onInfoWindowClick = {
+                    onInfoWindowLongClick = {
                         onDeleteLocationClick()
                     }
                 )
@@ -197,7 +210,7 @@ private fun LocationContent(
                             cameraPositionState.animate(
                                 CameraUpdateFactory.newLatLngZoom(
                                     newLatLng,
-                                    15f
+                                    20f
                                 )
                             )
                         }
@@ -211,9 +224,8 @@ private fun LocationContent(
                 modifier = Modifier
                     .padding(24.dp)
                     .align(Alignment.BottomCenter),
-                onClick = onClick,
+                onClick = onConfirmClick,
                 isLoading = isLoading,
-                enabled = cityName.isNotEmpty() && !isLoading
             )
         }
     }
@@ -335,24 +347,21 @@ private fun ConfirmButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     isLoading: Boolean,
-    enabled: Boolean
 ) {
 
     Button(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(8.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             disabledContainerColor = Color.Gray
         ),
         shape = RoundedCornerShape(8.dp),
-        enabled = enabled
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier
-                    .size(24.dp),
+                modifier = Modifier.size(24.dp),
                 color = MaterialTheme.colorScheme.onPrimary
             )
         } else {

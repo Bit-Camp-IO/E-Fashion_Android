@@ -34,6 +34,9 @@ class LocationViewModel(
     private val _addresses = mutableStateOf(cities)
     val addresses = _addresses
 
+    private val _isConfirmSuccess = mutableStateOf(false)
+    val isConfirmSuccess = _isConfirmSuccess
+
     init {
         viewModelScope.launch {
             when (val response = getUserLocationUseCase()) {
@@ -48,15 +51,14 @@ class LocationViewModel(
                 is ResponseStatus.Success -> {
                     Log.d(TAG_APP, "initial:${response.data?.location} ")
                     response.data?.let {
-                        val userLocation = UserLocation(
-                            latitude = it.location.latitude,
-                            longitude = it.location.longitude
-                        )
                         _uiState.value = LocationUIState(
                             loading = false,
                             id = it.id,
                             isPrimary = it.isPrimary,
-                            locationInfo = userLocation
+                            userLocation = UserLocation(
+                                latitude = it.location.latitude,
+                                longitude = it.location.longitude
+                            )
                         )
                     }
                 }
@@ -67,8 +69,9 @@ class LocationViewModel(
     fun updateLocationInfo(lat: Double, lon: Double) {
         _uiState.value = LocationUIState(
             loading = false,
-            locationInfo = UserLocation(lat, lon)
+            userLocation = UserLocation(lat, lon)
         )
+        Log.d(TAG_APP, "updateLocationInfo: ${_uiState.value.userLocation}")
     }
 
     fun findAutoPlace(
@@ -119,7 +122,7 @@ class LocationViewModel(
                     val newLatLng = UserLocation(latitude, longitude)
                     _uiState.value = LocationUIState(
                         loading = false,
-                        locationInfo = newLatLng
+                        userLocation = newLatLng
                     )
                 } else {
                     _uiState.value = LocationUIState(
@@ -137,11 +140,13 @@ class LocationViewModel(
         }
     }
 
-    fun confirmLocation() {
+    fun confirmLocation(userLocation: UserLocation) {
         viewModelScope.launch {
             _uiState.value = LocationUIState(loading = true)
-            when (val response = addUserLocationUseCase( _uiState.value.locationInfo)) {
+            Log.d(TAG_APP, "before confirmLocation: ${_uiState.value.userLocation}")
+            when (val response = addUserLocationUseCase(userLocation)) {
                 is ResponseStatus.Error -> {
+                    _isConfirmSuccess.value = false
                     _uiState.value = LocationUIState(
                         loading = false,
                         message = response.errorMessage
@@ -149,32 +154,29 @@ class LocationViewModel(
                 }
 
                 is ResponseStatus.Success -> {
+                    _isConfirmSuccess.value = true
                     _uiState.value = LocationUIState(
                         loading = false,
-                        locationInfo =  _uiState.value.locationInfo
+                        userLocation = _uiState.value.userLocation
                     )
                 }
             }
         }
     }
 
-    fun deleteUserLocation(){
+    fun deleteUserLocation() {
         Log.d(TAG_APP, "deleteUserLocation: ${_uiState.value.id}")
         viewModelScope.launch {
             when (val response = deleteUserLocationUseCase(_uiState.value.id)) {
-                is ResponseStatus.Error -> {
-                    _uiState.value = LocationUIState(
-                        loading = false,
-                        message = response.errorMessage
-                    )
-                }
+                is ResponseStatus.Error -> _uiState.value = LocationUIState(
+                    loading = false,
+                    message = response.errorMessage
+                )
 
-                is ResponseStatus.Success -> {
-                    _uiState.value = LocationUIState(
-                        loading = false,
-                        message =  response.data
-                    )
-                }
+                is ResponseStatus.Success -> _uiState.value = LocationUIState(
+                    loading = false,
+                    message = response.data
+                )
             }
         }
     }

@@ -6,7 +6,7 @@ data class LocationUIState(
     val loading: Boolean = false,
     val id: String = "",
     val isPrimary: Boolean = false,
-    val locationInfo: UserLocation = UserLocation(),
+    val userLocation: UserLocation = UserLocation(),
     val message: String = ""
 )
 

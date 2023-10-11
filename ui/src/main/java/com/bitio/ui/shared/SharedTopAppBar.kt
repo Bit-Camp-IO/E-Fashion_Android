@@ -19,7 +19,7 @@ import com.bitio.ui.R
 fun SharedTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
-    onClickBackButton: () -> Unit
+    onBackButtonClick: () -> Unit
 ) {
     TopAppBar(
         modifier = modifier,
@@ -31,7 +31,7 @@ fun SharedTopAppBar(
             )
         },
         navigationIcon = {
-            IconButton(onClick = onClickBackButton) {
+            IconButton(onClick = onBackButtonClick) {
                 Icon(
                     modifier = Modifier.padding(start = 16.dp),
                     painter = painterResource(id = R.drawable.arraw_back),

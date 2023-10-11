@@ -38,4 +38,5 @@
     <string name="confirm">Confirm</string>
     <string name="hint_search_location">البصره, العراق</string>
     <string name="desc_of_confirm_location">You have successfully added your site</string>
+    <string name="shopping_bag">Shopping Bag</string>
 </resources>

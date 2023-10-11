@@ -80,7 +80,7 @@ private fun ChatSupportContent(
         topBar = {
             SharedTopAppBar(
                 title = "Chat Support",
-                onClickBackButton = onClickBackButton
+                onBackButtonClick = onClickBackButton
             )
         }
     ) {

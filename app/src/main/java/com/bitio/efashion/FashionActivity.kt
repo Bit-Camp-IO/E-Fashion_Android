@@ -80,7 +80,7 @@ class FashionActivity : ComponentActivity() {
                                             ImagePickerPermissionTextProvider()
                                         }
 
-                                        Manifest.permission.ACCESS_FINE_LOCATION -> {
+                                        ACCESS_FINE_LOCATION -> {
                                             LocationPermissionTextProvider()
                                         }
 

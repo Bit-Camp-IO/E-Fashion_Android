@@ -28,7 +28,7 @@ private val LightColorScheme = lightColorScheme(
     background = Porcelain,
     onBackground = FireFly,
     surface = Platinum,
-    onSurface = Porcelain,
+    onSurface = FireFly,
 
 )
 

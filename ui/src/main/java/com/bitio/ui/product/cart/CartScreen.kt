@@ -2,30 +2,27 @@ package com.bitio.ui.product.cart
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults.textButtonColors
 import androidx.compose.material3.CardDefaults.elevatedCardColors
 import androidx.compose.material3.CardDefaults.elevatedCardElevation
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,15 +58,21 @@ private fun CartContent(
             )
         }
     ) {
-        CardItem(
-            modifier = Modifier.padding(vertical = it.calculateTopPadding()),
-            painter = rememberAsyncImagePainter(
-                model = "https://img.freepik.com/premium-photo/funny-female-hipster-showing-tongue_251859-14529.jpg"
-            ),
-            onAddClick = {},
-            onRemoveClick = {},
-            value = ""
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            CardItem(
+                modifier = Modifier.padding(vertical = it.calculateTopPadding()),
+                painter = rememberAsyncImagePainter(
+                    model = "https://img.freepik.com/premium-photo/funny-female-hipster-showing-tongue_251859-14529.jpg"
+                ),
+                onAddClick = {},
+                onRemoveClick = {},
+                value = ""
+            )
+            InfoOfCart()
+        }
     }
 }
 
@@ -158,6 +161,50 @@ private fun CardItem(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun InfoOfCart(
+    modifier: Modifier = Modifier,
+    totalPrice: String = "$600.00"
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.sup_total),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                text = totalPrice,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        }
+        TextButton(
+            onClick = { /*TODO*/ },
+            colors = textButtonColors(containerColor = MaterialTheme.colorScheme.primary),
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.checkout),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
 }

@@ -21,6 +21,7 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 
 
+
 class LocationViewModel(
     private val addUserLocationUseCase: AddUserLocationUseCase,
     private val getUserLocationUseCase: GetUserLocationUseCase,

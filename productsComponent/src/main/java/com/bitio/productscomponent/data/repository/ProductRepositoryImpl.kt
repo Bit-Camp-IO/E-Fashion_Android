@@ -2,12 +2,15 @@ package com.bitio.productscomponent.data.repository
 
 import com.bitio.productscomponent.data.local.dataSource.ProductDao
 import com.bitio.productscomponent.data.remote.ProductsApi
+import com.bitio.productscomponent.data.remote.request.CartItemBody
+import com.bitio.productscomponent.data.remote.response.CartResponse
 import com.bitio.productscomponent.domain.entities.Brand
 import com.bitio.productscomponent.domain.entities.categories.Category
 import com.bitio.productscomponent.domain.entities.categories.GenderType
 import com.bitio.productscomponent.domain.entities.products.Product
 import com.bitio.productscomponent.domain.entities.products.ProductDetails
 import com.bitio.productscomponent.domain.repository.ProductRepository
+import com.bitio.sharedcomponent.data.ResponseWrapper
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -16,7 +19,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ProductRepositoryImpl(private val api: ProductsApi, private val dao: ProductDao) :
+class ProductRepositoryImpl(
+    private val api: ProductsApi,
+    private val dao: ProductDao
+) :
     ProductRepository {
     init {
         updateFavoriteIds()
@@ -69,6 +75,18 @@ class ProductRepositoryImpl(private val api: ProductsApi, private val dao: Produ
     override suspend fun removeProductFromFavorite(id: String) {
         api.removeProductFromFavorite(id)
         addOrRemoveIdFromFavoriteStream(id, false)
+    }
+
+    override suspend fun getAllCarts(): ResponseWrapper<CartResponse> {
+        return api.getAllCarts()
+    }
+
+    override suspend fun addCart(cartItemBody: CartItemBody): ResponseWrapper<CartResponse> {
+        return api.addCart(cartItemBody)
+    }
+
+    override suspend fun deleteCart(cartId: String): ResponseWrapper<String> {
+        return api.deleteCart(cartId)
     }
 
     @OptIn(DelicateCoroutinesApi::class)

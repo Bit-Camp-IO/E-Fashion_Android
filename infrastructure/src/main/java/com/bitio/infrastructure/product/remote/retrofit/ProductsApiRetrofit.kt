@@ -1,7 +1,9 @@
 package com.bitio.infrastructure.product.remote.retrofit
 
+import com.bitio.productscomponent.data.remote.request.CartItemBody
 import com.bitio.productscomponent.data.remote.request.IdBody
 import com.bitio.productscomponent.data.remote.response.BrandResponse
+import com.bitio.productscomponent.data.remote.response.CartResponse
 import com.bitio.productscomponent.data.remote.response.CategoryResponse
 import com.bitio.productscomponent.data.remote.response.FavoriteProductResponse
 import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
@@ -9,6 +11,7 @@ import com.bitio.productscomponent.data.remote.response.ProductsPage
 import com.bitio.sharedcomponent.data.ResponseWrapper
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.POST
@@ -50,4 +53,12 @@ interface ProductsApiRetrofit {
     suspend fun removeFromFavoriteProduct(@Body id: IdBody): Response<Unit>
 
 
+    @GET("user/cart")
+    suspend fun getAllCarts(): ResponseWrapper<CartResponse>
+
+    @POST("user/cart")
+    suspend fun addCart(@Body cartItemBody: CartItemBody): ResponseWrapper<CartResponse>
+
+    @DELETE("user/cart")
+    suspend fun deleteCart(@Query("id") cartId: String): ResponseWrapper<String>
 }

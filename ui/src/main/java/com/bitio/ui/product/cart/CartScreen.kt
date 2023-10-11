@@ -1,8 +1,8 @@
 package com.bitio.ui.product.cart
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,13 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.ButtonDefaults.textButtonColors
 import androidx.compose.material3.CardDefaults.elevatedCardColors
-import androidx.compose.material3.CardDefaults.elevatedCardElevation
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,34 +24,52 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.bitio.productscomponent.domain.entities.cart.CartItem
 import com.bitio.ui.R
 import com.bitio.ui.shared.SharedTopAppBar
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
+import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun CartScreen(navController: NavController) {
+    val viewModel = getViewModel<CartViewModel>()
+    val state by viewModel.cartUiState
+    val context = LocalContext.current
+
+    if (state.message.isNotEmpty()) {
+        Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+    }
+
     CartContent(
-        onBackButtonClick = navController::navigateUp
+        onBackButtonClick = navController::navigateUp,
+        onRemoveClick = {},
+        onAddClick = {},
+        onDeleteItemClick = viewModel::deleteCart,
+        state = state
     )
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun CartContent(
-    onBackButtonClick: () -> Unit
+    onBackButtonClick: () -> Unit,
+    onAddClick: () -> Unit,
+    onDeleteItemClick: (String) -> Unit,
+    onRemoveClick: () -> Unit,
+    state: CartItemUiState,
 ) {
     Scaffold(
         topBar = {
@@ -63,21 +78,26 @@ private fun CartContent(
                 onBackButtonClick = onBackButtonClick
             )
         }
-    ) {
+    ) { paddingValue ->
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = paddingValue.calculateTopPadding()),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            CardItem(
-                modifier = Modifier.padding(vertical = it.calculateTopPadding()),
-                painter = rememberAsyncImagePainter(
-                    model = "https://img.freepik.com/premium-photo/funny-female-hipster-showing-tongue_251859-14529.jpg"
-                ),
-                onAddClick = {},
-                onRemoveClick = {},
-                value = ""
-            )
-            InfoOfCart()
+            LazyColumn() {
+                items(
+                    count = state.items.size,
+                    contentType = { CartUiState::class.java },
+                    key = { it }) {
+                    CardItem(
+                        onAddClick = onAddClick,
+                        onRemoveClick = onRemoveClick,
+                        cart = state.items[it]
+                    )
+                }
+            }
+            InfoOfCart(totalPrice = "$${state.subTotal}")
         }
     }
 }
@@ -85,17 +105,16 @@ private fun CartContent(
 @Composable
 private fun CardItem(
     modifier: Modifier = Modifier,
-    value: String,
-    painter: Painter,
+    cart: CartItem,
     onAddClick: () -> Unit,
     onRemoveClick: () -> Unit,
-    onDeleteItem: (String) -> Unit = {}
+    onDeleteItemClick: (String) -> Unit = {},
 ) {
     val delete = SwipeAction(
         icon = painterResource(id = R.drawable.trash),
         background = Color.Red,
         onSwipe = {
-            onDeleteItem("")
+            onDeleteItemClick("")
         }
     )
     SwipeableActionsBox(
@@ -116,7 +135,9 @@ private fun CardItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painter, contentDescription = null,
+                    painter = rememberAsyncImagePainter(
+                        model = "https://img.freepik.com/premium-photo/funny-female-hipster-showing-tongue_251859-14529.jpg"
+                    ), contentDescription = null,
                     modifier = Modifier
                         .clip(RoundedCornerShape(16.dp))
                         .size(100.dp),
@@ -132,7 +153,7 @@ private fun CardItem(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "Size : XL",
+                        text = cart.size,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -160,7 +181,7 @@ private fun CardItem(
                             )
                         }
                         Text(
-                            text = value,
+                            text = cart.quantity.toString(),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -185,7 +206,7 @@ private fun CardItem(
 @Composable
 private fun InfoOfCart(
     modifier: Modifier = Modifier,
-    totalPrice: String = "$600.00"
+    totalPrice: String,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),

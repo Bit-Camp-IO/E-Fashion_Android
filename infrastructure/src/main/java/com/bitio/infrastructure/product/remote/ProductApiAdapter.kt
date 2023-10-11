@@ -4,8 +4,10 @@ import android.util.Log
 import com.bitio.infrastructure.product.remote.retrofit.ProductsApiRetrofit
 import com.bitio.infrastructure.retrofitConfiguration.ErrorWrapper
 import com.bitio.productscomponent.data.remote.ProductsApi
+import com.bitio.productscomponent.data.remote.request.CartItemBody
 import com.bitio.productscomponent.data.remote.request.IdBody
 import com.bitio.productscomponent.data.remote.response.BrandResponse
+import com.bitio.productscomponent.data.remote.response.CartResponse
 import com.bitio.productscomponent.data.remote.response.CategoryResponse
 import com.bitio.productscomponent.data.remote.response.FavoriteProductResponse
 import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
@@ -23,7 +25,7 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
         page: Int,
         limit: Int
     ): ResponseWrapper<ProductsPage> {
-        Log.d("aaa",(hasDiscount).toString())
+        Log.d("aaa", (hasDiscount).toString())
 
         try {
             val parsedCategories = categoryIds?.joinToString(",")
@@ -94,6 +96,30 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
 
     override suspend fun removeProductFromFavorite(id: String) {
         retrofitApi.removeFromFavoriteProduct(IdBody(id))
+    }
+
+    override suspend fun getAllCarts(): ResponseWrapper<CartResponse> {
+        try {
+            return retrofitApi.getAllCarts()
+        } catch (e: HttpException) {
+            throw parseIfApiErrorException(e).error
+        }
+    }
+
+    override suspend fun addCart(cartItemBody: CartItemBody): ResponseWrapper<CartResponse> {
+        try {
+            return retrofitApi.addCart(cartItemBody)
+        } catch (e: HttpException) {
+            throw parseIfApiErrorException(e).error
+        }
+    }
+
+    override suspend fun deleteCart(cartId: String): ResponseWrapper<String> {
+        try {
+            return retrofitApi.deleteCart(cartId)
+        } catch (e: HttpException) {
+            throw parseIfApiErrorException(e).error
+        }
     }
 }
 

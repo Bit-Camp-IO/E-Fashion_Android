@@ -40,4 +40,10 @@
     <string name="shopping_bag">Shopping Bag</string>
     <string name="sup_total">Sub total :</string>
     <string name="checkout">Checkout</string>
+    <string name="label_payment_method">Payment Method</string>
+    <string name="label_delivery_location">Delivery location</string>
+    <string name="label_apply_promo_code">Apply Promo Code</string>
+    <string name="shipping">Shipping :</string>
+    <string name="total_price">Total</string>
+    <string name="confirm_payment"><![CDATA[Confirm & Pay]]></string>
 </resources>

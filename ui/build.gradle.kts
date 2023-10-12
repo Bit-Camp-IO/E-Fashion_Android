@@ -100,7 +100,7 @@ dependencies {
     //google fonts
     implementation("androidx.compose.ui:ui-text-google-fonts:1.4.3")
 
-    // Swiped Card
+    // Swiped Card4
     implementation ("me.saket.swipe:swipe:1.2.0")
 
     // Koin

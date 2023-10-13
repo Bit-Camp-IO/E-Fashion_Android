@@ -48,7 +48,7 @@ class AuthInterceptor : Interceptor, KoinComponent {
 
     private fun createNewRequest(request: Request, accessToken: String?): Request {
         return request.newBuilder()
-            .header("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MGFlOTVjNGMxZDEyYWZiYmRiMGU2YSIsImlhdCI6MTY5NjkyNTUzOCwiZXhwIjoxNjk2OTI2MTM4fQ.e_IBDgO_kRoFmDd7lzM4csb4oE5OVirORMf2srDZZTlmpdcCiPsEtdd6AqsUyZeEnx59MY9aktOOFEksgbQ3zWvgolRVVinCRGByq8nf7EyWSPDDIO_qKq1Bu-j2IqjB2UaCKPK4n6O4xsbFVCRDjCEVJv5ruO25kkwCXF3NCEIZf2ZCP0E5wszF8fwZqdxVKRTayxg55AThJZDluT-cVuFaIPagRyQ6XIz2DLpS-Lb8Wq2JU7ny-kS83agP6AmX5AN1juLoJuDHG6qhdLyOe2lHSLUq7amM51cutZ9KdgDWsOIZK2z4LCXUt9oczbC69tdez7saXg_Z28V1TC1eSw")
+            .header("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZmE1YjUzMzdmOTk0NTE2ZGIyZjU5MSIsImlhdCI6MTY5NzIxOTAwOCwiZXhwIjoxNjk5ODExMDA4fQ.AwywdNWk4dNm0C4iTEmsEmzwvGKh0yA456A-1PY5rIaNiZz9G2KySsxvg7Jlx_tRMmfEM9uremrorLXadjM0l74TovuWLw7njUofcHZzSibqBVX8Qqrxwk_rD-JjqYRD8wFoq1HUb1nfRGw4kgHIBtIA2KYdw0nRtGSHXsxF0Pl8ix4k_4L30t-QcKsWQp7y23yQdrpnhFNZ_Q3guFrZTdMfO4MFANV-2bBqyiEbChh-EovSCjTIRvHle5QUGDJORQwTxliE8ZT5ORF5LAC_9G1ygPehR-eE8ay-TtgAqWLqWpWL8gshQc4myCFWna4vd69Iqhhj60nc66MKo4BYRw")
             .build()
     }
 

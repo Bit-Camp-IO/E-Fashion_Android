@@ -1,6 +1,7 @@
 package com.bitio.productscomponent.data.remote
 
 import com.bitio.productscomponent.data.remote.request.CartItemBody
+import com.bitio.productscomponent.data.remote.request.IdBody
 import com.bitio.productscomponent.data.remote.response.BrandResponse
 import com.bitio.productscomponent.data.remote.response.CartResponse
 import com.bitio.productscomponent.data.remote.response.CategoryResponse
@@ -31,7 +32,7 @@ interface ProductsApi {
     suspend fun removeProductFromFavorite(id: String)
     suspend fun getAllCarts():ResponseWrapper<CartResponse>
     suspend fun addCart(cartItemBody: CartItemBody):ResponseWrapper<CartResponse>
-    suspend fun deleteCart(cartId:String):ResponseWrapper<String>
-
+    suspend fun deleteCart(id: IdBody):ResponseWrapper<CartResponse>
+    suspend fun editCart(id:String,quantity:Int): ResponseWrapper<CartResponse>
 
 }

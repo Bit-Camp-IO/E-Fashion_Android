@@ -5,6 +5,7 @@ import com.bitio.infrastructure.product.remote.retrofit.ProductsApiRetrofit
 import com.bitio.infrastructure.retrofitConfiguration.ErrorWrapper
 import com.bitio.productscomponent.data.remote.ProductsApi
 import com.bitio.productscomponent.data.remote.request.CartItemBody
+import com.bitio.productscomponent.data.remote.request.CartQuantityBody
 import com.bitio.productscomponent.data.remote.request.IdBody
 import com.bitio.productscomponent.data.remote.response.BrandResponse
 import com.bitio.productscomponent.data.remote.response.CartResponse
@@ -114,9 +115,17 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
         }
     }
 
-    override suspend fun deleteCart(cartId: String): ResponseWrapper<String> {
+    override suspend fun deleteCart(id: IdBody): ResponseWrapper<CartResponse> {
         try {
-            return retrofitApi.deleteCart(cartId)
+            return retrofitApi.deleteCart(id)
+        } catch (e: HttpException) {
+            throw parseIfApiErrorException(e).error
+        }
+    }
+
+    override suspend fun editCart(id: String,quantity:Int): ResponseWrapper<CartResponse> {
+        try {
+            return retrofitApi.editCart(CartQuantityBody(id,quantity))
         } catch (e: HttpException) {
             throw parseIfApiErrorException(e).error
         }

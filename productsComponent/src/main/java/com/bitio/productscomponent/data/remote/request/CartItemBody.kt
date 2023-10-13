@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CartItemBody(
-    override val id: Int,
+    override val productId: String,
     override val size: String,
     override val color: String,
     override val quantity: Int,
@@ -13,7 +13,6 @@ data class CartItemBody(
     override val stock: Int,
     override val title: String,
     override val imageUrl: String,
-    override val productId: Int,
     override val totalPrice: Int,
     override val oldPrice: Int,
     override val oldTotalPrice: Int

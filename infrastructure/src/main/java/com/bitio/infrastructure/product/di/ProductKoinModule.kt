@@ -19,6 +19,7 @@ import com.bitio.productscomponent.domain.useCase.GetProductDetailsUseCase
 import com.bitio.productscomponent.domain.useCase.GetProductsByBrandAndCategoryUseCase
 import com.bitio.productscomponent.domain.useCase.cart.AddlCartUseCase
 import com.bitio.productscomponent.domain.useCase.cart.DeleteCartUseCase
+import com.bitio.productscomponent.domain.useCase.cart.EditCartUseCase
 import com.bitio.productscomponent.domain.useCase.cart.GetAllCartsUseCase
 import org.koin.dsl.module
 
@@ -45,6 +46,7 @@ val productKoinModule = module {
     factory { GetAllCartsUseCase(get()) }
     factory { AddlCartUseCase(get()) }
     factory { DeleteCartUseCase(get()) }
+    factory { EditCartUseCase(get()) }
 
 
 }

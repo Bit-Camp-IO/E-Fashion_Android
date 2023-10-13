@@ -31,7 +31,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -39,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -52,7 +55,6 @@ import com.bitio.productscomponent.domain.entities.cart.CartItem
 import com.bitio.ui.R
 import com.bitio.ui.shared.SharedTopAppBar
 import com.bitio.ui.shared.VerticalSpacer16Dp
-import com.bitio.ui.shared.VerticalSpacer24Dp
 import com.bitio.ui.shared.VerticalSpacer32Dp
 import com.bitio.ui.shared.VerticalSpacer40Dp
 import me.saket.swipe.SwipeAction
@@ -77,9 +79,9 @@ fun CartScreen(navController: NavController) {
         state = state,
         isSheetOpen = isSheetOpen,
         onBackButtonClick = navController::navigateUp,
-        onRemoveClick = {},
-        onAddClick = {},
-        onDeleteItemClick = viewModel::deleteCart,
+        onDecreaseQuantityClick = viewModel::editCart,
+        onIncreaseQuantityClick = viewModel::editCart,
+        onDeleteItemSwiped = viewModel::deleteCart,
         onCheckoutClick = {
             isSheetOpen = true
         },
@@ -88,9 +90,6 @@ fun CartScreen(navController: NavController) {
         },
         value = "",
         onValueChange = {},
-        supTotalPrice = "$400.00",
-        totalPrice = "$30",
-        shippingPrice = "$400.00",
         onConfirmPaymentClick = {}
     )
 }
@@ -101,18 +100,17 @@ private fun CartContent(
     state: CartItemUiState,
     isSheetOpen: Boolean,
     onBackButtonClick: () -> Unit,
-    onAddClick: () -> Unit,
-    onDeleteItemClick: (String) -> Unit,
-    onRemoveClick: () -> Unit,
+    onIncreaseQuantityClick: (String, Int) -> Unit,
+    onDecreaseQuantityClick: (String, Int) -> Unit,
+    onDeleteItemSwiped: (String) -> Unit,
     onCheckoutClick: () -> Unit,
     onOpenBottomSheetClick: (Boolean) -> Unit,
     value: String,
     onValueChange: (String) -> Unit,
-    supTotalPrice: String,
-    totalPrice: String,
-    shippingPrice: String,
     onConfirmPaymentClick: () -> Unit
 ) {
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
     Scaffold(
         topBar = {
             SharedTopAppBar(
@@ -124,32 +122,40 @@ private fun CartContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(vertical = paddingValue.calculateTopPadding()),
-            verticalArrangement = Arrangement.SpaceBetween
+                .padding(top = paddingValue.calculateTopPadding()),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LazyColumn() {
+
+            LazyColumn(
+                modifier = Modifier.height(screenHeight / (1.7).toFloat()),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
                 items(
                     count = state.items.size,
                     contentType = { CartUiState::class.java },
                     key = { it }) {
                     CardItem(
-                        onAddClick = onAddClick,
-                        onRemoveClick = onRemoveClick,
+                        onIncreaseQuantityClick = onIncreaseQuantityClick,
+                        onDecreaseQuantityClick = onDecreaseQuantityClick,
+                        onDeleteItemSwiped = onDeleteItemSwiped,
                         cart = state.items[it]
                     )
                 }
             }
-            InfoOfCart(totalPrice = "$${state.subTotal}", onCheckoutClick = onCheckoutClick)
+            InfoOfCart(
+                modifier = Modifier.height(200.dp),
+                totalPrice = "$${state.subtotal}",
+                onCheckoutClick = onCheckoutClick
+            )
         }
         PaymentBottomSheet(
             isSheetOpen = isSheetOpen,
             onOpenBottomSheetClick = onOpenBottomSheetClick,
             value = value,
             onValueChange = onValueChange,
-            supTotalPrice = supTotalPrice,
-            totalPrice = totalPrice,
-            shippingPrice = shippingPrice,
-            onConfirmPaymentClick = onConfirmPaymentClick
+            onConfirmPaymentClick = onConfirmPaymentClick,
+            cart = state
         )
     }
 }
@@ -158,15 +164,20 @@ private fun CartContent(
 private fun CardItem(
     modifier: Modifier = Modifier,
     cart: CartItem,
-    onAddClick: () -> Unit,
-    onRemoveClick: () -> Unit,
-    onDeleteItemClick: (String) -> Unit = {},
+    onIncreaseQuantityClick: (String, Int) -> Unit,
+    onDecreaseQuantityClick: (String, Int) -> Unit,
+    onDeleteItemSwiped: (String) -> Unit,
 ) {
+
+    var quantity by remember {
+        mutableIntStateOf(cart.quantity)
+    }
+
     val delete = SwipeAction(
         icon = painterResource(id = R.drawable.trash),
         background = Color.Red,
         onSwipe = {
-            onDeleteItemClick("")
+            onDeleteItemSwiped(cart.productId)
         }
     )
     SwipeableActionsBox(
@@ -188,7 +199,7 @@ private fun CardItem(
             ) {
                 Image(
                     painter = rememberAsyncImagePainter(
-                        model = "https://img.freepik.com/premium-photo/funny-female-hipster-showing-tongue_251859-14529.jpg"
+                        model = cart.imageUrl
                     ), contentDescription = null,
                     modifier = Modifier
                         .clip(RoundedCornerShape(16.dp))
@@ -200,7 +211,7 @@ private fun CardItem(
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Black jacket",
+                        text = cart.title,
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -217,12 +228,15 @@ private fun CardItem(
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Text(
-                            text = "$200.00",
+                            text = cart.price.toString(),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         IconButton(
-                            onClick = onRemoveClick,
+                            onClick = {
+                                quantity--
+                                onDecreaseQuantityClick(cart.productId, quantity)
+                            },
                             modifier = Modifier
                                 .border(1.dp, color = Color.White, RoundedCornerShape(50.dp))
                                 .size(24.dp)
@@ -238,7 +252,10 @@ private fun CardItem(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         IconButton(
-                            onClick = onAddClick,
+                            onClick = {
+                                quantity++
+                                onIncreaseQuantityClick(cart.productId, quantity)
+                            },
                             modifier = Modifier
                                 .border(1.dp, color = Color.White, RoundedCornerShape(50.dp))
                                 .size(24.dp)
@@ -308,10 +325,8 @@ private fun PaymentBottomSheet(
     onOpenBottomSheetClick: (Boolean) -> Unit,
     value: String,
     onValueChange: (String) -> Unit,
-    totalPrice: String,
-    supTotalPrice: String,
-    shippingPrice: String,
-    onConfirmPaymentClick: () -> Unit
+    onConfirmPaymentClick: () -> Unit,
+    cart: CartItemUiState
 ) {
     if (isSheetOpen) {
         ModalBottomSheet(
@@ -414,7 +429,7 @@ private fun PaymentBottomSheet(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
-                        text = supTotalPrice,
+                        text = cart.subtotal.toString(),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )
@@ -430,7 +445,7 @@ private fun PaymentBottomSheet(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
-                        text = shippingPrice,
+                        text = "$30.00",
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )
@@ -447,7 +462,7 @@ private fun PaymentBottomSheet(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
-                        text = totalPrice,
+                        text = cart.total.toString(),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )

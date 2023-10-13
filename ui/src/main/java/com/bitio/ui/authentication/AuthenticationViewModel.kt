@@ -1,5 +1,6 @@
 package com.bitio.ui.authentication
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,6 +17,7 @@ import com.bitio.authcomponent.domain.useCases.validate.ValidateEmailUseCase
 import com.bitio.authcomponent.domain.useCases.validate.ValidateFullNameUseCase
 import com.bitio.authcomponent.domain.useCases.validate.ValidatePasswordUseCase
 import com.bitio.authcomponent.domain.useCases.validate.ValidateTermsUseCase
+import com.bitio.utils.TAG_APP
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -190,6 +192,7 @@ class AuthenticationViewModel(
                             loading = false,
                             errorMessage = response.errorMessage
                         )
+                    Log.d(TAG_APP, "loginUser: ${response.errorMessage}")
                 }
 
                 is ResponseStatus.Success -> {

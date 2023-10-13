@@ -1,6 +1,7 @@
 package com.bitio.efashion
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -8,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
@@ -53,7 +55,7 @@ fun BottomNavigationBar(checkIfLogin: Boolean) {
             )
             BottomBar(navController, visibility)
         },
-        containerColor = Color.Transparent
+        containerColor = Color.Transparent,
     ) { innerPadding ->
         AppNavGraph(innerPadding, navController, isNavBottomVisible)
     }
@@ -80,24 +82,21 @@ fun BottomBar(navController: NavHostController, visibility: Boolean) {
     val currentDestination = navBackStackEntry?.destination
 
     if (visibility) {
-        Surface(
+        NavigationBar(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(8.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .fillMaxWidth(),
+            containerColor = MaterialTheme.colorScheme.onBackground,
+            windowInsets = NavigationBarDefaults.windowInsets
         ) {
-            NavigationBar(
-                containerColor = MaterialTheme.colorScheme.onBackground,
-            ) {
-                screens.forEach {
-                    BottomItem(
-                        screen = it,
-                        navController = navController,
-                        currentNavDestination = currentDestination
-                    )
-                }
+            screens.forEach {
+                BottomItem(
+                    screen = it,
+                    navController = navController,
+                    currentNavDestination = currentDestination
+                )
             }
-
         }
     }
 }

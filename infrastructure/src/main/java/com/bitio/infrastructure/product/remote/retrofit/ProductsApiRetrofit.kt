@@ -1,6 +1,7 @@
 package com.bitio.infrastructure.product.remote.retrofit
 
 import com.bitio.productscomponent.data.remote.request.CartItemBody
+import com.bitio.productscomponent.data.remote.request.CartQuantityBody
 import com.bitio.productscomponent.data.remote.request.IdBody
 import com.bitio.productscomponent.data.remote.response.BrandResponse
 import com.bitio.productscomponent.data.remote.response.CartResponse
@@ -14,6 +15,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -59,6 +61,11 @@ interface ProductsApiRetrofit {
     @POST("user/cart")
     suspend fun addCart(@Body cartItemBody: CartItemBody): ResponseWrapper<CartResponse>
 
-    @DELETE("user/cart")
-    suspend fun deleteCart(@Query("id") cartId: String): ResponseWrapper<String>
+    @HTTP(method = "DELETE", path = "user/cart", hasBody = true)
+    suspend fun deleteCart(@Body id: IdBody): ResponseWrapper<CartResponse>
+
+    @HTTP(method = "PATCH", path = "user/cart", hasBody = true)
+    suspend fun editCart(
+        @Body cartQuantityBody: CartQuantityBody
+    ): ResponseWrapper<CartResponse>
 }

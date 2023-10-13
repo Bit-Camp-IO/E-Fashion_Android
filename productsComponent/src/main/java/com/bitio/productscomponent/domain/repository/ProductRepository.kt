@@ -25,7 +25,8 @@ interface ProductRepository {
     suspend fun removeProductFromFavorite(id: String)
     suspend fun getAllCarts(): ResponseWrapper<CartResponse>
     suspend fun addCart(cartItemBody: CartItemBody): ResponseWrapper<CartResponse>
-    suspend fun deleteCart(cartId:String): ResponseWrapper<String>
+    suspend fun deleteCart(cartId:String): ResponseWrapper<CartResponse>
+    suspend fun editCart(cartId:String,quantity: Int): ResponseWrapper<CartResponse>
 
 
 }

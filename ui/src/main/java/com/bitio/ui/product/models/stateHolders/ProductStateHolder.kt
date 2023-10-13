@@ -84,10 +84,10 @@ class ProductStateHolder(
     private fun observeFavIds() {
         coroutineScope.launch(Dispatchers.Default) {
             favoriteIds.collect { set ->
-                productsFlow.value.forEach {
-                    val isFavorite = set.contains(it.id)
-                    it.updateFavoriteState(isFavorite)
-                }
+//                productsFlow.value.forEach {
+//                    val isFavorite = set.contains(it.id)
+//                    it.updateFavoriteState(isFavorite)
+//                }
             }
         }
 

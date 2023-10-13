@@ -3,6 +3,7 @@ package com.bitio.productscomponent.data.repository
 import com.bitio.productscomponent.data.local.dataSource.ProductDao
 import com.bitio.productscomponent.data.remote.ProductsApi
 import com.bitio.productscomponent.data.remote.request.CartItemBody
+import com.bitio.productscomponent.data.remote.request.IdBody
 import com.bitio.productscomponent.data.remote.response.CartResponse
 import com.bitio.productscomponent.domain.entities.Brand
 import com.bitio.productscomponent.domain.entities.categories.Category
@@ -22,8 +23,8 @@ import kotlinx.coroutines.withContext
 class ProductRepositoryImpl(
     private val api: ProductsApi,
     private val dao: ProductDao
-) :
-    ProductRepository {
+) : ProductRepository {
+
     init {
         updateFavoriteIds()
     }
@@ -85,8 +86,12 @@ class ProductRepositoryImpl(
         return api.addCart(cartItemBody)
     }
 
-    override suspend fun deleteCart(cartId: String): ResponseWrapper<String> {
-        return api.deleteCart(cartId)
+    override suspend fun deleteCart(cartId: String): ResponseWrapper<CartResponse> {
+        return api.deleteCart(IdBody(cartId))
+    }
+
+    override suspend fun editCart(cartId: String,quantity: Int): ResponseWrapper<CartResponse> {
+        return api.editCart(cartId,quantity)
     }
 
     @OptIn(DelicateCoroutinesApi::class)

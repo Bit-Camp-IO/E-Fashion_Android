@@ -47,7 +47,7 @@ class CartViewModel(
 
     fun deleteCart(cartId: String) {
         viewModelScope.launch {
-            val result =  deleteCartUseCase(cartId)
+            val result = deleteCartUseCase(cartId)
             result.onSuccess { cart ->
                 cart?.let {
                     _cartUiState.value = CartItemUiState(
@@ -67,24 +67,26 @@ class CartViewModel(
         }
     }
 
-    fun editCart(cartId: String,quantity:Int) {
+    fun editCart(cartId: String, quantity: Int) {
         viewModelScope.launch {
-            val result =  editCartUseCase(cartId,quantity)
-            result.onSuccess { cart ->
-                cart?.let {
+            editCartUseCase(cartId, quantity).collect { result ->
+                result.onSuccess { cart ->
+                    cart?.let {
+                        _cartUiState.value = CartItemUiState(
+                            items = it.items,
+                            subtotal = it.subtotal,
+                            tax = it.tax,
+                            total = it.total,
+                            totalQuantity = it.totalQuantity,
+                        )
+                    }
+                }
+                result.onFailure {
                     _cartUiState.value = CartItemUiState(
-                        items = it.items,
-                        subtotal = it.subtotal,
-                        tax = it.tax,
-                        total = it.total,
-                        totalQuantity = it.totalQuantity,
+                        message = it.message.toString()
                     )
                 }
-            }
-            result.onFailure {
-                _cartUiState.value = CartItemUiState(
-                    message = it.message.toString()
-                )
+
             }
         }
     }

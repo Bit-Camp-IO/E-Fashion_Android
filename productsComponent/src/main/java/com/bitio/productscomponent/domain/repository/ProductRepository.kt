@@ -8,6 +8,7 @@ import com.bitio.productscomponent.domain.entities.categories.GenderType
 import com.bitio.productscomponent.domain.entities.products.Product
 import com.bitio.productscomponent.domain.entities.products.ProductDetails
 import com.bitio.sharedcomponent.data.ResponseWrapper
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface ProductRepository {

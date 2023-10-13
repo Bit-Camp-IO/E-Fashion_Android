@@ -15,6 +15,7 @@ import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
 import com.bitio.productscomponent.data.remote.response.ProductsPage
 import com.bitio.productscomponent.domain.entities.categories.GenderType
 import com.bitio.sharedcomponent.data.ResponseWrapper
+import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 
@@ -123,7 +124,7 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
         }
     }
 
-    override suspend fun editCart(id: String,quantity:Int): ResponseWrapper<CartResponse> {
+    override  suspend fun editCart(id: String,quantity:Int): ResponseWrapper<CartResponse> {
         try {
             return retrofitApi.editCart(CartQuantityBody(id,quantity))
         } catch (e: HttpException) {

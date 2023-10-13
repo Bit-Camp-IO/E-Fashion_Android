@@ -10,12 +10,11 @@ import com.bitio.productscomponent.data.remote.response.FavoriteProductResponse
 import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
 import com.bitio.productscomponent.data.remote.response.ProductsPage
 import com.bitio.sharedcomponent.data.ResponseWrapper
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
-import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query

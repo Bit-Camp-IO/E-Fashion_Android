@@ -34,7 +34,7 @@
     <string name="verify_email">Email verification</string>
     <string name="details_of_verify_email">Enter the 6 digital code the sent to your email address</string>
     <string name="verify">Verify</string>
-    <string name="confirm">Confirm</string>
+    <string name="delete">Delete</string>
     <string name="hint_search_location">Basra,Iraq</string>
     <string name="desc_of_confirm_location">You have successfully added your site</string>
     <string name="shopping_bag">Shopping Bag</string>
@@ -46,4 +46,6 @@
     <string name="shipping">Shipping :</string>
     <string name="total_price">Total</string>
     <string name="confirm_payment"><![CDATA[Confirm & Pay]]></string>
+    <string name="confirm_delete_cart_item">Are you sure you want to delete this item?</string>
+    <string name="cancel">Cancel</string>
 </resources>

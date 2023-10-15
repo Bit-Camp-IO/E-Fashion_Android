@@ -24,6 +24,9 @@ class CartViewModel(
     val cartUiState = _cartUiState
 
     init {
+        getAllProductsFromCart()
+    }
+    private fun getAllProductsFromCart() {
         viewModelScope.launch {
             getAllProductsFromCartUseCase().onSuccess { cart ->
                 cart?.let {
@@ -40,7 +43,6 @@ class CartViewModel(
                 _cartUiState.value = CartItemUiState(
                     message = it.message.toString()
                 )
-                Log.d(TAG_APP, "init: ${it.message}")
             }
         }
     }
@@ -50,6 +52,7 @@ class CartViewModel(
             val result = deleteProductFromCartUseCase(cartId)
             result.onSuccess { cart ->
                 cart?.let {
+                    getAllProductsFromCart()
                     _cartUiState.value = CartItemUiState(
                         items = it.items,
                         subtotal = it.subtotal,

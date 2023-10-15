@@ -50,7 +50,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bitio.ui.BuildConfig
 import com.bitio.ui.R
-import com.bitio.utils.TAG_APP
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -365,7 +364,7 @@ private fun ConfirmButton(
             )
         } else {
             Text(
-                text = stringResource(id = R.string.confirm),
+                text = stringResource(id = R.string.delete),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onPrimary,
                 textAlign = TextAlign.Center,

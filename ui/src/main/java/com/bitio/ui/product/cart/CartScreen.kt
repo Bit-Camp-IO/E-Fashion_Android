@@ -1,6 +1,7 @@
 package com.bitio.ui.product.cart
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -15,6 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.ButtonDefaults.textButtonColors
 import androidx.compose.material3.CardDefaults.elevatedCardColors
 import androidx.compose.material3.Divider
@@ -57,6 +61,7 @@ import com.bitio.ui.shared.SharedTopAppBar
 import com.bitio.ui.shared.VerticalSpacer16Dp
 import com.bitio.ui.shared.VerticalSpacer32Dp
 import com.bitio.ui.shared.VerticalSpacer40Dp
+import com.bitio.utils.TAG_APP
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import org.koin.androidx.compose.getViewModel
@@ -90,7 +95,7 @@ fun CartScreen(navController: NavController) {
         },
         value = "",
         onValueChange = {},
-        onConfirmPaymentClick = {}
+        onConfirmPaymentClick = {},
     )
 }
 
@@ -107,17 +112,18 @@ private fun CartContent(
     onOpenBottomSheetClick: (Boolean) -> Unit,
     value: String,
     onValueChange: (String) -> Unit,
-    onConfirmPaymentClick: () -> Unit
+    onConfirmPaymentClick: () -> Unit,
 ) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
+
     Scaffold(
         topBar = {
             SharedTopAppBar(
                 title = stringResource(id = R.string.shopping_bag),
                 onBackButtonClick = onBackButtonClick
             )
-        }
+        },
     ) { paddingValue ->
         Column(
             modifier = Modifier
@@ -173,11 +179,25 @@ private fun CardItem(
         mutableIntStateOf(cart.quantity)
     }
 
+    var isSwipedItem by remember {
+        mutableStateOf(false)
+    }
+
+    if (isSwipedItem) {
+        ConfirmDeleteProductOfCart(onDismiss = {
+            isSwipedItem = false
+        },
+            onConfirm = {
+                isSwipedItem = false
+                onDeleteItemSwiped(cart.productId)
+            })
+    }
+
     val delete = SwipeAction(
         icon = painterResource(id = R.drawable.trash),
         background = Color.Red,
         onSwipe = {
-            onDeleteItemSwiped(cart.productId)
+            isSwipedItem = true
         }
     )
     SwipeableActionsBox(
@@ -233,6 +253,7 @@ private fun CardItem(
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         IconButton(
+                            enabled = quantity >= 2,
                             onClick = {
                                 quantity--
                                 onDecreaseQuantityClick(cart.productId, quantity)
@@ -271,6 +292,49 @@ private fun CardItem(
         }
     }
 }
+
+
+@Composable
+private fun ConfirmDeleteProductOfCart(
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+        text = {
+            Text(
+                text = stringResource(id = R.string.confirm_delete_cart_item),
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirm()
+                },
+            ) {
+                Text(
+                    text = stringResource(id = R.string.delete),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    onDismiss()
+                },
+            ) {
+                Text(
+                    text = stringResource(id = R.string.cancel),
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
+        },
+        containerColor = MaterialTheme.colorScheme.background
+    )
+}
+
 
 @Composable
 private fun InfoOfCart(

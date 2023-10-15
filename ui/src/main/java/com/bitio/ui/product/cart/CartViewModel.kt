@@ -4,20 +4,20 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bitio.productscomponent.domain.useCase.cart.AddlCartUseCase
-import com.bitio.productscomponent.domain.useCase.cart.DeleteCartUseCase
-import com.bitio.productscomponent.domain.useCase.cart.EditCartUseCase
-import com.bitio.productscomponent.domain.useCase.cart.GetAllCartsUseCase
+import com.bitio.productscomponent.domain.useCase.cart.AddProductToCartUseCase
+import com.bitio.productscomponent.domain.useCase.cart.DeleteProductFromCartUseCase
+import com.bitio.productscomponent.domain.useCase.cart.EditProductOfCartUseCase
+import com.bitio.productscomponent.domain.useCase.cart.GetAllProductsFromCartUseCase
 import com.bitio.utils.TAG_APP
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 class CartViewModel(
-    private val getAllCartsUseCase: GetAllCartsUseCase,
-    private val addCartUseCase: AddlCartUseCase,
-    private val deleteCartUseCase: DeleteCartUseCase,
-    private val editCartUseCase: EditCartUseCase
+    private val getAllProductsFromCartUseCase: GetAllProductsFromCartUseCase,
+    private val addCartUseCase: AddProductToCartUseCase,
+    private val deleteProductFromCartUseCase: DeleteProductFromCartUseCase,
+    private val editProductOfCartUseCase: EditProductOfCartUseCase
 ) : ViewModel() {
 
     private val _cartUiState = mutableStateOf(CartItemUiState())
@@ -25,7 +25,7 @@ class CartViewModel(
 
     init {
         viewModelScope.launch {
-            getAllCartsUseCase().onSuccess { cart ->
+            getAllProductsFromCartUseCase().onSuccess { cart ->
                 cart?.let {
                     _cartUiState.value = CartItemUiState(
                         items = it.items,
@@ -36,7 +36,7 @@ class CartViewModel(
                     )
                 }
             }
-            getAllCartsUseCase().onFailure {
+            getAllProductsFromCartUseCase().onFailure {
                 _cartUiState.value = CartItemUiState(
                     message = it.message.toString()
                 )
@@ -47,7 +47,7 @@ class CartViewModel(
 
     fun deleteCart(cartId: String) {
         viewModelScope.launch {
-            val result = deleteCartUseCase(cartId)
+            val result = deleteProductFromCartUseCase(cartId)
             result.onSuccess { cart ->
                 cart?.let {
                     _cartUiState.value = CartItemUiState(
@@ -69,7 +69,7 @@ class CartViewModel(
 
     fun editCart(cartId: String, quantity: Int) {
         viewModelScope.launch {
-            editCartUseCase(cartId, quantity).collect { result ->
+            editProductOfCartUseCase(cartId, quantity).collect { result ->
                 result.onSuccess { cart ->
                     cart?.let {
                         _cartUiState.value = CartItemUiState(

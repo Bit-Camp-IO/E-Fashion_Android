@@ -24,10 +24,10 @@ interface ProductRepository {
     fun getFavoriteIdsFlow(): StateFlow<HashSet<String>>
     suspend fun addProductToFavorites(product: Product)
     suspend fun removeProductFromFavorite(id: String)
-    suspend fun getAllCarts(): ResponseWrapper<CartResponse>
-    suspend fun addCart(cartItemBody: CartItemBody): ResponseWrapper<CartResponse>
-    suspend fun deleteCart(cartId:String): ResponseWrapper<CartResponse>
-    suspend fun editCart(cartId:String,quantity: Int): ResponseWrapper<CartResponse>
+    suspend fun getAllProductsFromCart(): ResponseWrapper<CartResponse>
+    suspend fun addProductToCart(cartItemBody: CartItemBody): ResponseWrapper<CartResponse>
+    suspend fun deleteProductFromCart(cartId:String): ResponseWrapper<CartResponse>
+    suspend fun editProductOfCart(cartId:String, quantity: Int): ResponseWrapper<CartResponse>
 
 
 }

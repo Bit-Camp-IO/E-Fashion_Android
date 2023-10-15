@@ -100,7 +100,7 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
         retrofitApi.removeFromFavoriteProduct(IdBody(id))
     }
 
-    override suspend fun getAllCarts(): ResponseWrapper<CartResponse> {
+    override suspend fun getAllProductsFromCart(): ResponseWrapper<CartResponse> {
         try {
             return retrofitApi.getAllCarts()
         } catch (e: HttpException) {
@@ -108,7 +108,7 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
         }
     }
 
-    override suspend fun addCart(cartItemBody: CartItemBody): ResponseWrapper<CartResponse> {
+    override suspend fun addProductToCart(cartItemBody: CartItemBody): ResponseWrapper<CartResponse> {
         try {
             return retrofitApi.addCart(cartItemBody)
         } catch (e: HttpException) {
@@ -116,7 +116,7 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
         }
     }
 
-    override suspend fun deleteCart(id: IdBody): ResponseWrapper<CartResponse> {
+    override suspend fun deleteProductFromCart(id: IdBody): ResponseWrapper<CartResponse> {
         try {
             return retrofitApi.deleteCart(id)
         } catch (e: HttpException) {
@@ -124,7 +124,7 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
         }
     }
 
-    override  suspend fun editCart(id: String,quantity:Int): ResponseWrapper<CartResponse> {
+    override  suspend fun editProductOfCart(id: String, quantity:Int): ResponseWrapper<CartResponse> {
         try {
             return retrofitApi.editCart(CartQuantityBody(id,quantity))
         } catch (e: HttpException) {

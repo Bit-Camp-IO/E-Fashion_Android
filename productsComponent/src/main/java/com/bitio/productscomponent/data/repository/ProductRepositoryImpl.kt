@@ -15,7 +15,6 @@ import com.bitio.sharedcomponent.data.ResponseWrapper
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -79,20 +78,20 @@ class ProductRepositoryImpl(
         addOrRemoveIdFromFavoriteStream(id, false)
     }
 
-    override suspend fun getAllCarts(): ResponseWrapper<CartResponse> {
-        return api.getAllCarts()
+    override suspend fun getAllProductsFromCart(): ResponseWrapper<CartResponse> {
+        return api.getAllProductsFromCart()
     }
 
-    override suspend fun addCart(cartItemBody: CartItemBody): ResponseWrapper<CartResponse> {
-        return api.addCart(cartItemBody)
+    override suspend fun addProductToCart(cartItemBody: CartItemBody): ResponseWrapper<CartResponse> {
+        return api.addProductToCart(cartItemBody)
     }
 
-    override suspend fun deleteCart(cartId: String): ResponseWrapper<CartResponse> {
-        return api.deleteCart(IdBody(cartId))
+    override suspend fun deleteProductFromCart(cartId: String): ResponseWrapper<CartResponse> {
+        return api.deleteProductFromCart(IdBody(cartId))
     }
 
-    override suspend fun editCart(cartId: String,quantity: Int): ResponseWrapper<CartResponse> {
-        return api.editCart(cartId,quantity)
+    override suspend fun editProductOfCart(cartId: String, quantity: Int): ResponseWrapper<CartResponse> {
+        return api.editProductOfCart(cartId,quantity)
     }
 
     @OptIn(DelicateCoroutinesApi::class)

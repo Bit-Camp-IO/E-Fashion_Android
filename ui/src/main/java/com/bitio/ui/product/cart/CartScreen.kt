@@ -64,6 +64,7 @@ import com.bitio.ui.shared.VerticalSpacer40Dp
 import com.bitio.utils.TAG_APP
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
+import me.saket.swipe.rememberSwipeableActionsState
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -198,17 +199,21 @@ private fun CardItem(
         background = Color.Red,
         onSwipe = {
             isSwipedItem = true
-        }
+        },
     )
+
+
     SwipeableActionsBox(
         endActions = listOf(delete),
         backgroundUntilSwipeThreshold = MaterialTheme.colorScheme.surface,
+        modifier = Modifier
+            .clip(RoundedCornerShape(24.dp))
+            .padding(horizontal = 24.dp),
+        swipeThreshold = 100.dp
     ) {
         ElevatedCard(
             modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-            shape = RoundedCornerShape(24.dp),
+                .fillMaxWidth(), shape = RoundedCornerShape(24.dp),
             colors = elevatedCardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Row(

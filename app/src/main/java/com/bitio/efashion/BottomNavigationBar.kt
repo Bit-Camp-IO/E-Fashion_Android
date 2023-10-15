@@ -87,7 +87,7 @@ fun BottomBar(navController: NavHostController, visibility: Boolean) {
                 .padding(8.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .fillMaxWidth(),
-            containerColor = MaterialTheme.colorScheme.onBackground,
+            containerColor = Color(0xFF051320),
             windowInsets = NavigationBarDefaults.windowInsets
         ) {
             screens.forEach {
@@ -114,7 +114,7 @@ fun RowScope.BottomItem(
         colors = NavigationBarItemDefaults.colors(
             selectedIconColor = MaterialTheme.colorScheme.secondary,
             unselectedIconColor = Color.White,
-            indicatorColor = MaterialTheme.colorScheme.onBackground,
+            indicatorColor = Color(0xFF051320),
         ),
         alwaysShowLabel = false,
         icon = {

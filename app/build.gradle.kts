@@ -54,5 +54,6 @@ android {
 dependencies {
     implementation(project(":ui"))
     implementation("com.google.android.gms:play-services-location:21.0.1")
+
 }
 

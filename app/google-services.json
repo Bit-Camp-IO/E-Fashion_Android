@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "493428254076",
+    "project_id": "fashion-402814",
+    "storage_bucket": "fashion-402814.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493428254076:android:2d2354c95abce22c47b0f9",
+        "android_client_info": {
+          "package_name": "com.bitio.efashion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEtNGURe5yNXVMQD4PV6unRQy4tVJCpbw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

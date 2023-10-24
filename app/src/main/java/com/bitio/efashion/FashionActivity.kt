@@ -6,13 +6,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -24,12 +22,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.core.content.ContextCompat
 import com.bitio.ui.authentication.AuthenticationViewModel
 import com.bitio.ui.profile.ProfileSettingsViewModel
 import com.bitio.ui.profile.user.PermissionViewModel
@@ -38,14 +35,7 @@ import com.bitio.ui.shared.LocationPermissionTextProvider
 import com.bitio.ui.shared.NotificationPermissionTextProvider
 import com.bitio.ui.shared.PermissionDialog
 import com.bitio.ui.theme.EFashionTheme
-import com.bitio.utils.TAG_APP
-import com.bitio.utils.hasLocationPermission
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.ktx.messaging
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 
@@ -69,25 +59,59 @@ class FashionActivity : ComponentActivity() {
     @SuppressLint("StringFormatInvalid")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initialNotification()
+        setContent {
+            InitialMainUi()
+        }
+    }
 
+    private fun initialNotification() {
         FCMService.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d("FCM", "Fetching FCM registration token ${task.result}")
                 FCMService.token = task.result
+                // move to notification screen
             }
             Log.w("FCM", "Fetching FCM registration token failed", task.exception)
-        })
+        }
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
+    }
 
-        setContent {
-            val dialogQueue = permissionViewModel.visiblePermissionDialogQueue
-            val state by profileSettingsViewModel.profileSettingsUiState.collectAsState()
-            val isUserLoggedIn by authenticationViewModel.isUserLoggedIn.collectAsState()
+    @Composable
+    private fun InitialMainUi() {
+        val state by profileSettingsViewModel.profileSettingsUiState.collectAsState()
+        val isUserLoggedIn by authenticationViewModel.isUserLoggedIn.collectAsState()
 
-            val multiplePermissionResultLauncher = rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.RequestMultiplePermissions(),
-                onResult = { perms ->
+        Crossfade(
+            targetState = state.darkModeEnabled,
+            label = "",
+            animationSpec = tween(
+                durationMillis = 650,
+                easing = FastOutSlowInEasing
+            )
+        ) { darkModeEnabled ->
+            EFashionTheme(
+                darkTheme = darkModeEnabled
+            ) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    CheckPermissions()
+                    BottomNavigationBar(checkIfLogin = isUserLoggedIn)
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun CheckPermissions() {
+        val dialogQueue = permissionViewModel.visiblePermissionDialogQueue
+        val multiplePermissionResultLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestMultiplePermissions(),
+            onResult = { perms ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     permissionsToRequest.forEach { permission ->
                         permissionViewModel.onPermissionResult(
                             permission = permission,
@@ -95,66 +119,46 @@ class FashionActivity : ComponentActivity() {
                         )
                     }
                 }
-            )
+            }
+        )
 
-            LaunchedEffect(key1 = Unit) {
+        LaunchedEffect(key1 = Unit) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 multiplePermissionResultLauncher.launch(permissionsToRequest)
             }
-
-            Crossfade(
-                targetState = state.darkModeEnabled,
-                label = "",
-                animationSpec = tween(
-                    durationMillis = 650,
-                    easing = FastOutSlowInEasing
-                )
-            ) { darkModeEnabled ->
-                EFashionTheme(
-                    darkTheme = darkModeEnabled
-                ) {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
-
-                        dialogQueue
-                            .reversed()
-                            .forEach { permission ->
-                                PermissionDialog(
-                                    permissionTextProvider = when (permission) {
-                                        Manifest.permission.READ_MEDIA_IMAGES -> {
-                                            ImagePickerPermissionTextProvider()
-                                        }
-
-                                        ACCESS_FINE_LOCATION -> {
-                                            LocationPermissionTextProvider()
-                                        }
-
-                                        Manifest.permission.POST_NOTIFICATIONS -> {
-                                            NotificationPermissionTextProvider()
-                                        }
-
-                                        else -> return@forEach
-                                    },
-                                    isPermanentlyDeclined = !shouldShowRequestPermissionRationale(
-                                        permission
-                                    ),
-                                    onDismiss = permissionViewModel::dismissDialog,
-                                    onOkClick = {
-                                        permissionViewModel.dismissDialog()
-                                        multiplePermissionResultLauncher.launch(
-                                            arrayOf(permission)
-                                        )
-                                    },
-                                    onGoToAppSettingsClick = ::openAppSettings
-                                )
-                            }
-
-                        BottomNavigationBar(checkIfLogin = isUserLoggedIn)
-                    }
-                }
-            }
         }
+        dialogQueue
+            .reversed()
+            .forEach { permission ->
+                PermissionDialog(
+                    permissionTextProvider = when (permission) {
+                        Manifest.permission.READ_MEDIA_IMAGES -> {
+                            ImagePickerPermissionTextProvider()
+                        }
+
+                        ACCESS_FINE_LOCATION -> {
+                            LocationPermissionTextProvider()
+                        }
+
+                        Manifest.permission.POST_NOTIFICATIONS -> {
+                            NotificationPermissionTextProvider()
+                        }
+
+                        else -> return@forEach
+                    },
+                    isPermanentlyDeclined = !shouldShowRequestPermissionRationale(
+                        permission
+                    ),
+                    onDismiss = permissionViewModel::dismissDialog,
+                    onOkClick = {
+                        permissionViewModel.dismissDialog()
+                        multiplePermissionResultLauncher.launch(
+                            arrayOf(permission)
+                        )
+                    },
+                    onGoToAppSettingsClick = ::openAppSettings
+                )
+            }
     }
 
 }

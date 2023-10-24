@@ -7,7 +7,6 @@ plugins {
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
-    id("com.google.gms.google-services")
 }
 
 fun getSecretKeys(): Properties {
@@ -86,12 +85,6 @@ dependencies {
     api("com.google.maps.android:places-ktx:0.4.0")
     api("com.google.android.gms:play-services-places:17.0.0")
     api("com.google.android.libraries.places:places:3.2.0")
-
-    //Firebase
-    api("com.google.firebase:firebase-messaging:23.3.0")
-    api("com.google.firebase:firebase-analytics:21.4.0")
-    api("com.google.firebase:firebase-core:21.1.1")
-    api(platform("com.google.firebase:firebase-bom:28.3.0"))
 
 
     // Accompanist

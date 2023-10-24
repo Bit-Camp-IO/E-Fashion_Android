@@ -12,7 +12,6 @@ import org.koin.ksp.generated.defaultModule
 class FashionApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        FirebaseApp.initializeApp(this)
         startKoin {
             androidContext(this@FashionApp)
             modules(infrastructureKoinModule, presentationDiModule, defaultModule)

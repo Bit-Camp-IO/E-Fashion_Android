@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
+
 }
 
 android {
@@ -54,6 +56,11 @@ android {
 dependencies {
     implementation(project(":ui"))
     implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-messaging-ktx:23.2.1")
 
 }
 

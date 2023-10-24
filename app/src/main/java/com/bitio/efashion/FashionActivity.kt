@@ -65,23 +65,20 @@ class FashionActivity : ComponentActivity() {
         Manifest.permission.POST_NOTIFICATIONS,
     )
 
-
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("StringFormatInvalid")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-//            if (task.isSuccessful) {
-//                Log.d(TAG_APP, "Fetching FCM registration token failed: ${task.result}")
-//            } else {
-//                Log.w(TAG_APP, "Fetching FCM registration token failed", task.exception)
-//            }
-//        }
-
-        askNotificationPermissions()
-        askLocationPermissions()
+        FCMService.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("FCM", "Fetching FCM registration token ${task.result}")
+                FCMService.token = task.result
+            }
+            Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+        })
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
 
         setContent {
             val dialogQueue = permissionViewModel.visiblePermissionDialogQueue
@@ -158,51 +155,6 @@ class FashionActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        permissionViewModel.onPermissionResult(
-            permission = ACCESS_FINE_LOCATION,
-            isGranted = isGranted
-        )
-    }
-
-    private fun askLocationPermissions() {
-        if (!hasLocationPermission()) {
-            requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
-        }
-    }
-
-    private val requestNotificationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { isGranted: Boolean ->
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissionViewModel.onPermissionResult(
-                permission = Manifest.permission.POST_NOTIFICATIONS,
-                isGranted = isGranted
-            )
-        }
-    }
-
-    private fun askNotificationPermissions() {
-        if (!askNotificationPermission()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-    }
-
-    private fun askNotificationPermission(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
-            ) {
-                return true
-            }
-        }
-        return false
     }
 
 }

@@ -6,7 +6,7 @@ import com.bitio.sharedcomponent.data.ResponseWrapper
 class AddDeviceTokenToNotificationUseCase(
     private val repository: NotificationRepository
 ) {
-    suspend operator fun invoke(deviceToken:String): Result<ResponseWrapper<Any>> {
+    suspend operator fun invoke(deviceToken:String): Result<ResponseWrapper<Nothing>> {
         return try {
             val data = repository.addDeviceTokenToNotification(deviceToken)
             Result.success(data)

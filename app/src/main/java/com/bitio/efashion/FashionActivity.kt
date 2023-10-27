@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -35,6 +36,7 @@ import com.bitio.ui.shared.LocationPermissionTextProvider
 import com.bitio.ui.shared.NotificationPermissionTextProvider
 import com.bitio.ui.shared.PermissionDialog
 import com.bitio.ui.theme.EFashionTheme
+import com.bitio.utils.TAG_APP
 import com.google.firebase.messaging.FirebaseMessaging
 import org.koin.android.ext.android.inject
 
@@ -72,6 +74,7 @@ class FashionActivity : ComponentActivity() {
             if (task.isSuccessful) {
                 if (isUserLoggedIn) {
                     notificationViewModel.addDeviceTokenToNotification(task.result)
+                    Log.d(TAG_APP, "initialNotification token : ${task.result}")
                 }
             }
         }

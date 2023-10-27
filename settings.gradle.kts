@@ -20,7 +20,7 @@ rootProject.name = "E Fashion"
 include(":app")
 include(":productsComponent")
 include(":userComponent")
-include(":supportComponent")
+include(":notificationsComponent")
 include(":sharedComponent")
 include(":orderComponent")
 include(":ui")

@@ -14,10 +14,10 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/authComponent" />
             <option value="$PROJECT_DIR$/infrastructure" />
+            <option value="$PROJECT_DIR$/notificationsComponent" />
             <option value="$PROJECT_DIR$/orderComponent" />
             <option value="$PROJECT_DIR$/productsComponent" />
             <option value="$PROJECT_DIR$/sharedComponent" />
-            <option value="$PROJECT_DIR$/supportComponent" />
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/userComponent" />
           </set>

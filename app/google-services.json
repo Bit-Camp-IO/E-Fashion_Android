@@ -1,26 +1,94 @@
 {
   "project_info": {
-    "project_number": "493428254076",
-    "project_id": "fashion-402814",
-    "storage_bucket": "fashion-402814.appspot.com"
+    "project_number": "741865556047",
+    "project_id": "efash-391423",
+    "storage_bucket": "efash-391423.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:493428254076:android:2d2354c95abce22c47b0f9",
+        "mobilesdk_app_id": "1:741865556047:android:f3bd50627c8c05a509c23a",
         "android_client_info": {
           "package_name": "com.bitio.efashion"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "741865556047-j2l265o3ikqh1afvbjpe5vsel63l6fh4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBEtNGURe5yNXVMQD4PV6unRQy4tVJCpbw"
+          "current_key": "AIzaSyDOz4KBLdsuwbkGPOthnOeaIc-ZfBexkk4"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "741865556047-j2l265o3ikqh1afvbjpe5vsel63l6fh4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741865556047:android:e48c2385d0d7552409c23a",
+        "android_client_info": {
+          "package_name": "com.bitio.efashion_admin_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741865556047-j2l265o3ikqh1afvbjpe5vsel63l6fh4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOz4KBLdsuwbkGPOthnOeaIc-ZfBexkk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "741865556047-j2l265o3ikqh1afvbjpe5vsel63l6fh4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741865556047:android:14ed868c82a9c88a09c23a",
+        "android_client_info": {
+          "package_name": "com.bitio.efashion_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741865556047-j2l265o3ikqh1afvbjpe5vsel63l6fh4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOz4KBLdsuwbkGPOthnOeaIc-ZfBexkk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "741865556047-j2l265o3ikqh1afvbjpe5vsel63l6fh4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

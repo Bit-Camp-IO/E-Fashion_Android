@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -29,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.bitio.ui.authentication.AuthenticationViewModel
 import com.bitio.ui.profile.ProfileSettingsViewModel
+import com.bitio.ui.profile.notifications.viewModel.NotificationViewModel
 import com.bitio.ui.profile.user.PermissionViewModel
 import com.bitio.ui.shared.ImagePickerPermissionTextProvider
 import com.bitio.ui.shared.LocationPermissionTextProvider
@@ -48,6 +48,7 @@ class FashionActivity : ComponentActivity() {
     private val profileSettingsViewModel: ProfileSettingsViewModel by inject()
     private val authenticationViewModel: AuthenticationViewModel by inject()
     private val permissionViewModel: PermissionViewModel by inject()
+    private val notificationViewModel: NotificationViewModel by inject()
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private val permissionsToRequest = arrayOf(
@@ -59,29 +60,27 @@ class FashionActivity : ComponentActivity() {
     @SuppressLint("StringFormatInvalid")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initialNotification()
         setContent {
-            InitialMainUi()
+            val isUserLoggedIn by authenticationViewModel.isUserLoggedIn.collectAsState()
+            initialNotification(isUserLoggedIn)
+            InitialMainUi(isUserLoggedIn)
         }
     }
 
-    private fun initialNotification() {
-        FCMService.sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
+    private fun initialNotification(isUserLoggedIn: Boolean) {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Log.d("FCM", "Fetching FCM registration token ${task.result}")
-                FCMService.token = task.result
-                // move to notification screen
+                if (isUserLoggedIn) {
+                    notificationViewModel.addDeviceTokenToNotification(task.result)
+                }
             }
-            Log.w("FCM", "Fetching FCM registration token failed", task.exception)
         }
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
     }
 
     @Composable
-    private fun InitialMainUi() {
+    private fun InitialMainUi(isUserLoggedIn: Boolean) {
         val state by profileSettingsViewModel.profileSettingsUiState.collectAsState()
-        val isUserLoggedIn by authenticationViewModel.isUserLoggedIn.collectAsState()
 
         Crossfade(
             targetState = state.darkModeEnabled,

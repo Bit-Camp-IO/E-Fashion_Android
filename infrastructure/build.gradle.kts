@@ -39,7 +39,7 @@ dependencies {
     api(project(":authComponent"))
     api(project(":orderComponent"))
     api(project(":productsComponent"))
-    api(project(":supportComponent"))
+    api(project(":notificationsComponent"))
     api(project(":userComponent"))
 
     implementation("androidx.core:core-ktx:1.9.0")

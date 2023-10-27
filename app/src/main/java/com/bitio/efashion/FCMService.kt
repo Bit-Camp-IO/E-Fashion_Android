@@ -22,23 +22,6 @@ private const val CHANNEL_ID = "my_channel"
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 class FCMService : FirebaseMessagingService() {
 
-    companion object {
-        var sharedPref: SharedPreferences? = null
-
-        var token: String?
-            get() {
-                return sharedPref?.getString("token", "")
-            }
-            set(value) {
-                sharedPref?.edit()?.putString("token", value)?.apply()
-            }
-    }
-
-    override fun onNewToken(newToken: String) {
-        super.onNewToken(newToken)
-        token = newToken
-    }
-
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 

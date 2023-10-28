@@ -11,7 +11,10 @@ import com.bitio.ui.product.models.UiProduct
 
 
 @Composable
-fun ProductParallelogramGrid(lazyProducts: LazyPagingItems<UiProduct>, onCardClicked:(Int)->Unit={}) {
+fun ProductParallelogramGrid(
+    lazyProducts: LazyPagingItems<UiProduct>,
+    onCardClicked: (Int) -> Unit = {}
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy((-12).dp),
@@ -19,8 +22,7 @@ fun ProductParallelogramGrid(lazyProducts: LazyPagingItems<UiProduct>, onCardCli
         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 24.dp)
     ) {
         items(lazyProducts.itemCount, contentType = { UiProduct::class }, key = { it }) {
-             SmallParallelogramCardFactory(lazyProducts[it]!!, cardIndex = it)
-
+            SmallParallelogramCardFactory(lazyProducts[it]!!, cardIndex = it)
         }
     }
 }

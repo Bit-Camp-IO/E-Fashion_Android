@@ -38,8 +38,6 @@ fun ProductListScreen(navController: NavController) {
         if (isGridDisplayMode.value)
             ProductParallelogramGrid(lazyProducts =data) else ProductParallelogramColumn(data)
     }
-
-
 }
 
 @Composable

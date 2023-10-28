@@ -21,6 +21,7 @@ import com.bitio.productscomponent.domain.useCase.cart.AddProductToCartUseCase
 import com.bitio.productscomponent.domain.useCase.cart.DeleteProductFromCartUseCase
 import com.bitio.productscomponent.domain.useCase.cart.EditProductOfCartUseCase
 import com.bitio.productscomponent.domain.useCase.cart.GetAllProductsFromCartUseCase
+import com.bitio.productscomponent.domain.useCase.favorite.GetAllFavoritesOfUserUseCase
 import com.bitio.productscomponent.domain.useCase.order.GetAllOrdersUseCase
 import org.koin.dsl.module
 
@@ -50,6 +51,8 @@ val productKoinModule = module {
     factory { EditProductOfCartUseCase(get()) }
 
     factory { GetAllOrdersUseCase(get()) }
+
+    factory { GetAllFavoritesOfUserUseCase(get()) }
 
 
 }

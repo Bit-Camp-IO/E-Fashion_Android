@@ -2,117 +2,150 @@
 
 package com.bitio.ui.product.favorite
 
-import android.annotation.SuppressLint
-import androidx.compose.animation.Crossfade
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults.iconButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
+import com.bitio.productscomponent.domain.entities.favorites.Favorite
 import com.bitio.ui.R
+import com.bitio.ui.shared.SharedTopAppBar
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun FavoriteScreen(navController: NavController) {
     val viewModel = getViewModel<FavoriteViewModel>()
-    val state by viewModel.favoriteUIState.collectAsState()
-    FavoriteContent(
-        state,
-        onClickFavoriteButton = {},
-        onClickBagButton = {}
-    )
+    val state by viewModel.favoriteUIState
+    FavoriteContent(state) {
+
+    }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun FavoriteContent(
+private fun FavoriteContent(
     state: FavoriteUiState,
-    onClickFavoriteButton: () -> Unit,
-    onClickBagButton: () -> Unit
+    onBackButtonClick: () -> Unit
 ) {
-
-    var isGrid by remember {
-        mutableStateOf(false)
-    }
-
-    var selectedGridColor =
-        if (isGrid) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
-
-    var selectedLazyColumnColor =
-        if (isGrid) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.primary
-
     Scaffold(
         topBar = {
-            CustomTopAppBar(
-                selectedLazyColumnColor = selectedLazyColumnColor,
-                selectedGridColor = selectedGridColor,
-            ) {
-                isGrid = it
-            }
+            SharedTopAppBar(
+                title = stringResource(id = R.string.your_favorites),
+                onBackButtonClick = onBackButtonClick
+            )
         }
     ) { paddingValue ->
-
-        Crossfade(
-            targetState = isGrid, modifier = Modifier.fillMaxWidth(),
-            label = ""
-        ) { targetIsGrid ->
-            if (targetIsGrid) {
-//                ProductParallelogramGrid(products = List(50) { productWithOffer.toUiProduct() })
-            } else {
-//                ProductParallelogramColumn(products = List(50) { productWithOffer })
+        LazyVerticalGrid(
+            modifier = Modifier.padding(top = paddingValue.calculateTopPadding()),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            columns = GridCells.Fixed(2),
+            contentPadding = PaddingValues(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(
+                count = state.products.size,
+                contentType = { FavoriteUiState::class.java },
+                key = { it }) {
+                FavoriteItem(onCartButtonClick = {}, favorite = state.products[it])
             }
         }
-
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTopAppBar(
-    selectedLazyColumnColor: Color,
-    selectedGridColor: Color,
-    onSelectedSortedItem: (Boolean) -> Unit
+private fun FavoriteItem(
+    favorite: Favorite,
+    onCartButtonClick: (String) -> Unit
 ) {
-    TopAppBar(
-        title = {
-            Text(
-                text = "Your Favorites",
-                style = MaterialTheme.typography.titleMedium,
-            )
-        },
-        colors = topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background
-        ),
-        actions = {
-
-            IconButton(onClick = { onSelectedSortedItem(false) }) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy((-24).dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+            ) {
+                Image(
+                    painter = rememberAsyncImagePainter(model = "https://th.bing.com/th/id/R.ffe4b2b0943c75f64786c4ce69b21e80?rik=B2w5s3%2f5bmmTZQ&pid=ImgRaw&r=0"),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    contentScale = ContentScale.FillBounds
+                )
+                IconButton(
+                    onClick = { onCartButtonClick(favorite.id) },
+                    modifier = Modifier.align(Alignment.TopEnd)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.full_heart),
+                        contentDescription = null
+                    )
+                }
+            }
+            IconButton(
+                onClick = { onCartButtonClick("") },
+                colors = iconButtonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                modifier = Modifier
+                    .border(
+                        4.dp,
+                        color = MaterialTheme.colorScheme.background,
+                        shape = RoundedCornerShape(50.dp)
+                    )
+            ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.one_item),
-                    contentDescription = "lazy column",
-                    tint = selectedLazyColumnColor
+                    painter = painterResource(id = R.drawable.bag),
+                    contentDescription = null
                 )
             }
-            IconButton(onClick = { onSelectedSortedItem(true) }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.multi_item),
-                    contentDescription = "grid",
-                    tint = selectedGridColor
-                )
-            }
-        },
-    )
+        }
+        Text(
+            text = favorite.title,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Text(
+            text = "$${favorite.price}",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+    }
 }

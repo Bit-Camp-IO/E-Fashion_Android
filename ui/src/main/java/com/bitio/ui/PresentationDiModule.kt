@@ -11,7 +11,6 @@ import org.koin.dsl.module
 val presentationDiModule = module {
   //  includes(productUiDi)
     viewModel { ChatSupportViewModel() }
-    viewModel { FavoriteViewModel() }
     viewModel { LocationViewModel(get(),get(),get()) }
 }
 

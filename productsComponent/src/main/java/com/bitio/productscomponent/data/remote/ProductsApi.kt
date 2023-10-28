@@ -9,8 +9,8 @@ import com.bitio.productscomponent.data.remote.response.FavoriteProductResponse
 import com.bitio.productscomponent.data.remote.response.OrderResponse
 import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
 import com.bitio.productscomponent.data.remote.response.ProductsPage
-import com.bitio.productscomponent.domain.entities.cart.CartItem
 import com.bitio.productscomponent.domain.entities.categories.GenderType
+import com.bitio.productscomponent.domain.entities.favorites.Favorite
 import com.bitio.sharedcomponent.data.ResponseWrapper
 
 
@@ -28,7 +28,7 @@ interface ProductsApi {
     suspend fun getAllCategories(genderType: GenderType): ResponseWrapper<List<CategoryResponse>>
     suspend fun getCategoryById(id: String): CategoryResponse
     suspend fun getBrands(): ResponseWrapper<List<BrandResponse>>
-    suspend fun getFavoritesList(): ResponseWrapper<List<FavoriteProductResponse>>
+    suspend fun getFavoritesOfUser(): ResponseWrapper<List<Favorite>>
     suspend fun addToFavoriteProduct(id: String)
     suspend fun removeProductFromFavorite(id: String)
     suspend fun getAllProductsFromCart(): ResponseWrapper<CartResponse>

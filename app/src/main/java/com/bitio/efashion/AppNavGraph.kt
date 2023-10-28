@@ -20,7 +20,7 @@ fun AppNavGraph(
     checkIfLogin: Boolean
 ) {
 
-    val startDestination = if (checkIfLogin) RootRouteScreens.Cart.route else "auth"
+    val startDestination = if (checkIfLogin) RootRouteScreens.Favorite.route else "auth"
     NavHost(
         navController = navController,
         startDestination = startDestination,

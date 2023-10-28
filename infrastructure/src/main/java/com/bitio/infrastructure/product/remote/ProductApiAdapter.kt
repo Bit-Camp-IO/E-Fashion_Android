@@ -16,6 +16,7 @@ import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
 import com.bitio.productscomponent.data.remote.response.ProductsPage
 import com.bitio.productscomponent.domain.entities.cart.CartItem
 import com.bitio.productscomponent.domain.entities.categories.GenderType
+import com.bitio.productscomponent.domain.entities.favorites.Favorite
 import com.bitio.sharedcomponent.data.ResponseWrapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.json.Json
@@ -79,9 +80,9 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
         }
     }
 
-    override suspend fun getFavoritesList(): ResponseWrapper<List<FavoriteProductResponse>> {
+    override suspend fun getFavoritesOfUser(): ResponseWrapper<List<Favorite>> {
         try {
-            return retrofitApi.getFavoriteProduct()
+            return retrofitApi.getFavoriteProduct() as ResponseWrapper<List<Favorite>>
         } catch (e: HttpException) {
             throw parseIfApiErrorException(e).error
         }

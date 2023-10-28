@@ -6,8 +6,10 @@ import com.bitio.productscomponent.data.remote.response.BrandResponse
 import com.bitio.productscomponent.data.remote.response.CartResponse
 import com.bitio.productscomponent.data.remote.response.CategoryResponse
 import com.bitio.productscomponent.data.remote.response.FavoriteProductResponse
+import com.bitio.productscomponent.data.remote.response.OrderResponse
 import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
 import com.bitio.productscomponent.data.remote.response.ProductsPage
+import com.bitio.productscomponent.domain.entities.cart.CartItem
 import com.bitio.productscomponent.domain.entities.categories.GenderType
 import com.bitio.sharedcomponent.data.ResponseWrapper
 
@@ -33,4 +35,6 @@ interface ProductsApi {
     suspend fun addProductToCart(cartItemBody: CartItemBody): ResponseWrapper<CartResponse>
     suspend fun deleteProductFromCart(id: IdBody): ResponseWrapper<CartResponse>
     suspend fun editProductOfCart(id: String, quantity: Int): ResponseWrapper<CartResponse>
+
+    suspend fun getAllOrder(): ResponseWrapper<List<OrderResponse>>
 }

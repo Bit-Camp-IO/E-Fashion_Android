@@ -18,6 +18,7 @@ object NotificationRetrofit {
         .addInterceptor(AuthInterceptor())
         .addInterceptor(LoggingInterceptor())
         .build()
+
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(USER_BASE_URL)
         .client(client)

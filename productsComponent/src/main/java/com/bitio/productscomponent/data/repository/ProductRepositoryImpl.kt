@@ -5,6 +5,7 @@ import com.bitio.productscomponent.data.remote.ProductsApi
 import com.bitio.productscomponent.data.remote.request.CartItemBody
 import com.bitio.productscomponent.data.remote.request.IdBody
 import com.bitio.productscomponent.data.remote.response.CartResponse
+import com.bitio.productscomponent.data.remote.response.OrderResponse
 import com.bitio.productscomponent.domain.entities.Brand
 import com.bitio.productscomponent.domain.entities.categories.Category
 import com.bitio.productscomponent.domain.entities.categories.GenderType
@@ -92,6 +93,10 @@ class ProductRepositoryImpl(
 
     override suspend fun editProductOfCart(cartId: String, quantity: Int): ResponseWrapper<CartResponse> {
         return api.editProductOfCart(cartId,quantity)
+    }
+
+    override suspend fun getAllOrders(): ResponseWrapper<List<OrderResponse>> {
+        return api.getAllOrder()
     }
 
     @OptIn(DelicateCoroutinesApi::class)

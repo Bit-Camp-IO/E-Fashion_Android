@@ -8,7 +8,7 @@ import com.bitio.ui.profile.ProfileScreen
 import com.bitio.ui.profile.chat.chatSupportRoute
 import com.bitio.ui.profile.location.locationRoute
 import com.bitio.ui.profile.notifications.notificationsRoute
-import com.bitio.ui.profile.order_status.orderStatusRoute
+import com.bitio.ui.profile.order_status.ordersRoute
 
 
 fun NavGraphBuilder.profileGraph(
@@ -19,7 +19,7 @@ fun NavGraphBuilder.profileGraph(
             ProfileScreen(navController = navController)
         }
         locationRoute(navController)
-        orderStatusRoute(navController)
+        ordersRoute(navController)
         chatSupportRoute(navController)
         notificationsRoute(navController)
     }

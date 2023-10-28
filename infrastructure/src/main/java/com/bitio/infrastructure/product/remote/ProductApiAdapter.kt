@@ -11,8 +11,10 @@ import com.bitio.productscomponent.data.remote.response.BrandResponse
 import com.bitio.productscomponent.data.remote.response.CartResponse
 import com.bitio.productscomponent.data.remote.response.CategoryResponse
 import com.bitio.productscomponent.data.remote.response.FavoriteProductResponse
+import com.bitio.productscomponent.data.remote.response.OrderResponse
 import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
 import com.bitio.productscomponent.data.remote.response.ProductsPage
+import com.bitio.productscomponent.domain.entities.cart.CartItem
 import com.bitio.productscomponent.domain.entities.categories.GenderType
 import com.bitio.sharedcomponent.data.ResponseWrapper
 import kotlinx.coroutines.flow.Flow
@@ -116,6 +118,7 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
         }
     }
 
+
     override suspend fun deleteProductFromCart(id: IdBody): ResponseWrapper<CartResponse> {
         try {
             return retrofitApi.deleteCart(id)
@@ -127,6 +130,14 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
     override  suspend fun editProductOfCart(id: String, quantity:Int): ResponseWrapper<CartResponse> {
         try {
             return retrofitApi.editCart(CartQuantityBody(id,quantity))
+        } catch (e: HttpException) {
+            throw parseIfApiErrorException(e).error
+        }
+    }
+
+    override suspend fun getAllOrder(): ResponseWrapper<List<OrderResponse>> {
+        try {
+            return retrofitApi.getAllOrders()
         } catch (e: HttpException) {
             throw parseIfApiErrorException(e).error
         }

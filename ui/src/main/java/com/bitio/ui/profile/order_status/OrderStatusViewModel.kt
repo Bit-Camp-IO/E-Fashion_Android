@@ -1,52 +1,45 @@
 package com.bitio.ui.profile.order_status
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.bitio.ui.R
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import androidx.lifecycle.viewModelScope
+import com.bitio.productscomponent.domain.useCase.order.GetAllOrdersUseCase
+import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
-class OrderStatusViewModel : ViewModel() {
+class OrderStatusViewModel(
+    private val getAllOrdersUseCase: GetAllOrdersUseCase
+) : ViewModel() {
 
-    private val _checkOrderUiState = MutableStateFlow(OrderStatusUiState())
-    val checkOrderString = _checkOrderUiState.asStateFlow()
+
+    private val _orderUiState = mutableStateOf(OrderUiState())
+    val orderUiState = _orderUiState
 
     init {
-        _checkOrderUiState.update {
-            it.copy(
-                isLoading = true
-            )
-        }
-        getOrderStatus()
+        getAllOrders()
     }
 
-    private fun getOrderStatus() {
-        _checkOrderUiState.update {
-            it.copy(
-                isLoading = false,
-                ordersStatus = listOf(
-                    OrderStatus(
-                        title = "On Progress",
-                        description = "Your order still on progress it may take hours",
-                        isOrderStatusActive = false,
-                        imageOfOrderStatus = R.drawable.order_progress
-                    ),
-                    OrderStatus(
-                        title = "On its way",
-                        description = "The delivery man on his way to your location",
-                        isOrderStatusActive = false,
-                        imageOfOrderStatus = R.drawable.order_on_way
-                    ),
-                    OrderStatus(
-                        title = "Delivered",
-                        description = "Your order has been delivered, hope you liked it",
-                        isOrderStatusActive = false,
-                        imageOfOrderStatus = R.drawable.order_delivered
-                    )
-                )
+    private fun getAllOrders() {
+        viewModelScope.launch {
+            _orderUiState.value = OrderUiState(
+                isLoading = true
             )
+            val result = getAllOrdersUseCase()
+            result.onSuccess {
+                it?.let { orders ->
+                    _orderUiState.value = OrderUiState(
+                        isLoading = false,
+                        orders = orders
+                    )
+                }
+            }
+            result.onFailure {
+                _orderUiState.value = OrderUiState(
+                    isLoading = false,
+                    errorMessage = it.message.toString()
+                )
+            }
         }
     }
 }

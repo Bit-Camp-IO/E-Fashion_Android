@@ -34,7 +34,6 @@ import com.bitio.ui.profile.chat.navigateToChatSupportScreen
 import com.bitio.ui.profile.settings.SettingApp
 import com.bitio.ui.profile.location.navigateToLocationScreen
 import com.bitio.ui.profile.notifications.navigateToNotificationsScreen
-import com.bitio.ui.profile.order_status.navigateToOrderStatusScreen
 import com.bitio.ui.theme.Porcelain
 import org.koin.androidx.compose.getViewModel
 import android.Manifest
@@ -55,6 +54,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
+import com.bitio.ui.profile.order_status.navigateToOrdersScreen
 import com.bitio.ui.profile.user.PermissionViewModel
 import com.bitio.ui.profile.user.ProfileUi
 import com.bitio.ui.profile.user.UserProfile
@@ -102,7 +102,7 @@ fun ProfileScreen(
                 navController.navigateToLocationScreen()
             }
         },
-        onClickOrderStatusScreen = navController::navigateToOrderStatusScreen,
+        onClickOrderStatusScreen = navController::navigateToOrdersScreen,
         onClickChatSupportScreen = navController::navigateToChatSupportScreen,
         onClickNotificationsScreen = navController::navigateToNotificationsScreen,
         permissionViewModel::onPermissionResult,

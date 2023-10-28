@@ -49,4 +49,8 @@
     <string name="confirm_payment"><![CDATA[Confirm & Pay]]></string>
     <string name="confirm_delete_cart_item">Are you sure you want to delete this item?</string>
     <string name="cancel">Cancel</string>
+    <string name="copy_id_of_product">Copy id</string>
+    <string name="on_progress">On progress</string>
+    <string name="on_it_is_way">On it\'s way</string>
+    <string name="delivered">Delivered</string>
 </resources>

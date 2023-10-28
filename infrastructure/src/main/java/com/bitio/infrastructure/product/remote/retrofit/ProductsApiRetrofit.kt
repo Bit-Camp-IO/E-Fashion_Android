@@ -7,6 +7,7 @@ import com.bitio.productscomponent.data.remote.response.BrandResponse
 import com.bitio.productscomponent.data.remote.response.CartResponse
 import com.bitio.productscomponent.data.remote.response.CategoryResponse
 import com.bitio.productscomponent.data.remote.response.FavoriteProductResponse
+import com.bitio.productscomponent.data.remote.response.OrderResponse
 import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
 import com.bitio.productscomponent.data.remote.response.ProductsPage
 import com.bitio.sharedcomponent.data.ResponseWrapper
@@ -67,4 +68,7 @@ interface ProductsApiRetrofit {
     suspend fun editCart(
         @Body cartQuantityBody: CartQuantityBody
     ): ResponseWrapper<CartResponse>
+
+    @GET("order")
+    suspend fun getAllOrders(): ResponseWrapper<List<OrderResponse>>
 }

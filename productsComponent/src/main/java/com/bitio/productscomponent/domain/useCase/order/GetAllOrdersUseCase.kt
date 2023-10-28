@@ -1,14 +1,15 @@
-package com.bitio.productscomponent.domain.useCase.cart
+package com.bitio.productscomponent.domain.useCase.order
 
-import com.bitio.productscomponent.domain.entities.cart.Cart
+
+import com.bitio.productscomponent.domain.entities.order.Order
 import com.bitio.productscomponent.domain.repository.ProductRepository
 
-class GetAllProductsFromCartUseCase(
+class GetAllOrdersUseCase(
     private val repository: ProductRepository
 ) {
-    suspend operator fun invoke(): Result<Cart?> {
+    suspend operator fun invoke(): Result<List<Order>?> {
         return try {
-            val response = repository.getAllProductsFromCart()
+            val response = repository.getAllOrders()
             if (response.data != null){
               Result.success(response.data)
             }else{

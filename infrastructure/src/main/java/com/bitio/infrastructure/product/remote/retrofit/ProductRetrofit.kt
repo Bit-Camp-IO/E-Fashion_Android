@@ -20,6 +20,7 @@ object ProductRetrofit {
      //   .addInterceptor(ServerErrorInterceptor())
         .addInterceptor(LoggingInterceptor())
         .build()
+
     private val json = Json { ignoreUnknownKeys = true }
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(USER_BASE_URL)

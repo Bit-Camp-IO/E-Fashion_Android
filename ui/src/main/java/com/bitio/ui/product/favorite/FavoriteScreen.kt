@@ -1,11 +1,9 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
-
 package com.bitio.ui.product.favorite
 
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,11 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults.iconButtonColors
@@ -30,7 +26,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,6 +35,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.bitio.productscomponent.domain.entities.favorites.Favorite
 import com.bitio.ui.R
+import com.bitio.ui.product.details.navigateToProductDetailsScreen
 import com.bitio.ui.shared.SharedTopAppBar
 import org.koin.androidx.compose.getViewModel
 
@@ -47,15 +43,20 @@ import org.koin.androidx.compose.getViewModel
 fun FavoriteScreen(navController: NavController) {
     val viewModel = getViewModel<FavoriteViewModel>()
     val state by viewModel.favoriteUIState
-    FavoriteContent(state) {
-
-    }
+    FavoriteContent(
+        state,
+        onBackButtonClick = navController::navigateUp,
+        onProductClick = navController::navigateToProductDetailsScreen,
+        onCartButtonClick = {}
+    )
 }
 
 @Composable
 private fun FavoriteContent(
     state: FavoriteUiState,
-    onBackButtonClick: () -> Unit
+    onBackButtonClick: () -> Unit,
+    onProductClick: (String) -> Unit,
+    onCartButtonClick: (String) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -76,7 +77,11 @@ private fun FavoriteContent(
                 count = state.products.size,
                 contentType = { FavoriteUiState::class.java },
                 key = { it }) {
-                FavoriteItem(onCartButtonClick = {}, favorite = state.products[it])
+                FavoriteItem(
+                    onCartButtonClick = onCartButtonClick,
+                    onProductClick = onProductClick,
+                    favorite = state.products[it]
+                )
             }
         }
     }
@@ -85,13 +90,17 @@ private fun FavoriteContent(
 @Composable
 private fun FavoriteItem(
     favorite: Favorite,
-    onCartButtonClick: (String) -> Unit
+    onCartButtonClick: (String) -> Unit,
+    onProductClick: (String) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxSize()
+            .clickable {
+                onProductClick(favorite.id)
+            }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

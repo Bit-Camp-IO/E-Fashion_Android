@@ -1,8 +1,6 @@
 package com.bitio.ui.product.search
 
 import android.util.Log
-import android.util.Range
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,7 +8,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.bitio.productscomponent.domain.entities.categories.GenderType
+import com.bitio.productscomponent.domain.model.categories.GenderType
 import com.bitio.productscomponent.domain.useCase.AddOrRemoveProductFromFavorite
 import com.bitio.productscomponent.domain.useCase.GetCategoryByGenderUseCase
 import com.bitio.productscomponent.domain.useCase.GetFavoriteIdsUseCase

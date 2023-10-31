@@ -1,7 +1,7 @@
 package com.bitio.productscomponent.domain.useCase.order
 
 
-import com.bitio.productscomponent.domain.entities.order.Order
+import com.bitio.productscomponent.domain.model.order.Order
 import com.bitio.productscomponent.domain.repository.ProductRepository
 
 class GetAllOrdersUseCase(

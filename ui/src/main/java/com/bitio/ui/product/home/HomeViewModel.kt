@@ -7,8 +7,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bitio.productscomponent.domain.entities.Brand
-import com.bitio.productscomponent.domain.entities.products.CollectionGroup
+import com.bitio.productscomponent.domain.model.Brand
+import com.bitio.productscomponent.domain.model.products.CollectionGroup
 import com.bitio.productscomponent.domain.useCase.AddOrRemoveProductFromFavorite
 import com.bitio.productscomponent.domain.useCase.GetBrandsUseCase
 import com.bitio.productscomponent.domain.useCase.GetCategoryByGenderUseCase

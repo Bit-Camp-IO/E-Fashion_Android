@@ -1,4 +1,4 @@
-package com.bitio.productscomponent.domain.entities.cart
+package com.bitio.productscomponent.domain.model.cart
 
 interface CartItem {
     val productId: String

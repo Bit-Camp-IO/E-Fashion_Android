@@ -1,6 +1,6 @@
 package com.bitio.ui.profile.order_status
 
-import com.bitio.productscomponent.domain.entities.order.Order
+import com.bitio.productscomponent.domain.model.order.Order
 
 
 data class OrderUiState(

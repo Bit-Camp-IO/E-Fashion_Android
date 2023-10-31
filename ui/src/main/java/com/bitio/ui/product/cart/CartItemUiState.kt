@@ -1,7 +1,7 @@
 package com.bitio.ui.product.cart
 
-import com.bitio.productscomponent.domain.entities.cart.Cart
-import com.bitio.productscomponent.domain.entities.cart.CartItem
+import com.bitio.productscomponent.domain.model.cart.Cart
+import com.bitio.productscomponent.domain.model.cart.CartItem
 
 data class CartItemUiState(
     val loading: Boolean = false,

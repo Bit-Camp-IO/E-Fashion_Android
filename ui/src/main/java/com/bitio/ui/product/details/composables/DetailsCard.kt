@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.bitio.productscomponent.domain.entities.products.ProductDetails
+import com.bitio.productscomponent.domain.model.products.ProductDetails
 import com.bitio.ui.R
 import com.bitio.ui.shared.CustomButtonForm
 import com.bitio.ui.shared.VerticalSpacer16Dp

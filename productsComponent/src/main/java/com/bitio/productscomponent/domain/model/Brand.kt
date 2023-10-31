@@ -1,4 +1,4 @@
-package com.bitio.productscomponent.domain.entities
+package com.bitio.productscomponent.domain.model
 
 interface Brand {
     val id: String

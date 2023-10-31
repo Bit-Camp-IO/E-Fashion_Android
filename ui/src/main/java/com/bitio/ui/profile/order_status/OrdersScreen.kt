@@ -27,16 +27,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.NavController
-import com.bitio.productscomponent.domain.entities.order.Order
+import com.bitio.productscomponent.domain.model.order.Order
 import com.bitio.ui.R
 import com.bitio.ui.shared.SharedTopAppBar
 import org.koin.androidx.compose.getViewModel

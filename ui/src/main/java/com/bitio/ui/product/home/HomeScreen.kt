@@ -5,8 +5,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
-import com.bitio.productscomponent.domain.entities.products.CollectionGroup
-import com.bitio.productscomponent.domain.entities.products.ProductWithOffer
+import com.bitio.productscomponent.domain.model.products.CollectionGroup
+import com.bitio.productscomponent.domain.model.products.ProductWithOffer
 import com.bitio.ui.product.details.navigateToProductDetailsScreen
 import com.bitio.ui.product.home.composables.BrandRow
 import com.bitio.ui.product.home.composables.CategoriesRow
@@ -14,7 +14,6 @@ import com.bitio.ui.product.home.composables.CollectionPager
 import com.bitio.ui.product.home.composables.OffersPager
 import com.bitio.ui.product.home.composables.myImage
 import com.bitio.ui.product.home.offers.navigateToOffersScreen
-import com.bitio.ui.product.home.zara.navigateToZaraScreen
 import com.bitio.ui.shared.screenState.ErrorScreen
 import com.bitio.ui.shared.screenState.LoadingScreen
 import com.bitio.ui.shared.screenState.UiDataState

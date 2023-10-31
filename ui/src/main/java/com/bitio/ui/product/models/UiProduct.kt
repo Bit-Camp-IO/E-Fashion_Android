@@ -3,7 +3,7 @@ package com.bitio.ui.product.models
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
-import com.bitio.productscomponent.domain.entities.products.Product
+import com.bitio.productscomponent.domain.model.products.Product
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

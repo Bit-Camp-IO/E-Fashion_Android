@@ -1,6 +1,6 @@
 package com.bitio.productscomponent.domain.useCase
 
-import com.bitio.productscomponent.domain.entities.products.ProductDetails
+import com.bitio.productscomponent.domain.model.products.ProductDetails
 import com.bitio.productscomponent.domain.repository.ProductRepository
 
 class GetProductByIdUseCase(private val repository: ProductRepository) {

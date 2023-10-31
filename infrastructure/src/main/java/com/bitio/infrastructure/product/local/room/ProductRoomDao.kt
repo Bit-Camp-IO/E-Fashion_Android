@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.bitio.infrastructure.product.local.productModels.CategoryDto
 import com.bitio.infrastructure.product.local.productModels.ProductDto
-import com.bitio.productscomponent.domain.entities.categories.GenderType
+import com.bitio.productscomponent.domain.model.categories.GenderType
 
 
 @Dao

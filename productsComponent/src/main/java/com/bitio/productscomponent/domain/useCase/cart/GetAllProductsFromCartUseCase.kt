@@ -1,6 +1,6 @@
 package com.bitio.productscomponent.domain.useCase.cart
 
-import com.bitio.productscomponent.domain.entities.cart.Cart
+import com.bitio.productscomponent.domain.model.cart.Cart
 import com.bitio.productscomponent.domain.repository.ProductRepository
 
 class GetAllProductsFromCartUseCase(

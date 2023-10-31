@@ -1,7 +1,7 @@
 package com.bitio.productscomponent.domain.useCase
 
-import com.bitio.productscomponent.domain.entities.categories.Category
-import com.bitio.productscomponent.domain.entities.categories.GenderType
+import com.bitio.productscomponent.domain.model.categories.Category
+import com.bitio.productscomponent.domain.model.categories.GenderType
 import com.bitio.productscomponent.domain.repository.ProductRepository
 
 class GetCategoryByGenderUseCase(private val repository: ProductRepository) {

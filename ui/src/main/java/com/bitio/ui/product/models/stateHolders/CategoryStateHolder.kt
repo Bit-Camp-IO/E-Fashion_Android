@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
-import com.bitio.productscomponent.domain.entities.categories.GenderType
+import com.bitio.productscomponent.domain.model.categories.GenderType
 import com.bitio.productscomponent.domain.useCase.GetCategoryByGenderUseCase
 import com.bitio.ui.product.models.UiCategory
 import com.bitio.ui.product.models.toUiCategory

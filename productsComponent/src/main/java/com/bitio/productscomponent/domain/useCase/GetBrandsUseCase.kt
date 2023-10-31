@@ -1,6 +1,6 @@
 package com.bitio.productscomponent.domain.useCase
 
-import com.bitio.productscomponent.domain.entities.Brand
+import com.bitio.productscomponent.domain.model.Brand
 import com.bitio.productscomponent.domain.repository.ProductRepository
 
 class GetBrandsUseCase(private val repository: ProductRepository) {

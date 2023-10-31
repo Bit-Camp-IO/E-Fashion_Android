@@ -1,6 +1,6 @@
 package com.bitio.productscomponent.data.remote.response
 
-import com.bitio.productscomponent.domain.entities.order.Order
+import com.bitio.productscomponent.domain.model.order.Order
 import kotlinx.serialization.Serializable
 
 @Serializable

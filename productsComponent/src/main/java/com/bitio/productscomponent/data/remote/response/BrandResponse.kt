@@ -1,6 +1,6 @@
 package com.bitio.productscomponent.data.remote.response
 
-import com.bitio.productscomponent.domain.entities.Brand
+import com.bitio.productscomponent.domain.model.Brand
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

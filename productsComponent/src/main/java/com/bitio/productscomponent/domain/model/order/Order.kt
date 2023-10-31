@@ -1,4 +1,4 @@
-package com.bitio.productscomponent.domain.entities.order
+package com.bitio.productscomponent.domain.model.order
 
 interface Order {
     val id: String

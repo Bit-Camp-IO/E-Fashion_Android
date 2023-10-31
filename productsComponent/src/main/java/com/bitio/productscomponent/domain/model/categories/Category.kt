@@ -1,4 +1,4 @@
-package com.bitio.productscomponent.domain.entities.categories
+package com.bitio.productscomponent.domain.model.categories
 
 
 interface Category {

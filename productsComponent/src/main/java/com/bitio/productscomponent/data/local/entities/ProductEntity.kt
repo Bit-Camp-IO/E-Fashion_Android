@@ -1,6 +1,6 @@
 package com.bitio.productscomponent.data.local.entities
 
-import com.bitio.productscomponent.domain.entities.products.Product
+import com.bitio.productscomponent.domain.model.products.Product
 
 data class ProductEntity(
     override val id: String,

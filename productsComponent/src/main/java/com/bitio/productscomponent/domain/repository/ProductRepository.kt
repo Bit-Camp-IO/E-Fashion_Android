@@ -2,14 +2,13 @@ package com.bitio.productscomponent.domain.repository
 
 import com.bitio.productscomponent.data.remote.request.CartItemBody
 import com.bitio.productscomponent.data.remote.response.CartResponse
-import com.bitio.productscomponent.data.remote.response.FavoriteProductResponse
 import com.bitio.productscomponent.data.remote.response.OrderResponse
-import com.bitio.productscomponent.domain.entities.Brand
-import com.bitio.productscomponent.domain.entities.categories.Category
-import com.bitio.productscomponent.domain.entities.categories.GenderType
-import com.bitio.productscomponent.domain.entities.favorites.Favorite
-import com.bitio.productscomponent.domain.entities.products.Product
-import com.bitio.productscomponent.domain.entities.products.ProductDetails
+import com.bitio.productscomponent.domain.model.Brand
+import com.bitio.productscomponent.domain.model.categories.Category
+import com.bitio.productscomponent.domain.model.categories.GenderType
+import com.bitio.productscomponent.domain.model.favorites.Favorite
+import com.bitio.productscomponent.domain.model.products.Product
+import com.bitio.productscomponent.domain.model.products.ProductDetails
 import com.bitio.sharedcomponent.data.ResponseWrapper
 import kotlinx.coroutines.flow.StateFlow
 

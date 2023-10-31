@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.bitio.productscomponent.domain.entities.selectable.ColorOption
-import com.bitio.productscomponent.domain.entities.selectable.SelectableProperty
+import com.bitio.productscomponent.domain.model.products.ColorOfProduct
+import com.bitio.productscomponent.domain.model.selectable.SelectableProperty
 import com.bitio.ui.shared.HorizontalSpacer8Dp
 
 @Composable
@@ -48,7 +48,7 @@ fun SelectableRow(selectable: SelectableProperty) {
 }
 
 @Composable
-fun ColorRow(colors: List<ColorOption>) {
+fun ColorRow(colors: List<ColorOfProduct>) {
     Row {
         Text(text = "Colors: ")
         HorizontalSpacer8Dp()

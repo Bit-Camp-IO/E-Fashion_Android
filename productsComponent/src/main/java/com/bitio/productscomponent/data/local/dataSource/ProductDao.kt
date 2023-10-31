@@ -1,8 +1,8 @@
 package com.bitio.productscomponent.data.local.dataSource
 
-import com.bitio.productscomponent.domain.entities.categories.Category
-import com.bitio.productscomponent.domain.entities.categories.GenderType
-import com.bitio.productscomponent.domain.entities.products.Product
+import com.bitio.productscomponent.domain.model.categories.Category
+import com.bitio.productscomponent.domain.model.categories.GenderType
+import com.bitio.productscomponent.domain.model.products.Product
 
 interface ProductDao {
 

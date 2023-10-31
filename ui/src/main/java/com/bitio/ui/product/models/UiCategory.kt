@@ -3,8 +3,8 @@ package com.bitio.ui.product.models
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
-import com.bitio.productscomponent.domain.entities.categories.Category
-import com.bitio.productscomponent.domain.entities.categories.GenderType
+import com.bitio.productscomponent.domain.model.categories.Category
+import com.bitio.productscomponent.domain.model.categories.GenderType
 
 @Stable
 data class UiCategory(

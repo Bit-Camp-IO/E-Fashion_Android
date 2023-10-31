@@ -23,8 +23,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.bitio.productscomponent.domain.entities.Brand
-import com.bitio.productscomponent.domain.entities.products.Product
+import com.bitio.productscomponent.domain.model.Brand
+import com.bitio.productscomponent.domain.model.products.Product
 import com.bitio.ui.R
 import com.bitio.ui.product.CartIconButton
 import com.bitio.ui.product.FavoriteIconButtonCircularBg

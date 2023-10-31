@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.PathParser
-import com.bitio.productscomponent.domain.entities.products.CollectionGroup
+import com.bitio.productscomponent.domain.model.products.CollectionGroup
 import com.bitio.ui.shared.AsyncDescribedImage
 import java.util.regex.Pattern
 

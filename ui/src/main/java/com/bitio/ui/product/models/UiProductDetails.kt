@@ -3,8 +3,8 @@ package com.bitio.ui.product.models
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
-import com.bitio.productscomponent.domain.entities.products.ProductDetails
-import com.bitio.productscomponent.domain.entities.selectable.ColorOption
+import com.bitio.productscomponent.domain.model.products.ColorOfProduct
+import com.bitio.productscomponent.domain.model.products.ProductDetails
 
 @Stable
 data class UiProductDetails(
@@ -19,9 +19,10 @@ data class UiProductDetails(
     override val isAvailable: Boolean,
     override val isNew: Boolean,
     override val rate: Float,
-    override val colors: List<ColorOption>,
+    override val colors: List<ColorOfProduct>,
     override val sizes: List<String>,
-    val isFavoriteState: MutableState<Boolean>
+    val isFavoriteState: MutableState<Boolean>,
+    override val stock: Int
 ) : ProductDetails
 
 fun ProductDetails.toUiProductDetails(isFavorite: Boolean): UiProductDetails {
@@ -31,6 +32,7 @@ fun ProductDetails.toUiProductDetails(isFavorite: Boolean): UiProductDetails {
         description, brandName,
         isAvailable, isNew,
         rate, colors, sizes,
-        isFavoriteState = mutableStateOf(isFavorite)
+        isFavoriteState = mutableStateOf(isFavorite),
+        stock
     )
 }

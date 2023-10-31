@@ -1,6 +1,4 @@
-package com.bitio.productscomponent.domain.entities.products
-
-import com.bitio.productscomponent.domain.entities.selectable.ColorOption
+package com.bitio.productscomponent.domain.model.products
 
 interface ProductDetails {
     val id: String
@@ -14,7 +12,8 @@ interface ProductDetails {
     val isAvailable: Boolean
     val isNew: Boolean
     val rate: Float
-    val colors: List<ColorOption>
+    val colors: List<ColorOfProduct>
     val sizes: List<String>
+    val stock: Int
     //  val selectableProperties: List<SelectableProperty>
 }

@@ -23,6 +23,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,7 +36,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import com.bitio.productscomponent.domain.entities.favorites.Favorite
+import com.bitio.productscomponent.domain.model.favorites.Favorite
+import com.bitio.productscomponent.domain.model.products.ProductDetails
 import com.bitio.ui.R
 import com.bitio.ui.product.details.navigateToProductDetailsScreen
 import com.bitio.ui.shared.SharedTopAppBar
@@ -42,21 +46,43 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun FavoriteScreen(navController: NavController) {
     val viewModel = getViewModel<FavoriteViewModel>()
-    val state by viewModel.favoriteUIState
+    val favoriteUiState by viewModel.favoriteUIState
+    val productUiState by viewModel.productUIState
+    var isSheetOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
+
     FavoriteContent(
-        state,
+        favoriteUiState,
+        isSheetOpen = isSheetOpen,
         onBackButtonClick = navController::navigateUp,
         onProductClick = navController::navigateToProductDetailsScreen,
-        onCartButtonClick = {}
+        onOpenBottomSheetClick = {
+            isSheetOpen = it
+        },
+        onAddToCartClick = {},
+        onCartButtonClick = {
+            viewModel.getProductDetails(it)
+            isSheetOpen = true
+        },
+        productUiState = productUiState.product,
+        onIncreaseQuantityClick = {},
+        onDecreaseQuantityClick = {}
     )
 }
 
 @Composable
 private fun FavoriteContent(
-    state: FavoriteUiState,
+    favoriteUiState: FavoriteUiState,
+    isSheetOpen: Boolean,
+    productUiState: ProductDetails,
     onBackButtonClick: () -> Unit,
     onProductClick: (String) -> Unit,
-    onCartButtonClick: (String) -> Unit
+    onOpenBottomSheetClick: (Boolean) -> Unit,
+    onAddToCartClick: (String) -> Unit,
+    onCartButtonClick: (String) -> Unit,
+    onIncreaseQuantityClick: (Int) -> Unit,
+    onDecreaseQuantityClick: (Int) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -74,24 +100,32 @@ private fun FavoriteContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(
-                count = state.products.size,
+                count = favoriteUiState.products.size,
                 contentType = { FavoriteUiState::class.java },
                 key = { it }) {
                 FavoriteItem(
-                    onCartButtonClick = onCartButtonClick,
+                    favorite = favoriteUiState.products[it],
                     onProductClick = onProductClick,
-                    favorite = state.products[it]
+                    onCartButtonClick = onCartButtonClick
                 )
             }
         }
+        FavoriteBottomSheet(
+            isSheetOpen = isSheetOpen,
+            onOpenBottomSheetClick = onOpenBottomSheetClick,
+            onAddToCartClick = onAddToCartClick,
+            productUiState = productUiState,
+            onDecreaseQuantityClick = onDecreaseQuantityClick,
+            onIncreaseQuantityClick = onIncreaseQuantityClick
+        )
     }
 }
 
 @Composable
 private fun FavoriteItem(
     favorite: Favorite,
+    onProductClick: (String) -> Unit,
     onCartButtonClick: (String) -> Unit,
-    onProductClick: (String) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -111,7 +145,7 @@ private fun FavoriteItem(
                     .clip(RoundedCornerShape(16.dp))
             ) {
                 Image(
-                    painter = rememberAsyncImagePainter(model = "https://th.bing.com/th/id/R.ffe4b2b0943c75f64786c4ce69b21e80?rik=B2w5s3%2f5bmmTZQ&pid=ImgRaw&r=0"),
+                    painter = rememberAsyncImagePainter(model = favorite.imageUrl),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -119,7 +153,7 @@ private fun FavoriteItem(
                     contentScale = ContentScale.FillBounds
                 )
                 IconButton(
-                    onClick = { onCartButtonClick(favorite.id) },
+                    onClick = { },
                     modifier = Modifier.align(Alignment.TopEnd)
                 ) {
                     Icon(
@@ -129,7 +163,7 @@ private fun FavoriteItem(
                 }
             }
             IconButton(
-                onClick = { onCartButtonClick("") },
+                onClick = { onCartButtonClick(favorite.id) },
                 colors = iconButtonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 modifier = Modifier
                     .border(
@@ -140,7 +174,7 @@ private fun FavoriteItem(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.bag),
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
         }

@@ -1,6 +1,6 @@
-package com.bitio.productscomponent.domain.entities.products
+package com.bitio.productscomponent.domain.model.products
 
-import com.bitio.productscomponent.domain.entities.selectable.SelectedProperty
+import com.bitio.productscomponent.domain.model.selectable.SelectedProperty
 
 interface ProductInstance {
     val productId: Int

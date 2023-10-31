@@ -1,6 +1,6 @@
 package com.bitio.productscomponent.data.remote.response
 
-import com.bitio.productscomponent.domain.entities.order.Address
+import com.bitio.productscomponent.domain.model.order.Address
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,8 +1,8 @@
 package com.bitio.ui.product.models.stateHolders
 
 import androidx.compose.runtime.Stable
-import com.bitio.productscomponent.domain.entities.Brand
-import com.bitio.productscomponent.domain.entities.products.Product
+import com.bitio.productscomponent.domain.model.Brand
+import com.bitio.productscomponent.domain.model.products.Product
 import com.bitio.productscomponent.domain.useCase.AddOrRemoveProductFromFavorite
 import com.bitio.productscomponent.domain.useCase.GetProductsByBrandAndCategoryUseCase
 import com.bitio.ui.product.models.UiProduct

@@ -32,7 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.bitio.productscomponent.domain.entities.cart.CartItem
+import com.bitio.productscomponent.domain.model.cart.CartItem
 import com.bitio.ui.R
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox

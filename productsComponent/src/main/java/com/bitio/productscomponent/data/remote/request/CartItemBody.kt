@@ -1,6 +1,6 @@
 package com.bitio.productscomponent.data.remote.request
 
-import com.bitio.productscomponent.domain.entities.cart.CartItem
+import com.bitio.productscomponent.domain.model.cart.CartItem
 import kotlinx.serialization.Serializable
 
 @Serializable

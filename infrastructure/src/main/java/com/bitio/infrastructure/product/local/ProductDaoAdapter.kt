@@ -5,9 +5,9 @@ import com.bitio.infrastructure.product.local.productModels.CategoryDto
 import com.bitio.infrastructure.product.local.productModels.ProductDto
 import com.bitio.infrastructure.product.local.room.ProductRoomDao
 import com.bitio.productscomponent.data.local.dataSource.ProductDao
-import com.bitio.productscomponent.domain.entities.categories.Category
-import com.bitio.productscomponent.domain.entities.categories.GenderType
-import com.bitio.productscomponent.domain.entities.products.Product
+import com.bitio.productscomponent.domain.model.categories.Category
+import com.bitio.productscomponent.domain.model.categories.GenderType
+import com.bitio.productscomponent.domain.model.products.Product
 
 @Dao
 class ProductDaoAdapter(private val roomDao: ProductRoomDao) : ProductDao {

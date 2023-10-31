@@ -2,7 +2,7 @@ package com.bitio.infrastructure.product.local.productModels
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.bitio.productscomponent.domain.entities.products.Product
+import com.bitio.productscomponent.domain.model.products.Product
 
 @Entity(tableName = "products")
 data class ProductDto constructor(

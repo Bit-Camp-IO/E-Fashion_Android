@@ -1,7 +1,7 @@
 package com.bitio.ui.product.models
 
 import androidx.compose.runtime.MutableState
-import com.bitio.productscomponent.domain.entities.products.ProductWithOffer
+import com.bitio.productscomponent.domain.model.products.ProductWithOffer
 
 data class UiProductWithOffer(
     override val id: String,

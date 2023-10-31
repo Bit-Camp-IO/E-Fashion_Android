@@ -1,4 +1,4 @@
-package com.bitio.productscomponent.domain.entities.order
+package com.bitio.productscomponent.domain.model.order
 
 interface Address {
     val longitude: Double

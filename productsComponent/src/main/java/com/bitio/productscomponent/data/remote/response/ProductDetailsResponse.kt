@@ -1,6 +1,6 @@
 package com.bitio.productscomponent.data.remote.response
 
-import com.bitio.productscomponent.domain.entities.products.ProductDetails
+import com.bitio.productscomponent.domain.model.products.ProductDetails
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -18,5 +18,6 @@ data class ProductDetailsResponse(
     override val isNew: Boolean,
     override val rate: Float,
     override val colors: List<ColorOptionResponse>,
-    override val sizes: List<String>
+    override val sizes: List<String>,
+    override val stock: Int
 ) : ProductDetails

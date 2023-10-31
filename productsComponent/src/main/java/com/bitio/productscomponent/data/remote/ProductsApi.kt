@@ -5,12 +5,11 @@ import com.bitio.productscomponent.data.remote.request.IdBody
 import com.bitio.productscomponent.data.remote.response.BrandResponse
 import com.bitio.productscomponent.data.remote.response.CartResponse
 import com.bitio.productscomponent.data.remote.response.CategoryResponse
-import com.bitio.productscomponent.data.remote.response.FavoriteProductResponse
 import com.bitio.productscomponent.data.remote.response.OrderResponse
 import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
 import com.bitio.productscomponent.data.remote.response.ProductsPage
-import com.bitio.productscomponent.domain.entities.categories.GenderType
-import com.bitio.productscomponent.domain.entities.favorites.Favorite
+import com.bitio.productscomponent.domain.model.categories.GenderType
+import com.bitio.productscomponent.domain.model.favorites.Favorite
 import com.bitio.sharedcomponent.data.ResponseWrapper
 
 

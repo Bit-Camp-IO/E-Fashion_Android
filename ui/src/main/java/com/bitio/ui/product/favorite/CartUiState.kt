@@ -1,10 +1,14 @@
-package com.bitio.productscomponent.data.remote.request
+package com.bitio.ui.product.favorite
 
 import com.bitio.productscomponent.domain.model.GeneralCart
-import kotlinx.serialization.Serializable
 
-@Serializable
-data class CartItemBody(
+
+data class CartUiState(
+    val isLoading: Boolean = false,
+    val message: String = "",
+)
+
+data class CartItemUiState(
     override val id: String,
     override val size: String,
     override val color: String,

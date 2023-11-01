@@ -1,6 +1,8 @@
 package com.bitio.ui.product.favorite
 
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,6 +33,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,6 +46,8 @@ import com.bitio.productscomponent.domain.model.products.ProductDetails
 import com.bitio.ui.R
 import com.bitio.ui.product.details.navigateToProductDetailsScreen
 import com.bitio.ui.shared.SharedTopAppBar
+import com.bitio.ui.shared.VerticalSpacer8Dp
+import com.bitio.utils.TAG_APP
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -48,9 +55,11 @@ fun FavoriteScreen(navController: NavController) {
     val viewModel = getViewModel<FavoriteViewModel>()
     val favoriteUiState by viewModel.favoriteUIState
     val productUiState by viewModel.productUIState
+    val cartUiState by viewModel.cartUIState
     var isSheetOpen by rememberSaveable {
         mutableStateOf(false)
     }
+
 
     FavoriteContent(
         favoriteUiState,
@@ -60,14 +69,14 @@ fun FavoriteScreen(navController: NavController) {
         onOpenBottomSheetClick = {
             isSheetOpen = it
         },
-        onAddToCartClick = {},
+        onAddToCartClick = viewModel::addProductToCart,
         onCartButtonClick = {
             viewModel.getProductDetails(it)
             isSheetOpen = true
         },
         productUiState = productUiState.product,
-        onIncreaseQuantityClick = {},
-        onDecreaseQuantityClick = {}
+        onFavoriteButtonClick = viewModel::deleteFavoriteOfUser,
+        cartUIState = viewModel.cartUIState.value
     )
 }
 
@@ -79,10 +88,10 @@ private fun FavoriteContent(
     onBackButtonClick: () -> Unit,
     onProductClick: (String) -> Unit,
     onOpenBottomSheetClick: (Boolean) -> Unit,
-    onAddToCartClick: (String) -> Unit,
+    onAddToCartClick: (CartItemUiState) -> Unit,
     onCartButtonClick: (String) -> Unit,
-    onIncreaseQuantityClick: (Int) -> Unit,
-    onDecreaseQuantityClick: (Int) -> Unit,
+    onFavoriteButtonClick: (String) -> Unit,
+    cartUIState: CartUiState,
 ) {
     Scaffold(
         topBar = {
@@ -102,21 +111,23 @@ private fun FavoriteContent(
             items(
                 count = favoriteUiState.products.size,
                 contentType = { FavoriteUiState::class.java },
-                key = { it }) {
+                key = { item -> item }
+            ) { index ->
                 FavoriteItem(
-                    favorite = favoriteUiState.products[it],
+                    favorite = favoriteUiState.products[index],
                     onProductClick = onProductClick,
-                    onCartButtonClick = onCartButtonClick
+                    onCartButtonClick = onCartButtonClick,
+                    onFavoriteButtonClick = onFavoriteButtonClick
                 )
             }
         }
+
         FavoriteBottomSheet(
             isSheetOpen = isSheetOpen,
             onOpenBottomSheetClick = onOpenBottomSheetClick,
             onAddToCartClick = onAddToCartClick,
             productUiState = productUiState,
-            onDecreaseQuantityClick = onDecreaseQuantityClick,
-            onIncreaseQuantityClick = onIncreaseQuantityClick
+            isLoading = cartUIState.isLoading
         )
     }
 }
@@ -126,12 +137,14 @@ private fun FavoriteItem(
     favorite: Favorite,
     onProductClick: (String) -> Unit,
     onCartButtonClick: (String) -> Unit,
+    onFavoriteButtonClick: (String) -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxSize()
+            .padding(top = 8.dp)
             .clickable {
                 onProductClick(favorite.id)
             }
@@ -153,18 +166,19 @@ private fun FavoriteItem(
                     contentScale = ContentScale.FillBounds
                 )
                 IconButton(
-                    onClick = { },
+                    onClick = { onFavoriteButtonClick(favorite.id) },
                     modifier = Modifier.align(Alignment.TopEnd)
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.full_heart),
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
             }
             IconButton(
                 onClick = { onCartButtonClick(favorite.id) },
-                colors = iconButtonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+                colors = iconButtonColors(containerColor = MaterialTheme.colorScheme.primary),
                 modifier = Modifier
                     .border(
                         4.dp,
@@ -175,20 +189,22 @@ private fun FavoriteItem(
                 Icon(
                     painter = painterResource(id = R.drawable.bag),
                     contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
         Text(
             text = favorite.title,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onBackground,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
+        VerticalSpacer8Dp()
         Text(
             text = "$${favorite.price}",
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onBackground,
         )
     }
 }

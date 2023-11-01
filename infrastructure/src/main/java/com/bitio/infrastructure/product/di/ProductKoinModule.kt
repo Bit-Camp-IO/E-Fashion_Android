@@ -17,10 +17,11 @@ import com.bitio.productscomponent.domain.useCase.GetFavoriteIdsUseCase
 import com.bitio.productscomponent.domain.useCase.GetProductByIdUseCase
 import com.bitio.productscomponent.domain.useCase.GetProductDetailsUseCase
 import com.bitio.productscomponent.domain.useCase.GetProductsByBrandAndCategoryUseCase
-import com.bitio.productscomponent.domain.useCase.cart.AddProductToCartUseCase
 import com.bitio.productscomponent.domain.useCase.cart.DeleteProductFromCartUseCase
 import com.bitio.productscomponent.domain.useCase.cart.EditProductOfCartUseCase
 import com.bitio.productscomponent.domain.useCase.cart.GetAllProductsFromCartUseCase
+import com.bitio.productscomponent.domain.useCase.favorite.AddProductToCartUseCase
+import com.bitio.productscomponent.domain.useCase.favorite.DeleteFavoriteOfUserUseCase
 import com.bitio.productscomponent.domain.useCase.favorite.GetAllFavoritesOfUserUseCase
 import com.bitio.productscomponent.domain.useCase.order.GetAllOrdersUseCase
 import org.koin.dsl.module
@@ -53,6 +54,7 @@ val productKoinModule = module {
     factory { GetAllOrdersUseCase(get()) }
 
     factory { GetAllFavoritesOfUserUseCase(get()) }
+    factory { DeleteFavoriteOfUserUseCase(get()) }
 
 
 }

@@ -110,7 +110,7 @@ class ProductApiAdapter(private val retrofitApi: ProductsApiRetrofit) : Products
 
     override suspend fun addProductToCart(cartItemBody: CartItemBody): ResponseWrapper<CartResponse> {
         try {
-            return retrofitApi.addCart(cartItemBody)
+            return retrofitApi.addProductToCart(cartItemBody)
         } catch (e: HttpException) {
             throw parseIfApiErrorException(e).error
         }

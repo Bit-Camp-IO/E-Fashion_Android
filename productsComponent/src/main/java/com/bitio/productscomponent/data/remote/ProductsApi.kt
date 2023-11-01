@@ -1,6 +1,7 @@
 package com.bitio.productscomponent.data.remote
 
 import com.bitio.productscomponent.data.remote.request.CartItemBody
+import com.bitio.productscomponent.data.remote.response.CartItemResponse
 import com.bitio.productscomponent.data.remote.request.IdBody
 import com.bitio.productscomponent.data.remote.response.BrandResponse
 import com.bitio.productscomponent.data.remote.response.CartResponse

@@ -166,7 +166,6 @@ class LocationViewModel(
     }
 
     fun deleteUserLocation() {
-        Log.d(TAG_APP, "deleteUserLocation: ${_uiState.value.id}")
         viewModelScope.launch {
             when (val response = deleteUserLocationUseCase(_uiState.value.id)) {
                 is ResponseStatus.Error -> _uiState.value = LocationUIState(

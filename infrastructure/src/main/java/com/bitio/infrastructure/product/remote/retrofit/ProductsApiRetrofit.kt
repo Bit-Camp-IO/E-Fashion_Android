@@ -11,7 +11,6 @@ import com.bitio.productscomponent.data.remote.response.OrderResponse
 import com.bitio.productscomponent.data.remote.response.ProductDetailsResponse
 import com.bitio.productscomponent.data.remote.response.ProductsPage
 import com.bitio.sharedcomponent.data.ResponseWrapper
-import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -59,7 +58,7 @@ interface ProductsApiRetrofit {
     suspend fun getAllCarts(): ResponseWrapper<CartResponse>
 
     @POST("user/cart")
-    suspend fun addCart(@Body cartItemBody: CartItemBody): ResponseWrapper<CartResponse>
+    suspend fun addProductToCart(@Body cartItemBody: CartItemBody): ResponseWrapper<CartResponse>
 
     @HTTP(method = "DELETE", path = "user/cart", hasBody = true)
     suspend fun deleteCart(@Body id: IdBody): ResponseWrapper<CartResponse>

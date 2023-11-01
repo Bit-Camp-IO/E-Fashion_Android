@@ -1,21 +1,17 @@
 package com.bitio.ui.product.cart
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bitio.productscomponent.domain.useCase.cart.AddProductToCartUseCase
 import com.bitio.productscomponent.domain.useCase.cart.DeleteProductFromCartUseCase
 import com.bitio.productscomponent.domain.useCase.cart.EditProductOfCartUseCase
 import com.bitio.productscomponent.domain.useCase.cart.GetAllProductsFromCartUseCase
-import com.bitio.utils.TAG_APP
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 class CartViewModel(
     private val getAllProductsFromCartUseCase: GetAllProductsFromCartUseCase,
-    private val addCartUseCase: AddProductToCartUseCase,
     private val deleteProductFromCartUseCase: DeleteProductFromCartUseCase,
     private val editProductOfCartUseCase: EditProductOfCartUseCase
 ) : ViewModel() {

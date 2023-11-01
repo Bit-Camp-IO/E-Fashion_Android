@@ -3,10 +3,12 @@ package com.bitio.productscomponent.data.repository
 import com.bitio.productscomponent.data.local.dataSource.ProductDao
 import com.bitio.productscomponent.data.remote.ProductsApi
 import com.bitio.productscomponent.data.remote.request.CartItemBody
+import com.bitio.productscomponent.data.remote.response.CartItemResponse
 import com.bitio.productscomponent.data.remote.request.IdBody
 import com.bitio.productscomponent.data.remote.response.CartResponse
 import com.bitio.productscomponent.data.remote.response.OrderResponse
 import com.bitio.productscomponent.domain.model.Brand
+import com.bitio.productscomponent.domain.model.GeneralCart
 import com.bitio.productscomponent.domain.model.categories.Category
 import com.bitio.productscomponent.domain.model.categories.GenderType
 import com.bitio.productscomponent.domain.model.favorites.Favorite
@@ -84,7 +86,14 @@ class ProductRepositoryImpl(
         return api.getAllProductsFromCart()
     }
 
-    override suspend fun addProductToCart(cartItemBody: CartItemBody): ResponseWrapper<CartResponse> {
+    override suspend fun addProductToCart(generalCart: GeneralCart): ResponseWrapper<CartResponse> {
+        val cartItemBody =
+            CartItemBody(
+                id = generalCart.id,
+                size = generalCart.size,
+                color = generalCart.color,
+                quantity = generalCart.quantity,
+            )
         return api.addProductToCart(cartItemBody)
     }
 
@@ -92,8 +101,11 @@ class ProductRepositoryImpl(
         return api.deleteProductFromCart(IdBody(cartId))
     }
 
-    override suspend fun editProductOfCart(cartId: String, quantity: Int): ResponseWrapper<CartResponse> {
-        return api.editProductOfCart(cartId,quantity)
+    override suspend fun editProductOfCart(
+        cartId: String,
+        quantity: Int
+    ): ResponseWrapper<CartResponse> {
+        return api.editProductOfCart(cartId, quantity)
     }
 
     override suspend fun getAllOrders(): ResponseWrapper<List<OrderResponse>> {

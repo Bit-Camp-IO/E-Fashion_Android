@@ -1,24 +1,16 @@
 # 📱 E-Fashion_Android App
 
-![GitHub license](https://img.shields.io/github/license/Bit-Camp-IO/TMDA-Android)
-![GitHub last commit](https://img.shields.io/github/last-commit/Bit-Camp-IO/TMDA-Android)
-![GitHub issues](https://img.shields.io/github/issues/Bit-Camp-IO/TMDA-Android)
-
-This repository contains the source code for the E-Fashion Android app, which allows users to browse and search for movies using the custom api. The app provides information such as clothes for women, men, children, and accessories.
-
-## 🚀: Features
-
-- Search by special filters like color, category, price, or size.
-- Search about your location using Google Maps.
-- Support chat with owner app.
-- Notification for reviews, orders, messaging and etc.
-- Follow status order.
-- Light and dark mode.
-- And more.
+This repository contains the source code for the E-Fashion Android app, which allows users to browse and search for movies using the custom API. The app provides information such as clothes for women, men, children, and accessories.
 
 
 ## Technologies
-
+- [Ktor (Client - Server)](https://ktor.io/docs/welcome.html)
+- [Koin dependency injection](https://insert-koin.io/)
+- [Firebase Messaging](https://firebase.google.com/docs/cloud-messaging)
+- [Coroutines](https://developer.android.com/kotlin/coroutines)
+- [Room Database](https://developer.android.com/training/data-storage/room)
+- [Kotlin Flow](https://developer.android.com/kotlin/flow)
+- [Koin](https://www.baeldung.com/kotlin/koin-di)
 
 
 ## Prerequisites

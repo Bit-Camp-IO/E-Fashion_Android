@@ -9,7 +9,6 @@ import com.bitio.ui.profile.chat.chatSupportRoute
 import com.bitio.ui.profile.location.locationRoute
 import com.bitio.ui.profile.notifications.notificationsRoute
 import com.bitio.ui.profile.order_status.ordersRoute
-import com.bitio.ui.profile.user.changeEmailRoute
 import com.bitio.ui.profile.user.changePasswordRoute
 import com.bitio.ui.profile.user.editProfileRoute
 
@@ -26,7 +25,6 @@ fun NavGraphBuilder.profileGraph(
         chatSupportRoute(navController)
         notificationsRoute(navController)
         editProfileRoute(navController)
-        changeEmailRoute(navController)
         changePasswordRoute(navController)
     }
 }

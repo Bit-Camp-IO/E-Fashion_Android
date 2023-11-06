@@ -47,7 +47,6 @@ import com.bitio.ui.profile.location.navigateToLocationScreen
 import com.bitio.ui.profile.order_status.navigateToOrdersScreen
 import com.bitio.ui.profile.user.PermissionViewModel
 import com.bitio.ui.profile.user.UserViewModel
-import com.bitio.ui.profile.user.navigateToChangeEmailScreen
 import com.bitio.ui.profile.user.navigateToChangePasswordScreen
 import com.bitio.ui.profile.user.navigateToEditProfileScreen
 import com.bitio.ui.shared.VerticalSpacer8Dp

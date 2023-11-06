@@ -10,6 +10,6 @@ import retrofit2.http.Query
 
 interface NotificationApiRetrofit : NotificationApi {
 
-    @POST("notif/subscribe")
+    @POST("/api/notif/subscribe")
     override suspend fun addDeviceTokenToNotification(@Body notificationBody: NotificationBody): ResponseWrapper<Nothing>
 }

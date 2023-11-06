@@ -27,7 +27,7 @@ fun ProfileCustomTextField(
     leadingIcon: Painter,
     keyboardType: KeyboardType = KeyboardType.Text,
     onValueChange: (String) -> Unit,
-    onClickClearText: () -> Unit = {},
+    onClearTextClicked: () -> Unit = {},
     isEmailValid: Boolean = false,
     emailError: String = ""
 ) {
@@ -58,7 +58,7 @@ fun ProfileCustomTextField(
         },
         trailingIcon = {
             IconButton(
-                onClick = onClickClearText,
+                onClick = onClearTextClicked,
                 enabled = value.isNotEmpty()
             ) {
                 if (value.isNotEmpty()) {

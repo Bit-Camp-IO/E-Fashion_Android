@@ -4,14 +4,16 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bitio.usercomponent.domain.model.User
+import com.bitio.usercomponent.domain.model.profile.UserProfile
 import com.bitio.usercomponent.domain.usecase.user.AddUserImageUseCase
 import com.bitio.usercomponent.domain.usecase.user.DeleteUserLocationUseCase
 import com.bitio.usercomponent.domain.usecase.user.GetUserLocationUseCase
 import com.bitio.usercomponent.domain.usecase.user.GetSavedUserInformationUseCase
+import com.bitio.usercomponent.domain.usecase.user.GetUserInformationUseCase
 import com.bitio.usercomponent.domain.usecase.user.RefreshUserInfoUseCase
 import com.bitio.usercomponent.domain.usecase.user.UpdateUserInfoUseCase
 import com.bitio.usercomponent.domain.utils.ResponseStatus
+import com.bitio.utils.TAG_APP
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 import java.io.File
@@ -20,101 +22,57 @@ import java.io.File
 class UserViewModel(
     private val refreshUserInfoUseCase: RefreshUserInfoUseCase,
     private val getSavedUserInformationUseCase: GetSavedUserInformationUseCase,
+    private val getUserInformationUseCase: GetUserInformationUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
     private val getUserLocationUseCase: GetUserLocationUseCase,
     private val deleteUserLocationUseCase: DeleteUserLocationUseCase,
     private val addUserImageUseCase: AddUserImageUseCase,
 ) : ViewModel() {
 
-    private val _profileUiState = mutableStateOf(ProfileUiState())
-    val profileUiState = _profileUiState
+    private val _userProfileUiState = mutableStateOf(UserProfileUiState())
+    val userProfileUiState = _userProfileUiState
 
     val fullName = mutableStateOf("")
     val email = mutableStateOf("")
     val phoneNumber = mutableStateOf("")
 
     init {
-        refreshUserInfo()
+        getUserInformation()
     }
 
-    private fun refreshUserInfo() {
+    private fun getUserInformation() {
         viewModelScope.launch {
-            refreshUserInfoUseCase()
-            getUserInfo()
-        }
-    }
-
-    private fun getUserInfo() {
-        viewModelScope.launch {
-            getSavedUserInformationUseCase().collect { user ->
-                initialFiled(user)
-                _profileUiState.value = ProfileUiState(
-                    loading = false,
-                    profileUi = ProfileUi(
-                        fullName = user.fullName ?: "",
-                        email = user.email ?: "",
-                        phoneNumber = user.phoneNumber ?: "",
-                        profileImage = user.profileImage
-                            ?: "https://th.bing.com/th/id/OIP.SzixlF6Io24jCN67HHZulAHaLH?w=130&h=195&c=7&r=0&o=5&dpr=1.3&pid=1.7",
-                        settingsUi = SettingsUi(
-                            language = "",
-                            addresses = emptyList()
+            val response = getUserInformationUseCase()
+            response.onSuccess { profile ->
+                profile?.let { user ->
+                    initialFiled(user)
+                    _userProfileUiState.value = UserProfileUiState(
+                        profileUi = ProfileUi(
+                            fullName = user.fullName,
+                            phoneNumber = user.phoneNumber,
+                            email = user.email,
+                            id = user.id,
+                            address = user.address,
+                            isVerified = user.isVerified,
+                            settings = user.settings,
+                            provider = user.provider,
+                            profileImage = user.profileImage,
                         )
                     )
-                )
+                }
+            }
+            response.onFailure {
+                Log.d(TAG_APP, "getUserInformation: ${it.message}")
             }
         }
     }
 
-    private fun initialFiled(user: User) {
-        email.value = user.email.toString()
-        phoneNumber.value = user.phoneNumber.toString()
-        fullName.value = user.fullName.toString()
+    private fun initialFiled(userProfile: UserProfile) {
+        email.value = userProfile.email
+        phoneNumber.value = userProfile.phoneNumber
+        fullName.value = userProfile.fullName
     }
 
-    fun updateUserInfo(userUiState: UserUiState) {
-        viewModelScope.launch {
-            _profileUiState.value = ProfileUiState(loading = true)
-            when (val response = updateUserInfoUseCase(userUiState)) {
-                is ResponseStatus.Success -> {
-                    response.data?.let {
-                        _profileUiState.value = ProfileUiState(
-                            loading = false,
-                            profileUi = ProfileUi(
-                                fullName = it.fullName ?: "",
-                                phoneNumber = it.phoneNumber ?: "",
-                                email = it.email ?: "",
-                                profileImage = it.profileImage ?: "",
-                                settingsUi = SettingsUi(
-                                    language = it.settings?.language ?: "",
-                                    addresses =  emptyList()
-                                )
-                            )
-                        )
-                    }
-                }
-
-                is ResponseStatus.Error -> {
-                    _profileUiState.value = ProfileUiState(
-                        loading = false,
-                        errorMessage = response.errorMessage
-                    )
-                }
-            }
-        }
-    }
-
-//    private fun List<Address>?.mapToAddressUi(): List<AddressUi>? {
-//        return this?.map {
-//            AddressUi(
-//                id = it.id ?: "",
-//                state = it.state ?: "",
-//                postalCode = it.postalCode ?: 0,
-//                isPrimary = it.isPrimary ?: false,
-//                city = it.city ?: ""
-//            )
-//        }
-//    }
 
     fun addUserImage(file: File) {
         viewModelScope.launch {

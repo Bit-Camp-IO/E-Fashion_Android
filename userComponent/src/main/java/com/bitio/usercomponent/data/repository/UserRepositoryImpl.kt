@@ -2,17 +2,21 @@ package com.bitio.usercomponent.data.repository
 
 import com.bitio.sharedcomponent.data.ResponseWrapper
 import com.bitio.usercomponent.data.local.UserDao
-import com.bitio.usercomponent.data.local.UserEntity
+import com.bitio.usercomponent.data.local.UserProfileEntity
+import com.bitio.usercomponent.data.remote.RealtimeMessagingClient
 import com.bitio.usercomponent.data.remote.UserApi
 import com.bitio.usercomponent.data.remote.request.LocationBody
-import com.bitio.usercomponent.data.remote.request.UserBody
-import com.bitio.usercomponent.data.remote.response.AddressResponse
-import com.bitio.usercomponent.data.remote.response.ProfileResponse
-import com.bitio.usercomponent.domain.model.Location
-import com.bitio.usercomponent.domain.model.User
+import com.bitio.usercomponent.data.remote.request.UserProfileBody
+import com.bitio.usercomponent.data.remote.response.ChatResponse
+import com.bitio.usercomponent.data.remote.response.profile.AddressResponse
+import com.bitio.usercomponent.data.remote.response.ChatStatusResponse
+import com.bitio.usercomponent.data.remote.response.SenderChatResponse
+import com.bitio.usercomponent.data.remote.response.profile.UserProfileResponse
+import com.bitio.usercomponent.domain.model.Chat
+import com.bitio.usercomponent.domain.model.profile.Location
+import com.bitio.usercomponent.domain.model.profile.UserProfile
 import com.bitio.usercomponent.domain.repository.UserRepository
 import com.bitio.usercomponent.domain.utils.ResponseStatus
-import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import java.io.File
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -20,19 +24,20 @@ import okhttp3.RequestBody.Companion.asRequestBody
 
 class UserRepositoryImpl(
     private val userApi: UserApi,
-    private val userDao: UserDao
+    private val userDao: UserDao,
+    private var realtimeMessagingClient: RealtimeMessagingClient,
 ) : UserRepository {
-    override suspend fun refreshUserInfo(): ResponseStatus<UserEntity> {
+    override suspend fun refreshUserInfo(): ResponseStatus<UserProfileEntity> {
         return try {
             val response = userApi.getUserInformation()
             if (response.data != null) {
-                val userEntity = UserEntity(
+                val userEntity = UserProfileEntity(
                     fullName = response.data?.fullName,
                     email = response.data?.email,
                     phoneNumber = response.data?.phoneNumber,
                     profileImage = response.data?.profileImage
                 )
-                userDao.saveUserInformation(userEntity)
+//                userDao.saveUserInformation(userEntity)
                 ResponseStatus.Success(userEntity)
             } else {
                 ResponseStatus.Error(response.message)
@@ -42,15 +47,19 @@ class UserRepositoryImpl(
         }
     }
 
-    override  fun getSavedUserInformation(): Flow<User> {
-        return userDao.getUserInformation()
+    override suspend fun getUserInformation(): ResponseWrapper<UserProfileResponse> {
+        return userApi.getUserInformation()
     }
 
-    override suspend fun updateUserInformation(user: User): ResponseWrapper<ProfileResponse> {
-        val user = UserBody(
-            email = user.email,
-            fullName = user.fullName,
-            phoneNumber = user.phoneNumber
+    override fun getSavedUserInformation() {
+
+    }
+
+    override suspend fun updateUserInformation(userProfile: UserProfile): ResponseWrapper<UserProfileResponse> {
+        val user = UserProfileBody(
+            email = userProfile.email,
+            fullName = userProfile.fullName,
+            phoneNumber = userProfile.phoneNumber
         )
         return userApi.updateUserInformation(user)
     }
@@ -80,6 +89,33 @@ class UserRepositoryImpl(
 
     override suspend fun deleteUserLocation(addressId: String): ResponseWrapper<String> {
         return userApi.deleteUserLocation(addressId)
+    }
+
+    override suspend fun getStatusChat(): String? {
+        try {
+            val response = userApi.getStatusChat()
+            if (response.status == "success") {
+                return response.data?.id
+//                realtimeMessagingClient.connectSocketIo(response.data?.id.toString())
+            } else {
+                val aksResponse = userApi.askNewChat()
+                if (aksResponse.status == "success") {
+                    return response.data?.id
+                }
+            }
+        } catch (e: Exception) {
+            println("Sajjadio catch: ${e.message}")
+        }
+
+        return null
+    }
+
+    override suspend fun getAllMessages(chatId: String): List<Chat> {
+        return userApi.getAllMessages(chatId).data!!
+    }
+
+    override suspend fun sendMessage(chatId: String, content: String): ResponseWrapper<SenderChatResponse> {
+        return userApi.sendMessage(chatId, content)
     }
 
 }

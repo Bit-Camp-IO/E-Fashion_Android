@@ -1,6 +1,6 @@
 package com.bitio.usercomponent.data.remote.request
 
-import com.bitio.usercomponent.domain.model.Location
+import com.bitio.usercomponent.domain.model.profile.Location
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,4 +1,4 @@
-package com.bitio.usercomponent.domain.model
+package com.bitio.usercomponent.domain.model.profile
 
 interface Location {
     val latitude:Double

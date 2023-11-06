@@ -1,26 +1,28 @@
 package com.bitio.ui.profile.chat
 
+import com.bitio.usercomponent.domain.model.Chat
+
 data class ChatSupportUIState(
     val isLoading: Boolean = true,
     val errorMessage: String = "",
-    val chatSupport: List<ChatSupport> = emptyList()
+    val chats: List<Chat> = emptyList()
 )
 
 
 interface ChatSupport {
     val id: String
     val message: String
-    val messageTime: String
+    val date: String
 }
 
 data class Sender(
     override val id: String,
     override val message: String,
-    override val messageTime: String
+    override val date: String
 ) : ChatSupport
 
 data class Receiver(
-    override val id: String,
-    override val message: String,
-    override val messageTime: String
-) : ChatSupport
+    override val content: String,
+    override val date: String,
+    override val me: Boolean
+) : Chat

@@ -1,7 +1,6 @@
 package com.bitio.efashion
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,7 +12,6 @@ import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,7 +29,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.bitio.ui.authentication.route.AuthRouterScreens
-import com.bitio.ui.profile.ProfileRouteScreens
+import com.bitio.ui.profile.ProfileSettingsRouteScreens
 import com.bitio.ui.route.RootRouteScreens
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -48,8 +46,8 @@ fun BottomNavigationBar(checkIfLogin: Boolean) {
     Scaffold(
         bottomBar = {
             val visibility = currentRoute(navController = navController) !in listOf(
-                ProfileRouteScreens.Location.route,
-                ProfileRouteScreens.ChatSupport.route,
+                ProfileSettingsRouteScreens.Location.route,
+                ProfileSettingsRouteScreens.ChatSupport.route,
                 AuthRouterScreens.Login.route,
                 AuthRouterScreens.SignUp.route,
             )

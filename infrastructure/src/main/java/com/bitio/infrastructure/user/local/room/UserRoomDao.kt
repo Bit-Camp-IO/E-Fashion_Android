@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.Flow
 interface UserRoomDao {
 
     @Insert
-    suspend fun saveUserInformation(userEntity: UserEntity)
+    suspend fun saveUserInformation(userEntity: UserProfileEntity)
 
     @Query("SELECT * FROM user")
-    fun getUserInformation(): Flow<UserEntity>
+    fun getUserInformation(): Flow<UserProfileEntity>
 
     @Query("DELETE from user")
     suspend fun deleteUserInfo()

@@ -5,10 +5,10 @@ import androidx.room.RoomDatabase
 import com.bitio.infrastructure.product.local.productModels.CategoryDto
 import com.bitio.infrastructure.product.local.productModels.ProductDto
 import com.bitio.infrastructure.product.local.room.ProductRoomDao
-import com.bitio.infrastructure.user.local.room.UserEntity
+import com.bitio.infrastructure.user.local.room.UserProfileEntity
 import com.bitio.infrastructure.user.local.room.UserRoomDao
 
-@Database(entities = [ProductDto::class, CategoryDto::class, UserEntity::class], version = 1)
+@Database(entities = [ProductDto::class, CategoryDto::class, UserProfileEntity::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productRoomDao(): ProductRoomDao
     abstract fun userRoomDao(): UserRoomDao

@@ -4,9 +4,12 @@ package com.bitio.infrastructure.user.remote
 import com.bitio.sharedcomponent.data.ResponseWrapper
 import com.bitio.usercomponent.data.remote.UserApi
 import com.bitio.usercomponent.data.remote.request.LocationBody
-import com.bitio.usercomponent.data.remote.request.UserBody
-import com.bitio.usercomponent.data.remote.response.AddressResponse
-import com.bitio.usercomponent.data.remote.response.ProfileResponse
+import com.bitio.usercomponent.data.remote.request.UserProfileBody
+import com.bitio.usercomponent.data.remote.response.ChatResponse
+import com.bitio.usercomponent.data.remote.response.profile.AddressResponse
+import com.bitio.usercomponent.data.remote.response.ChatStatusResponse
+import com.bitio.usercomponent.data.remote.response.SenderChatResponse
+import com.bitio.usercomponent.data.remote.response.profile.UserProfileResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -19,27 +22,42 @@ import retrofit2.http.Path
 
 interface UserApiProvider : UserApi {
 
-    @GET("user/me")
-    override suspend fun getUserInformation(): ResponseWrapper<ProfileResponse>
+    @GET("/api/user/me")
+    override suspend fun getUserInformation(): ResponseWrapper<UserProfileResponse>
 
-    @PATCH("user/me/edit")
+    @PATCH("/api/user/me/edit")
     override suspend fun updateUserInformation(
-        @Body userBody: UserBody
-    ): ResponseWrapper<ProfileResponse>
+        @Body userBody: UserProfileBody
+    ): ResponseWrapper<UserProfileResponse>
 
-    @GET("user/address")
+    @GET("/api/user/address")
     override suspend fun getAddressesOfUser(): ResponseWrapper<AddressResponse>
 
     @Multipart
-    @POST("user/profile-image")
+    @POST("/api/user/profile-image")
     override suspend fun addUserImage(
         @Part profileImage: MultipartBody.Part?
     ): ResponseWrapper<String>
 
-    @POST("user/address")
+    @POST("/api/user/address")
     override suspend fun addUserLocation(@Body locationBody: LocationBody): ResponseWrapper<AddressResponse>
 
-    @DELETE("user/address/{address_id}")
-    override suspend fun deleteUserLocation(@Path("address_id") addressId: String):ResponseWrapper<String>
+    @DELETE("/api/user/address/{address_id}")
+    override suspend fun deleteUserLocation(@Path("address_id") addressId: String): ResponseWrapper<String>
+
+    @POST("/api/chat/new-chat")
+    override suspend fun askNewChat(): ResponseWrapper<ChatStatusResponse>
+
+    @GET("/api/chat")
+    override suspend fun getStatusChat(): ResponseWrapper<ChatStatusResponse>
+
+    @GET("/api/chat/{chat_id}/messages")
+    override suspend fun getAllMessages(@Path("chat_id") chatId: String): ResponseWrapper<List<ChatResponse>>
+
+    @POST("/api/chat/{chat_id}/new-message")
+    override suspend fun sendMessage(
+        @Path("chat_id") chatId: String,
+        @Body content: String
+    ): ResponseWrapper<SenderChatResponse>
 
 }

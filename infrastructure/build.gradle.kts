@@ -51,6 +51,15 @@ dependencies {
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
+
+
+    // Ktor
+    val ktorVersion = "1.6.3"
+    implementation ("io.ktor:ktor-client-core:$ktorVersion")
+    implementation ("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation ("io.ktor:ktor-client-websockets:$ktorVersion")
+    implementation ("io.ktor:ktor-client-logging:$ktorVersion")
 
 
     //room
@@ -58,6 +67,9 @@ dependencies {
     api("androidx.room:room-runtime:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+
+    implementation ("com.github.nkzawa:socket.io-client:0.6.0")
+
 
 
     val koinVersion ="3.4.3"
@@ -67,7 +79,6 @@ dependencies {
     api("io.insert-koin:koin-annotations:$koinKspVersion")
     ksp ("io.insert-koin:koin-ksp-compiler:$koinKspVersion")
     // api("io.insert-koin:koin-androidx-workmanager:3.4.3")
-
 
 
     //work manager

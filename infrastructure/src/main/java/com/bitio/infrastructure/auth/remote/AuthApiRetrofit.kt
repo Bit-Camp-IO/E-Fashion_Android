@@ -13,21 +13,21 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface AuthApiRetrofit : AuthApi {
-    @POST("auth/register")
+    @POST("/api/auth/register")
     override suspend fun register(@Body registerBody: RegisterBody): ResponseWrapper<AuthDataResponse>
 
-    @POST("auth/login")
+    @POST("/api/auth/login")
     override suspend fun login(@Body loginBody: LoginBody): ResponseWrapper<AuthDataResponse>
 
-    @GET("auth/refresh")
+    @GET("/api/auth/refresh")
     override suspend fun refreshAccessToken(@Header(value = "X-Refresh-Token") refreshToken: String): ResponseWrapper<AccessTokenResponse>
 
-    @GET("auth/forgot-password")
+    @GET("/api/auth/forgot-password")
     override suspend fun forgotPassword(email: String): ResponseWrapper<AuthDataResponse>
 
-    @GET("auth/forgot-password")
+    @GET("/api/auth/forgot-password")
     override suspend fun verifyEmail(otp: String): ResponseWrapper<AuthDataResponse>
 
-    @POST("auth/reset-password")
+    @POST("/api/auth/reset-password")
     override suspend fun resetPassword(@Body resetPasswordBody: ResetPasswordBody): ResponseWrapper<AuthDataResponse>
 }

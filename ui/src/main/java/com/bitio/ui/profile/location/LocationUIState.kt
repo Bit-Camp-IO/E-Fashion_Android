@@ -1,6 +1,6 @@
 package com.bitio.ui.profile.location
 
-import com.bitio.usercomponent.domain.model.Location
+import com.bitio.usercomponent.domain.model.profile.Location
 
 data class LocationUIState(
     val loading: Boolean = false,

@@ -17,13 +17,13 @@ class ProfileSettingsViewModel(
     private val getProfileSettingsUseCase: GetProfileSettingsUseCase
 ) : ViewModel() {
 
-    private val _profileSettingsUiState = MutableStateFlow(ProfileSettingsUiState())
+    private val _profileSettingsUiState = MutableStateFlow(LocalProfileSettingsUiState())
     val profileSettingsUiState = _profileSettingsUiState.asStateFlow()
 
     init {
         viewModelScope.launch {
             getProfileSettingsUseCase().collect {
-                _profileSettingsUiState.value = ProfileSettingsUiState(
+                _profileSettingsUiState.value = LocalProfileSettingsUiState(
                     darkModeEnabled = it.darkModeEnabled,
                     language = it.language
                 )
@@ -34,7 +34,7 @@ class ProfileSettingsViewModel(
     internal fun onSwitchTheme(darkModeEnabled: Boolean) {
         viewModelScope.launch {
             saveProfileSettingsUseCase(
-                ProfileSettingsUiState(
+                LocalProfileSettingsUiState(
                     darkModeEnabled = darkModeEnabled,
                     language = _profileSettingsUiState.value.language
                 )
@@ -45,7 +45,7 @@ class ProfileSettingsViewModel(
     internal fun onChangeLanguage(language: String) {
         viewModelScope.launch {
             saveProfileSettingsUseCase(
-                ProfileSettingsUiState(
+                LocalProfileSettingsUiState(
                     darkModeEnabled = _profileSettingsUiState.value.darkModeEnabled,
                     language = language
                 )

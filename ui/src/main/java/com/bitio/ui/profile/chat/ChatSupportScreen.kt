@@ -1,6 +1,7 @@
 package com.bitio.ui.profile.chat
 
 import android.annotation.SuppressLint
+import android.icu.text.SimpleDateFormat
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
@@ -31,9 +32,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,8 +48,10 @@ import com.bitio.ui.R
 import com.bitio.ui.shared.SharedTopAppBar
 import com.bitio.ui.shared.VerticalSpacer2Dp
 import com.bitio.ui.theme.textStyles.AppThemeTextStyles
+import com.bitio.usercomponent.domain.model.Chat
 import org.koin.androidx.compose.getViewModel
-import kotlin.random.Random
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -62,9 +62,13 @@ fun ChatSupportScreen(
     val state by viewModel.chatSupportUiState.collectAsState()
     ChatSupportContent(
         state,
-        onClickLinkButton ={},
-        viewModel::sendMessage,
-        navController::popBackStack
+        onClickLinkButton = {},
+        onClickSendButton = viewModel::sendMessage,
+        navController::popBackStack,
+        content = viewModel.content.value,
+        onContentChange = {
+            viewModel.content.value = it
+        }
     )
 }
 
@@ -73,8 +77,10 @@ fun ChatSupportScreen(
 private fun ChatSupportContent(
     state: ChatSupportUIState,
     onClickLinkButton: () -> Unit,
-    onClickSendButton: (Sender) -> Unit,
-    onClickBackButton: () -> Unit
+    onClickSendButton: () -> Unit,
+    onClickBackButton: () -> Unit,
+    content: String,
+    onContentChange: (String) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -97,9 +103,11 @@ private fun ChatSupportContent(
                 Text(text = state.errorMessage)
             } else {
                 ChatSupportContainer(
-                    state.chatSupport,
+                    state.chats,
+                    content = content,
                     onClickLinkButton,
-                    onClickSendButton
+                    onClickSendButton,
+                    onContentChange = onContentChange
                 )
             }
         }
@@ -108,9 +116,11 @@ private fun ChatSupportContent(
 
 @Composable
 private fun ChatSupportContainer(
-    chatSupport: List<ChatSupport>,
+    chatSupport: List<Chat>,
+    content: String,
     onClickLinkButton: () -> Unit,
-    onClickSendButton: (Sender) -> Unit
+    onClickSendButton: () -> Unit,
+    onContentChange: (String) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -126,7 +136,12 @@ private fun ChatSupportContainer(
             ChatSupportHeader()
             ChatsSupportBody(chatSupport, Modifier.weight(1f))
         }
-        Footer(onClickLinkButton, onClickSendButton)
+        Footer(
+            onClickLinkButton,
+            onClickSendButton,
+            content = content,
+            onContentChange = onContentChange
+        )
     }
 }
 
@@ -169,7 +184,7 @@ private fun ChatSupportHeader() {
 
 @Composable
 private fun ChatsSupportBody(
-    chatSupport: List<ChatSupport>,
+    chatSupport: List<Chat>,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -184,28 +199,28 @@ private fun ChatsSupportBody(
             contentType = { ChatSupport::class.java },
             key = { it }
         ) { index ->
-            if (chatSupport[index] is Sender) {
-                SenderChats(chatSupport[index] as Sender)
+            if (chatSupport[index].me) {
+                SenderChats(chatSupport.reversed()[index])
             } else {
-                ReceiverChats(chatSupport[index] as Receiver)
+                ReceiverChats(chatSupport.reversed()[index])
             }
         }
     }
 }
 
 @Composable
-private fun SenderChats(sender: Sender) {
+private fun SenderChats(sender: Chat) {
     CustomMessageCard(
-        sender.message,
-        sender.messageTime
+        sender.content,
+        sender.date
     )
 }
 
 @Composable
-private fun ReceiverChats(receiver: Receiver) {
+private fun ReceiverChats(receiver: Chat) {
     CustomMessageCard(
-        receiver.message,
-        receiver.messageTime,
+        receiver.content,
+        receiver.date,
         Alignment.Start,
         Color(0xFFDEE3EB),
         Color.Black,
@@ -220,7 +235,7 @@ private fun ReceiverChats(receiver: Receiver) {
 @Composable
 private fun CustomMessageCard(
     message: String,
-    messageTime: String,
+    date: String,
     alignment: Alignment.Horizontal = Alignment.End,
     backgroundColor: Color = MaterialTheme.colorScheme.primary,
     textColor: Color = Color.White,
@@ -250,7 +265,7 @@ private fun CustomMessageCard(
             )
         }
         Text(
-            text = messageTime,
+            text =  date,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.secondary
         )
@@ -260,11 +275,10 @@ private fun CustomMessageCard(
 @Composable
 private fun Footer(
     onClickLinkButton: () -> Unit,
-    onClickSendButton: (Sender) -> Unit
+    onClickSendButton: () -> Unit,
+    content: String,
+    onContentChange: (String) -> Unit
 ) {
-    var message by remember {
-        mutableStateOf("")
-    }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -273,21 +287,12 @@ private fun Footer(
     ) {
         ChatBox(
             modifier = Modifier.weight(1f),
-            value = message,
-            onValueChange = { message = it },
+            value = content,
+            onValueChange = onContentChange,
             onClickLinkButton = onClickLinkButton
         )
 
-        CustomSendButton(message.isEmpty()) {
-            onClickSendButton(
-                Sender(
-                    id = Random(100).nextInt().toString(),
-                    message = message,
-                    messageTime = "11:45 PM"
-                )
-            )
-            message = ""
-        }
+        CustomSendButton(content.isEmpty(), onClickSendButton = onClickSendButton)
     }
 }
 
@@ -352,12 +357,13 @@ private fun CustomSendButton(
             tween(durationMillis = 25)
         }
     )
-    val iconPainter: Painter =
-        painterResource(id = if (transition.currentState) R.drawable.send_outline else R.drawable.send_full)
+    val iconPainter: Painter = painterResource(
+        id = if (transition.currentState) R.drawable.send_outline
+        else R.drawable.send_full
+    )
 
     IconButton(
-        modifier = Modifier
-            .size(48.dp),
+        modifier = Modifier.size(48.dp),
         onClick = onClickSendButton,
         enabled = !transition.currentState
     ) {

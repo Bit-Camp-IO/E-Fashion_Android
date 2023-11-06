@@ -1,4 +1,4 @@
-package com.bitio.ui.profile.settings
+package com.bitio.ui.profile
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.AnimationSpec
@@ -18,9 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,101 +30,123 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bitio.ui.R
-import com.bitio.ui.theme.Porcelain
-import com.bitio.ui.theme.textStyles.AppThemeTextStyles
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.stringResource
-import com.bitio.ui.shared.VerticalSpacer32Dp
+import com.bitio.ui.shared.VerticalSpacer16Dp
+import com.bitio.ui.shared.VerticalSpacer8Dp
 
 
 @Composable
 fun SettingApp(
-    darkModeEnabled: Boolean,
+    isDarkModeEnabled: Boolean,
+    isNotificationEnabled: Boolean,
     modifier: Modifier = Modifier,
     onSwitchTheme: (Boolean) -> Unit,
-    onClickMyProfile: () -> Unit,
-    onClickLocationScreen: () -> Unit,
-    onClickOrderStatusScreen: () -> Unit,
-    onClickChatSupportScreen: () -> Unit,
-    onClickNotificationsScreen: () -> Unit,
+    onSwitchNotification: (Boolean) -> Unit,
+    onMyProfileClicked: () -> Unit,
+    onLocationScreenClicked: () -> Unit,
+    onOrderStatusScreenClicked: () -> Unit,
+    onChatSupportScreenClicked: () -> Unit,
+    onChangePasswordScreenClicked: () -> Unit,
 ) {
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        IconButton(
-            onClick = { /*TODO*/ },
-            modifier = Modifier
-                .padding(horizontal = 24.dp, vertical = 24.dp)
-                .size(48.dp)
-                .clip(RoundedCornerShape(100.dp))
-                .background(MaterialTheme.colorScheme.primary)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.logout),
-                contentDescription = "logout",
-                tint = Porcelain
-            )
-        }
-
-        VerticalSpacer32Dp()
-
-        Text(
-            text = stringResource(id = R.string.profile_settings),
-            style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).titleMedium,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-        )
-
-        VerticalSpacer32Dp()
 
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.profile),
             text = stringResource(id = R.string.my_profile),
-            modifier = Modifier.clickable(onClick = onClickMyProfile)
+            modifier = Modifier.clickable(onClick = onMyProfileClicked)
+        )
+        Divider(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            color = Color(0x406F6F6F)
         )
 
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.location),
             text = stringResource(id = R.string.location),
-            modifier = Modifier.clickable(onClick = onClickLocationScreen)
+            modifier = Modifier.clickable(onClick = onLocationScreenClicked)
 
         )
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.bag),
             text = stringResource(id = R.string.order_status),
-            modifier = Modifier.clickable(onClick = onClickOrderStatusScreen)
+            modifier = Modifier.clickable(onClick = onOrderStatusScreenClicked)
+        )
+
+        Divider(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            color = Color(0x406F6F6F)
         )
         SettingItem(
             startPainterIcon = painterResource(id = R.drawable.messages),
             text = stringResource(id = R.string.chat_support),
-            modifier = Modifier.clickable(onClick = onClickChatSupportScreen)
+            modifier = Modifier.clickable(onClick = onChatSupportScreenClicked)
         )
         SettingItem(
-            startPainterIcon = painterResource(id = R.drawable.notification),
-            text = stringResource(id = R.string.notifications),
-            modifier = Modifier.clickable(onClick = onClickNotificationsScreen)
+            startPainterIcon = painterResource(id = R.drawable.large_lock),
+            text = stringResource(id = R.string.change_password),
+            modifier = Modifier.clickable(onClick = onChangePasswordScreenClicked)
+        )
+
+        Divider(
+            modifier = Modifier.padding(horizontal = 24.dp),
+            color = Color(0x406F6F6F)
         )
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 20.dp),
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(painter = painterResource(id = R.drawable.notification), contentDescription = "")
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = stringResource(id = R.string.notifications),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.weight(1f)
+            )
+            Switcher(
+                enabled = isNotificationEnabled,
+                onSwitch = onSwitchNotification,
+                enableIcon = painterResource(id = R.drawable.outline_notifications_off_24),
+                disableIcon = painterResource(id = R.drawable.notification),
+                enableColor = Color.Green,
+                disableColor = Color.Red
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(painter = painterResource(id = R.drawable.sun), contentDescription = "")
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = stringResource(id = if (darkModeEnabled) R.string.dark_mode else R.string.light_mode),
-                style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).bodySmall,
+                text = stringResource(id = if (isDarkModeEnabled) R.string.dark_mode else R.string.light_mode),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.weight(1f)
             )
-            ThemeSwitcher(darkModeEnabled = darkModeEnabled, onSwitchTheme = onSwitchTheme)
+            Switcher(
+                enabled = isDarkModeEnabled,
+                onSwitch = onSwitchTheme,
+                enableIcon = painterResource(id = R.drawable.moon_half),
+                disableIcon = painterResource(id = R.drawable.sun_full),
+            )
         }
+
     }
 }
 
@@ -140,14 +161,14 @@ private fun SettingItem(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 12.dp, horizontal = 24.dp),
+            .padding(vertical = 16.dp, horizontal = 24.dp)
+            .fillMaxWidth(),
     ) {
         Icon(painter = startPainterIcon, contentDescription = "")
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = text,
-            style = AppThemeTextStyles(MaterialTheme.colorScheme.onBackground).bodySmall,
+            style = MaterialTheme.typography.labelMedium,
             modifier = Modifier.weight(1f)
         )
         Icon(painter = endPainterIcon, contentDescription = "")
@@ -156,25 +177,29 @@ private fun SettingItem(
 
 
 @Composable
-private fun ThemeSwitcher(
-    darkModeEnabled: Boolean,
+private fun Switcher(
+    enabled: Boolean,
     size: Dp = 32.dp,
     padding: Dp = 2.dp,
     parentShape: Shape = CircleShape,
     toggleShape: Shape = CircleShape,
     animationSpec: AnimationSpec<Dp> = tween(durationMillis = 100),
-    onSwitchTheme: (Boolean) -> Unit
+    onSwitch: (Boolean) -> Unit,
+    enableIcon: Painter,
+    disableIcon: Painter,
+    enableColor: Color = MaterialTheme.colorScheme.onBackground,
+    disableColor: Color = MaterialTheme.colorScheme.onBackground
 ) {
-    var isDarkThemeEnable by remember {
-        mutableStateOf(darkModeEnabled)
+    var isEnable by remember {
+        mutableStateOf(enabled)
     }
     val offsetThumb by animateDpAsState(
-        targetValue = if (isDarkThemeEnable) 0.dp else size,
+        targetValue = if (enabled) 0.dp else size,
         animationSpec = animationSpec, label = ""
     )
 
     val offsetIcon by animateDpAsState(
-        targetValue = if (isDarkThemeEnable) (-120).dp else 0.dp,
+        targetValue = if (enabled) (-120).dp else 0.dp,
         animationSpec = animationSpec, label = ""
     )
 
@@ -183,9 +208,10 @@ private fun ThemeSwitcher(
         .height(size)
         .clip(shape = parentShape)
         .clickable {
-            isDarkThemeEnable = !isDarkThemeEnable
-            onSwitchTheme(isDarkThemeEnable) }
-        .background(MaterialTheme.colorScheme.onBackground)
+            isEnable = !isEnable
+            onSwitch(isEnable)
+        }
+        .background(if (enabled) enableColor else disableColor)
     ) {
         Box(
             modifier = Modifier
@@ -204,8 +230,8 @@ private fun ThemeSwitcher(
                     modifier = Modifier
                         .size(16.dp)
                         .offset(x = offsetIcon),
-                    painter = painterResource(id = R.drawable.moon_half),
-                    contentDescription = "Dark theme",
+                    painter = enableIcon,
+                    contentDescription = null,
                     tint = MaterialTheme.colorScheme.background,
                 )
             }
@@ -217,8 +243,8 @@ private fun ThemeSwitcher(
                     modifier = Modifier
                         .size(16.dp)
                         .offset(x = offsetThumb + offsetThumb),
-                    painter = painterResource(id = R.drawable.sun_full),
-                    contentDescription = "Light theme",
+                    painter = disableIcon,
+                    contentDescription = null,
                     tint = MaterialTheme.colorScheme.background,
                 )
             }

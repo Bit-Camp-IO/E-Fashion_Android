@@ -21,7 +21,7 @@ import retrofit2.http.Query
 
 interface ProductsApiRetrofit {
 
-    @GET("product/list")
+    @GET("/api/product/list")
     suspend fun getProductsByCategoryAndBrand(
         @Query("brands") brandId: String?,
         @Query("categories") categoryIds: String?,
@@ -30,44 +30,44 @@ interface ProductsApiRetrofit {
         @Query("limit") limit: Int
     ): ResponseWrapper<ProductsPage>
 
-    @GET("product/{id}")
+    @GET("/api/product/{id}")
     suspend fun getProductById(
         @Path("id") id: String
     ): ResponseWrapper<ProductDetailsResponse>
 
-    @GET("category/list")
+    @GET("/api/category/list")
     suspend fun getAllCategories(@Query("gender") genderId: Int?): ResponseWrapper<List<CategoryResponse>>
 
-    @GET("category/{id}")
+    @GET("/api/category/{id}")
     suspend fun getCategoryById(@Path("id") id: String): CategoryResponse
 
-    @GET("brand/list")
+    @GET("/api/brand/list")
     suspend fun getBrands(): ResponseWrapper<List<BrandResponse>>
 
-    @GET("user/favorites")
+    @GET("/api/user/favorites")
     suspend fun getFavoriteProduct(): ResponseWrapper<List<FavoriteProductResponse>>
 
-    @POST("user/favorites")
+    @POST("/api/user/favorites")
     suspend fun addToFavoriteProduct(@Body id: IdBody)
 
-    @HTTP(method = "DELETE", path = "user/favorites", hasBody = true)
+    @HTTP(method = "DELETE", path = "/api/user/favorites", hasBody = true)
     suspend fun removeFromFavoriteProduct(@Body id: IdBody): Response<Unit>
 
 
-    @GET("user/cart")
+    @GET("/api/user/cart")
     suspend fun getAllCarts(): ResponseWrapper<CartResponse>
 
-    @POST("user/cart")
+    @POST("/api/user/cart")
     suspend fun addProductToCart(@Body cartItemBody: CartItemBody): ResponseWrapper<CartResponse>
 
-    @HTTP(method = "DELETE", path = "user/cart", hasBody = true)
+    @HTTP(method = "DELETE", path = "/api/user/cart", hasBody = true)
     suspend fun deleteCart(@Body id: IdBody): ResponseWrapper<CartResponse>
 
-    @HTTP(method = "PATCH", path = "user/cart", hasBody = true)
+    @HTTP(method = "PATCH", path = "/api/user/cart", hasBody = true)
     suspend fun editCart(
         @Body cartQuantityBody: CartQuantityBody
     ): ResponseWrapper<CartResponse>
 
-    @GET("order")
+    @GET("/api/order")
     suspend fun getAllOrders(): ResponseWrapper<List<OrderResponse>>
 }

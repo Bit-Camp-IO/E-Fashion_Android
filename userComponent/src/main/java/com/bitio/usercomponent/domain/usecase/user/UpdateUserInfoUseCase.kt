@@ -1,14 +1,14 @@
 package com.bitio.usercomponent.domain.usecase.user
 
-import com.bitio.usercomponent.data.remote.response.ProfileResponse
-import com.bitio.usercomponent.domain.model.User
+import com.bitio.usercomponent.data.remote.response.profile.UserProfileResponse
+import com.bitio.usercomponent.domain.model.profile.UserProfile
 import com.bitio.usercomponent.domain.utils.ResponseStatus
 import com.bitio.usercomponent.domain.repository.UserRepository
 
 class UpdateUserInfoUseCase(private val repository: UserRepository) {
-    suspend operator fun invoke(user: User): ResponseStatus<ProfileResponse?> {
+    suspend operator fun invoke(userProfile: UserProfile): ResponseStatus<UserProfileResponse?> {
         return try {
-            val response = repository.updateUserInformation(user)
+            val response = repository.updateUserInformation(userProfile)
             if (response.data != null) {
                 ResponseStatus.Success(response.data)
             } else {

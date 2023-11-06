@@ -1,7 +1,7 @@
 package com.bitio.usercomponent.domain.usecase.user
 
-import com.bitio.usercomponent.domain.model.Address
-import com.bitio.usercomponent.domain.model.Location
+import com.bitio.usercomponent.domain.model.profile.Address
+import com.bitio.usercomponent.domain.model.profile.Location
 import com.bitio.usercomponent.domain.repository.UserRepository
 import com.bitio.usercomponent.domain.utils.ResponseStatus
 

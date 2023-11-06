@@ -7,21 +7,21 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.bitio.usercomponent.data.local.ProfileSettingsDao
-import com.bitio.usercomponent.domain.model.ProfileSettings
+import com.bitio.usercomponent.domain.model.profile.LocalProfileSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class ProfileSettingsDaoImpl(private val context: Context) : ProfileSettingsDao {
-    override suspend fun saveProfileSettings(profileSettings: ProfileSettings) {
+    override suspend fun saveProfileSettings(localProfileSettings: LocalProfileSettings) {
         context.dataStore.edit { settings ->
-            settings[DARK_MODE_ENABLED] = profileSettings.darkModeEnabled.toString()
-            settings[LANGUAGE] = profileSettings.language
+            settings[DARK_MODE_ENABLED] = localProfileSettings.darkModeEnabled.toString()
+            settings[LANGUAGE] = localProfileSettings.language
         }
     }
 
-    override fun getProfileSettings(): Flow<ProfileSettings> {
+    override fun getProfileSettings(): Flow<LocalProfileSettings> {
         return context.dataStore.data.map { preferences ->
-            ProfileSettingsEntity(
+            LocalProfileSettingsEntity(
                 darkModeEnabled = preferences[DARK_MODE_ENABLED]?.toBoolean() ?: false,
                 language = preferences[LANGUAGE] ?: ""
             )

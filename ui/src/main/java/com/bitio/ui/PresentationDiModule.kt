@@ -10,7 +10,6 @@ import org.koin.dsl.module
 
 val presentationDiModule = module {
   //  includes(productUiDi)
-    viewModel { ChatSupportViewModel() }
     viewModel { LocationViewModel(get(),get(),get()) }
 }
 

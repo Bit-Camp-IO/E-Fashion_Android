@@ -3,14 +3,14 @@ package com.bitio.ui.profile.notifications
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.bitio.ui.profile.ProfileRouteScreens
+import com.bitio.ui.profile.ProfileSettingsRouteScreens
 
 internal fun NavController.navigateToNotificationsScreen() {
-    navigate(ProfileRouteScreens.Notifications.route)
+    navigate(ProfileSettingsRouteScreens.Notifications.route)
 }
 
 internal fun NavGraphBuilder.notificationsRoute(navController: NavController) {
-    composable(ProfileRouteScreens.Notifications.route) {
+    composable(ProfileSettingsRouteScreens.Notifications.route) {
         NotificationsScreen(
             navController = navController
         )

@@ -1,7 +1,5 @@
 package com.bitio.usercomponent.domain.usecase.user
 
-import com.bitio.usercomponent.data.remote.response.ProfileResponse
-import com.bitio.usercomponent.domain.utils.ResponseStatus
 import com.bitio.usercomponent.domain.repository.UserRepository
 
 
